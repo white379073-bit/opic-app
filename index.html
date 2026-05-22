@@ -183,7 +183,7 @@
 
     .info-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 8px; padding: 5px 11px; font-size: 12px; color: #818cf8; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeIn 0.3s ease; }
+    .fade-in { animation: fadeIn 0.3s ease forwards; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
     .pulse { animation: pulse 2s infinite; }
 
@@ -20040,25 +20040,25 @@ function App() {
         }
       });
     }
-    if (tab === 'home') return /*#__PURE__*/React.createElement(HomeScreen, {
+    if (tab === 'home') return /*#__PURE__*/React.createElement(HomeScreen, { key: 'home',
       progress: progress,
       onTopicSelect: function onTopicSelect(t) {
         return handleTopicSelect(t);
       },
       setTab: setTab
     });
-    if (tab === 'topics') return /*#__PURE__*/React.createElement(TopicsScreen, {
+    if (tab === 'topics') return /*#__PURE__*/React.createElement(TopicsScreen, { key: 'topics',
       progress: progress,
       onTopicSelect: handleTopicSelect
     });
-    if (tab === 'flashcards') return /*#__PURE__*/React.createElement(FlashcardsScreen, {
+    if (tab === 'flashcards') return /*#__PURE__*/React.createElement(FlashcardsScreen, { key: 'flashcards',
       progress: progress,
       onMaster: handleMasterCard,
       showToast: showToast,
       speech: speech,
       speechRate: speechRate
     });
-    if (tab === 'quiz') return /*#__PURE__*/React.createElement(QuizScreen, {
+    if (tab === 'quiz') return /*#__PURE__*/React.createElement(QuizScreen, { key: 'quiz',
       showToast: showToast
     });
     if (tab === 'progress') return /*#__PURE__*/React.createElement(ProgressScreen, {
