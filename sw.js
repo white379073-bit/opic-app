@@ -1,5 +1,5 @@
 const CACHE_NAME = 'opic-app-v9';
-const URLS_TO_CACHE = ['/'];
+const URLS_TO_CACHE = ['/opic-app/'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
