@@ -19721,6 +19721,7 @@ function App() {
     showProfileSetup = _useState48[0],
     setShowProfileSetup = _useState48[1];
   var speech = useSpeech();
+  useEffect(function() { speech.stop(); }, [tab]);
 
   // 프로필 없으면 초기 설정 화면
   if (!profile && !showProfileSetup) {
