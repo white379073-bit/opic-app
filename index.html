@@ -19898,7 +19898,7 @@ function HomeScreen(_ref5) {
             React.createElement("div", { style:{fontSize:16,fontWeight:800,color:"#34d399"} }, bestScore > 0 ? bestScore+"점" : "-")
           ),
           React.createElement("div", { style:{background:"rgba(167,139,250,0.1)",border:"1px solid rgba(167,139,250,0.2)",borderRadius:12,padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"} },
-            React.createElement("div", { style:{fontSize:11,color:"#64748b"} }, "🎤 스피킹"),
+            React.createElement("div", { style:{fontSize:11,color:"#64748b"} }, "🗣️ 스피킹"),
             React.createElement("div", { style:{fontSize:16,fontWeight:800,color:"#a78bfa"} }, spTotal > 0 ? Math.round(spGood/spTotal*100)+"%" : "-")
           ),
           React.createElement("div", { style:{background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:12,padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"} },
@@ -19925,10 +19925,6 @@ function HomeScreen(_ref5) {
           React.createElement("div", { style:{flex:1,textAlign:"center"} },
             React.createElement("div", { style:{fontSize:15,fontWeight:700,color:"#34d399"} }, masteredCount),
             React.createElement("div", { style:{fontSize:10,color:"#64748b"} }, "암기 표현")
-          ),
-          React.createElement("div", { style:{flex:1,textAlign:"center"} },
-            React.createElement("div", { style:{fontSize:15,fontWeight:700,color:"#fbbf24"} }, TOPICS.length),
-            React.createElement("div", { style:{fontSize:10,color:"#64748b"} }, "전체 주제")
           )
         )
       ),
@@ -19989,28 +19985,7 @@ function HomeScreen(_ref5) {
         )
       ),
 
-      // ── 전체 주제 그리드 ──────────────────────────────────────────────
-      React.createElement("div", { style:{padding:"12px 16px 0"} },
-        React.createElement("div", { style:{fontSize:13,color:"#64748b",marginBottom:10,fontWeight:600} }, "📖 전체 주제")
-      ),
-      React.createElement("div", { className:"topic-grid" },
-        TOPICS.map(function(t) {
-          var done = (progress.completedQ[t.id]||[]).length;
-          var isDone = done === t.questions.length;
-          return React.createElement("div", { key:t.id, className:"topic-card "+(isDone?"done":""), onClick:function(){ return onTopicSelect(t); } },
-            React.createElement("div", { className:"topic-emoji" }, t.emoji),
-            React.createElement("div", { className:"topic-name" }, t.name),
-            React.createElement("div", { className:"topic-count" }, t.nameEn),
-            React.createElement("div", { style:{marginTop:8} },
-              React.createElement("div", { className:"progress-bar", style:{height:4} },
-                React.createElement("div", { className:"progress-fill", style:{width:done/t.questions.length*100+"%"} })
-              ),
-              React.createElement("div", { style:{fontSize:10,color:"#64748b",marginTop:4} }, done,"/",t.questions.length)
-            ),
-            isDone && React.createElement("div", { style:{position:"absolute",top:10,right:10,fontSize:16} }, "✅")
-          );
-        })
-      ),
+
       React.createElement("div", { style:{height:16} })
     )
   );
@@ -21276,167 +21251,141 @@ function ProgressScreen(_ref18) {
   var _showTopics = useState(false), _sta = _slicedToArray(_showTopics, 2),
       showTopics = _sta[0], setShowTopics = _sta[1];
 
-  var totalQ       = TOPICS.reduce(function(s,t){ return s+t.questions.length; }, 0);
-  var completedQ   = Object.values(progress.completedQ).flat().length;
-  var masteredCards= progress.masteredCards.length;
-  var overallPct   = totalQ>0 ? Math.round(completedQ/totalQ*100) : 0;
-  var cardPct      = FLASHCARDS.length>0 ? Math.round(masteredCards/FLASHCARDS.length*100) : 0;
+  // ── 학습 통계 계산 ────────────────────────────────────────────────
+  var totalQ          = TOPICS.reduce(function(s,t){ return s+t.questions.length; }, 0);
+  var completedQ      = Object.values(progress.completedQ).flat().length;
+  var masteredCards   = progress.masteredCards.length;
   var completedTopics = TOPICS.filter(function(t){ return (progress.completedQ[t.id]||[]).length===t.questions.length; }).length;
+  var overallPct      = totalQ>0 ? Math.round(completedQ/totalQ*100) : 0;
+  var cardPct         = FLASHCARDS.length>0 ? Math.round(masteredCards/FLASHCARDS.length*100) : 0;
 
-  // 저장된 데이터 읽기
-  var bestRank=null, bestScore=0, spTotal=0, spGood=0;
-  try { bestRank  = Storage.getItem('opic_best_rank'); }  catch(e){}
-  try { bestScore = parseInt(Storage.getItem('opic_quiz_best')||'0'); } catch(e){}
-  try { spTotal   = parseInt(Storage.getItem('sp_total')||'0'); }       catch(e){}
-  try { spGood    = parseInt(Storage.getItem('sp_good')||'0'); }         catch(e){}
+  // Storage에서 읽기
+  var totalCorrect=0, sessionCount=0, spTotal=0, spGood=0, streak=progress.streak||0;
+  try { totalCorrect  = parseInt(Storage.getItem('quiz_total_correct')||'0'); } catch(e){}
+  try { sessionCount  = parseInt(Storage.getItem('quiz_session_count')||'0'); } catch(e){}
+  try { spTotal       = parseInt(Storage.getItem('sp_total')||'0'); }          catch(e){}
+  try { spGood        = parseInt(Storage.getItem('sp_good')||'0'); }            catch(e){}
   var spRate = spTotal>0 ? Math.round(spGood/spTotal*100) : 0;
 
-  var RANK_INFO = {
-    'NH' :{ color:'#94a3b8', label:'Novice High',        next:'IL',  tip:'퀴즈 40% 이상 목표' },
-    'IL' :{ color:'#f87171', label:'Intermediate Low',   next:'IM1', tip:'퀴즈 50% 이상 목표' },
-    'IM1':{ color:'#fb923c', label:'Intermediate Mid 1', next:'IM2', tip:'퀴즈 60% 이상 목표' },
-    'IM2':{ color:'#a78bfa', label:'Intermediate Mid 2', next:'IM3', tip:'퀴즈 70% 이상 목표' },
-    'IM3':{ color:'#60a5fa', label:'Intermediate Mid 3', next:'IH',  tip:'퀴즈 80% 이상 목표' },
-    'IH' :{ color:'#34d399', label:'Intermediate High',  next:'AL',  tip:'퀴즈 90% 이상 목표' },
-    'AL' :{ color:'#f59e0b', label:'Advanced Low',       next:null,  tip:'최고 등급 달성!' }
-  };
-  var RANK_ORDER = ['NH','IL','IM1','IM2','IM3','IH','AL'];
-  var rk = bestRank && RANK_INFO[bestRank] ? RANK_INFO[bestRank] : null;
-  var rkIdx = bestRank ? RANK_ORDER.indexOf(bestRank) : -1;
+  // ── 통계 카드 데이터 ─────────────────────────────────────────────
+  var STAT_CARDS = [
+    { icon:"🎯", label:"퀴즈 정답 수", value:totalCorrect+"개",     sub:"누적 정답",          color:"#818cf8", bg:"rgba(99,102,241,0.12)"  },
+    { icon:"🔄", label:"복습 세션",   value:sessionCount+"회",     sub:"총 퀴즈 횟수",        color:"#60a5fa", bg:"rgba(96,165,250,0.12)"  },
+    { icon:"🔥", label:"연속 학습일", value:streak+(streak>=3?"🔥":"")+"일", sub:streak>=7?"대단해요!":streak>=3?"꾸준하네요":"계속 이어가요", color:"#f59e0b", bg:"rgba(245,158,11,0.12)"  },
+    { icon:"🃏", label:"암기 표현",   value:masteredCards+"/"+FLASHCARDS.length, sub:cardPct+"%달성",      color:"#34d399", bg:"rgba(52,211,153,0.12)"  },
+    { icon:"🗣️", label:"스피킹 연습", value:spTotal+"회",          sub:spTotal>0?spRate+"% 성공률":"도전해보세요",color:"#f472b6", bg:"rgba(244,114,182,0.12)"  },
+    { icon:"✅", label:"완료 주제",   value:completedTopics+"/"+TOPICS.length, sub:"주제 완성도",          color:"#22d3ee", bg:"rgba(34,211,238,0.12)"  },
+  ];
 
   return React.createElement("div", { className:"screen fade-in" },
     React.createElement("div", { className:"top-bar" },
-      React.createElement("h1", null, "📊 학습 진도"),
-      React.createElement("p", null, profile ? (profile.nameKo||profile.nameEn)+"님의 학습 현황" : "현재 실력을 확인하세요")
+      React.createElement("h1", null, "📊 나의 학습 현황"),
+      React.createElement("p", null, profile ? (profile.nameKo||profile.nameEn||"사용자")+"님의 기록" : "학습 기록을 확인하세요")
     ),
     React.createElement("div", { className:"scroll-content", style:{padding:"16px 16px 0"} },
 
-      // ── 1. OPIc 랭크 메인 카드 ────────────────────────────────────────
+      // ── 1. 프로필 카드 ──────────────────────────────────────────────
       React.createElement("div", {
-        style:{ background: rk ? "linear-gradient(135deg,"+rk.color+"25,#0f172a)" : "linear-gradient(135deg,rgba(99,102,241,0.12),#0f172a)",
-          border:"2px solid "+(rk?rk.color+"66":"rgba(99,102,241,0.3)"), borderRadius:20, padding:"20px 18px", marginBottom:14 }
+        style:{ background:"linear-gradient(135deg,rgba(99,102,241,0.15),rgba(30,41,59,0.9))",
+          border:"1.5px solid rgba(99,102,241,0.3)", borderRadius:20, padding:"18px 18px", marginBottom:14 }
       },
-        React.createElement("div", { style:{fontSize:12,color:"#64748b",letterSpacing:2,marginBottom:12} }, "MY OPIc RANK"),
-        React.createElement("div", { style:{display:"flex",alignItems:"center",gap:16} },
-          // 랭크 표시
-          React.createElement("div", { style:{textAlign:"center"} },
-            rk
-              ? React.createElement("div", { style:{fontSize:52,fontWeight:900,color:rk.color,letterSpacing:3,lineHeight:1} }, bestRank)
-              : React.createElement("div", { style:{fontSize:36} }, "🎯"),
-            React.createElement("div", { style:{fontSize:11,color:"#94a3b8",marginTop:4,whiteSpace:"nowrap"} }, rk ? rk.label : "퀴즈를 풀어 랭크 획득")
-          ),
-          // 구분선
-          React.createElement("div", { style:{width:1,height:70,background:"rgba(255,255,255,0.08)"} }),
-          // 오른쪽 스탯
-          React.createElement("div", { style:{flex:1,display:"flex",flexDirection:"column",gap:10} },
-            React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
-              React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🏆 퀴즈 최고"),
-              React.createElement("span", { style:{fontSize:13,fontWeight:700,color:"#34d399"} }, bestScore>0 ? bestScore+"점" : "-")
+        React.createElement("div", { style:{display:"flex",alignItems:"center",gap:14} },
+          // 아바타
+          React.createElement("div", {
+            style:{ width:60,height:60,borderRadius:"50%",
+              background:"linear-gradient(135deg,#6366f1,#8b5cf6)",
+              display:"flex",alignItems:"center",justifyContent:"center",
+              fontSize:26,fontWeight:700,color:"white",flexShrink:0,
+              boxShadow:"0 4px 14px rgba(99,102,241,0.35)" }
+          }, profile ? (profile.nameKo||profile.nameEn||"?")[0] : "👤"),
+          // 이름 + 직업
+          React.createElement("div", { style:{flex:1} },
+            React.createElement("div", { style:{fontSize:18,fontWeight:800,color:"#f1f5f9",marginBottom:4} },
+              profile ? (profile.nameKo||profile.nameEn||"이름 없음") : "프로필 미설정"
             ),
-            React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
-              React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎤 스피킹"),
-              React.createElement("span", { style:{fontSize:13,fontWeight:700,color:"#a78bfa"} }, spTotal>0 ? spRate+"% ("+spTotal+"회)" : "-")
+            React.createElement("div", { style:{fontSize:13,color:"#94a3b8",marginBottom:6} },
+              profile ? (profile.jobKo||profile.jobEn||"직업 미설정") : "프로필을 설정해주세요"
             ),
-            rk && rk.next
-              ? React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
-                  React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎯 다음 목표"),
-                  React.createElement("div", { style:{display:"flex",alignItems:"center",gap:6} },
-                    React.createElement("span", { style:{fontSize:13,fontWeight:700,color:RANK_INFO[rk.next].color} }, rk.next),
-                    React.createElement("span", { style:{fontSize:11,color:"#64748b"} }, rk.tip)
-                  )
-                )
-              : rk
-                ? React.createElement("div", { style:{fontSize:12,color:"#f59e0b",fontWeight:700} }, "🏆 최고 등급 달성!")
-                : null
-          )
-        ),
-        // 랭크 로드맵 바
-        React.createElement("div", { style:{marginTop:16} },
-          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginBottom:8} }, "랭크 로드맵"),
-          React.createElement("div", { style:{display:"flex",gap:4,alignItems:"center"} },
-            RANK_ORDER.map(function(r, i) {
-              var ri = RANK_INFO[r];
-              var isAchieved = rkIdx >= i;
-              var isCurrent  = rkIdx === i;
-              return React.createElement("div", { key:r, style:{display:"flex",alignItems:"center",flex:1} },
-                React.createElement("div", {
-                  style:{ flex:1, textAlign:"center", padding:"4px 2px", borderRadius:8,
-                    background: isAchieved ? ri.color+"33" : "rgba(255,255,255,0.04)",
-                    border:"1px solid "+(isAchieved ? ri.color+"88" : "rgba(255,255,255,0.06)"),
-                    color: isAchieved ? ri.color : "#475569",
-                    fontSize: isCurrent ? 12 : 10,
-                    fontWeight: isCurrent ? 900 : 500,
-                    boxShadow: isCurrent ? "0 0 8px "+ri.color+"66" : "none" }
-                }, r)
-              );
-            })
-          )
-        )
-      ),
-
-      // ── 2. 핵심 통계 4칸 ────────────────────────────────────────────
-      React.createElement("div", { style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14} },
-        React.createElement("div", { style:{background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:14,padding:"14px 16px"} },
-          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#818cf8"} }, completedQ,
-            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+totalQ)
-          ),
-          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "📖 완료한 질문"),
-          React.createElement("div", { className:"progress-bar", style:{marginTop:8} },
-            React.createElement("div", { className:"progress-fill", style:{width:overallPct+"%"} })
-          )
-        ),
-        React.createElement("div", { style:{background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:14,padding:"14px 16px"} },
-          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#34d399"} }, masteredCards,
-            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+FLASHCARDS.length)
-          ),
-          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "🃏 암기한 표현"),
-          React.createElement("div", { className:"progress-bar", style:{marginTop:8} },
-            React.createElement("div", { className:"progress-fill", style:{width:cardPct+"%"} })
-          )
-        ),
-        React.createElement("div", { style:{background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:14,padding:"14px 16px"} },
-          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#fbbf24"} }, progress.streak),
-          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, progress.streak>=3?"🔥 연속 학습일":"📅 연속 학습일")
-        ),
-        React.createElement("div", { style:{background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.2)",borderRadius:14,padding:"14px 16px"} },
-          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#06b6d4"} }, completedTopics,
-            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+TOPICS.length)
-          ),
-          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "✅ 완료 주제")
-        )
-      ),
-
-      // ── 3. 프로필 카드 ──────────────────────────────────────────────
-      profile && React.createElement("div", {
-        style:{ background:"linear-gradient(135deg,rgba(99,102,241,0.1),#1e293b)",
-          border:"1px solid rgba(99,102,241,0.2)", borderRadius:14, padding:"14px 16px", marginBottom:14 }
-      },
-        React.createElement("div", { style:{display:"flex",alignItems:"center",justifyContent:"space-between"} },
-          React.createElement("div", { style:{display:"flex",alignItems:"center",gap:10} },
-            React.createElement("div", { style:{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,#6366f1,#8b5cf6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:700,color:"white"} },
-              (profile.nameKo||profile.nameEn||"?")[0]
-            ),
-            React.createElement("div", null,
-              React.createElement("div", { style:{fontWeight:700,fontSize:15} }, profile.nameKo||profile.nameEn),
-              React.createElement("div", { style:{fontSize:12,color:"#64748b"} }, profile.jobKo||profile.jobEn)
+            React.createElement("div", { style:{display:"flex",gap:6,flexWrap:"wrap"} },
+              profile && profile.companyKo && React.createElement("span", {
+                style:{fontSize:11,color:"#818cf8",background:"rgba(99,102,241,0.15)",
+                  padding:"3px 8px",borderRadius:20,border:"1px solid rgba(99,102,241,0.3)"}
+              }, "🏢 "+profile.companyKo),
+              profile && profile.locationKo && React.createElement("span", {
+                style:{fontSize:11,color:"#34d399",background:"rgba(52,211,153,0.1)",
+                  padding:"3px 8px",borderRadius:20,border:"1px solid rgba(52,211,153,0.25)"}
+              }, "📍 "+profile.locationKo),
+              profile && profile.durationKo && React.createElement("span", {
+                style:{fontSize:11,color:"#f59e0b",background:"rgba(245,158,11,0.1)",
+                  padding:"3px 8px",borderRadius:20,border:"1px solid rgba(245,158,11,0.25)"}
+              }, "⏱ "+profile.durationKo)
             )
           ),
-          React.createElement("button", { className:"btn btn-secondary", style:{padding:"6px 12px",fontSize:12}, onClick:onEditProfile }, "✏️ 수정")
+          // 수정 버튼
+          React.createElement("button", {
+            className:"btn btn-secondary",
+            style:{padding:"8px 14px",fontSize:13,flexShrink:0},
+            onClick:onEditProfile
+          }, "✏️")
         ),
-        React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6,marginTop:10} },
-          profile.companyKo && React.createElement("span", { className:"badge badge-purple" }, "🏢 ",profile.companyKo),
-          profile.durationKo && React.createElement("span", { className:"badge badge-purple" }, "⏱ ",profile.durationKo),
-          profile.locationKo && React.createElement("span", { className:"badge badge-purple" }, "📍 ",profile.locationKo),
-          profile.hobby1Ko   && React.createElement("span", { className:"badge badge-green" }, "🎯 ",profile.hobby1Ko),
-          profile.hobby2Ko   && React.createElement("span", { className:"badge badge-green" }, "🎯 ",profile.hobby2Ko)
+        // 취미 배지
+        profile && (profile.hobby1Ko||profile.hobby2Ko) && React.createElement("div", {
+          style:{display:"flex",gap:6,marginTop:12,flexWrap:"wrap"}
+        },
+          profile.hobby1Ko && React.createElement("span", {
+            style:{fontSize:11,color:"#f472b6",background:"rgba(244,114,182,0.1)",
+              padding:"3px 10px",borderRadius:20,border:"1px solid rgba(244,114,182,0.25)"}
+          }, "🎯 "+profile.hobby1Ko),
+          profile.hobby2Ko && React.createElement("span", {
+            style:{fontSize:11,color:"#f472b6",background:"rgba(244,114,182,0.1)",
+              padding:"3px 10px",borderRadius:20,border:"1px solid rgba(244,114,182,0.25)"}
+          }, "🎯 "+profile.hobby2Ko)
         )
+      ),
+
+      // ── 2. 전체 학습 진행률 바 ──────────────────────────────────────
+      React.createElement("div", {
+        style:{ background:"rgba(30,41,59,0.9)",border:"1px solid rgba(255,255,255,0.08)",
+          borderRadius:14, padding:"14px 16px", marginBottom:14 }
+      },
+        React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8} },
+          React.createElement("span", { style:{fontSize:13,fontWeight:600,color:"#94a3b8"} }, "📖 전체 질문 진행률"),
+          React.createElement("span", { style:{fontSize:18,fontWeight:800,color:"#818cf8"} }, overallPct+"%")
+        ),
+        React.createElement("div", { className:"progress-bar", style:{height:10,borderRadius:6} },
+          React.createElement("div", { className:"progress-fill",
+            style:{width:overallPct+"%",borderRadius:6,
+              background:"linear-gradient(90deg,#6366f1,#8b5cf6)"} })
+        ),
+        React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:6} },
+          completedQ+"개 완료 / "+totalQ+"개 전체"
+        )
+      ),
+
+      // ── 3. 통계 6칸 그리드 ─────────────────────────────────────────
+      React.createElement("div", {
+        style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14}
+      },
+        STAT_CARDS.map(function(s, i) {
+          return React.createElement("div", {
+            key:i,
+            style:{ background:s.bg, border:"1px solid "+s.color+"33",
+              borderRadius:14, padding:"14px 14px" }
+          },
+            React.createElement("div", { style:{fontSize:22,marginBottom:4} }, s.icon),
+            React.createElement("div", { style:{fontSize:22,fontWeight:800,color:s.color,lineHeight:1.1} }, s.value),
+            React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, s.label),
+            React.createElement("div", { style:{fontSize:10,color:s.color,opacity:0.7,marginTop:2} }, s.sub)
+          );
+        })
       ),
 
       // ── 4. 주제별 학습 현황 (접기/펼치기) ───────────────────────────
       React.createElement("div", { style:{marginBottom:14} },
         React.createElement("button", {
-          style:{ width:"100%",background:"rgba(30,41,59,0.9)",border:"1px solid rgba(255,255,255,0.08)",
-            borderRadius:14,padding:"12px 16px",display:"flex",justifyContent:"space-between",
+          style:{ width:"100%",background:"rgba(30,41,59,0.9)",
+            border:"1px solid rgba(255,255,255,0.08)", borderRadius:14,
+            padding:"12px 16px",display:"flex",justifyContent:"space-between",
             alignItems:"center",cursor:"pointer",color:"#e2e8f0",fontWeight:700,fontSize:14 },
           onClick:function(){ setShowTopics(!showTopics); }
         },
@@ -21446,14 +21395,15 @@ function ProgressScreen(_ref18) {
         showTopics && React.createElement("div", { style:{marginTop:8,display:"flex",flexDirection:"column",gap:8} },
           TOPICS.map(function(t) {
             var done = (progress.completedQ[t.id]||[]).length;
-            var pct  = Math.round(done/t.questions.length*100);
+            var pct  = t.questions.length>0 ? Math.round(done/t.questions.length*100) : 0;
             var isDone = done===t.questions.length;
             return React.createElement("div", {
               key:t.id,
-              style:{ background:"rgba(30,41,59,0.8)",border:"1px solid "+(isDone?"rgba(52,211,153,0.2)":"rgba(255,255,255,0.06)"),
+              style:{ background:"rgba(30,41,59,0.8)",
+                border:"1px solid "+(isDone?"rgba(52,211,153,0.2)":"rgba(255,255,255,0.06)"),
                 borderRadius:12, padding:"12px 14px" }
             },
-              React.createElement("div", { style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8} },
+              React.createElement("div", { style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6} },
                 React.createElement("div", { style:{display:"flex",alignItems:"center",gap:8} },
                   React.createElement("span", { style:{fontSize:18} }, t.emoji),
                   React.createElement("span", { style:{fontSize:13,fontWeight:600} }, t.name)
@@ -21465,45 +21415,15 @@ function ProgressScreen(_ref18) {
               React.createElement("div", { className:"progress-bar" },
                 React.createElement("div", { className:"progress-fill", style:{width:pct+"%"} })
               ),
-              React.createElement("div", { style:{fontSize:10,color:"#64748b",marginTop:4} }, done+"/"+t.questions.length+" 질문")
+              React.createElement("div", { style:{fontSize:10,color:"#64748b",marginTop:4} },
+                done+"/"+t.questions.length+" 질문"
+              )
             );
           })
         )
       ),
 
-      // ── 5. 다음 랭크 달성 조건 ──────────────────────────────────────
-      React.createElement("div", {
-        style:{ background:"rgba(30,41,59,0.9)",border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"16px", marginBottom:14 }
-      },
-        React.createElement("div", { style:{fontWeight:700,fontSize:14,marginBottom:12,color:"#94a3b8"} },
-          rk && rk.next
-            ? "🎯 "+rk.next+" 달성 조건"
-            : rk ? "🏆 최고 등급 달성!" : "🎯 첫 랭크 획득 조건"
-        ),
-        [
-          ["퀴즈 10문제 이상 풀기",    bestScore > 0],
-          ["퀴즈 정답률 50% 이상",     bestScore >= Math.round(0.5 * (parseInt(Storage.getItem('opic_quiz_size')||'10')))],
-          ["주제 연습 3개 이상 완료",   completedTopics >= 3],
-          ["플래시카드 20개 이상 암기", masteredCards >= 20],
-          ["스피킹 연습 3회 이상",      spTotal >= 3]
-        ].map(function(pair, i) {
-          var label = pair[0], done = pair[1];
-          return React.createElement("div", {
-            key:i,
-            style:{ display:"flex",alignItems:"center",gap:10,padding:"9px 0",
-              borderBottom:i<4?"1px solid rgba(255,255,255,0.05)":"none" }
-          },
-            React.createElement("div", {
-              style:{ width:24,height:24,borderRadius:"50%",flexShrink:0,
-                background:done?"rgba(52,211,153,0.2)":"rgba(100,116,139,0.15)",
-                display:"flex",alignItems:"center",justifyContent:"center",fontSize:12 }
-            }, done ? "✓" : "○"),
-            React.createElement("div", { style:{fontSize:13,color:done?"#34d399":"#94a3b8"} }, label)
-          );
-        })
-      ),
-
-      // ── 6. 커플 섹션 ────────────────────────────────────────────────
+      // ── 5. 커플 섹션 ────────────────────────────────────────────────
       React.createElement(CoupleSection, {
         myData:myData, partnerData:partnerData, onExport:onExport,
         onImport:onImportPartner, coupleCode:coupleCode,
@@ -21515,23 +21435,6 @@ function ProgressScreen(_ref18) {
   );
 }
 
-// ─── 메인 앱 ─────────────────────────────────────────────────────────────────
-
-var SPEED_OPTIONS = [{
-  label: '느리게',
-  value: 0.65
-}, {
-  label: '보통',
-  value: 0.85
-}, {
-  label: '빠르게',
-  value: 1.1
-}];
-
-// ─── 퀴즈 화면 ──────────────────────────────────────────────────────────────
-
-
-// ─── 스피킹 연습 화면 ────────────────────────────────────────────────────────
 
 function SpeakingScreen(_ref_sp) {
   var showToast = _ref_sp.showToast, profile = _ref_sp.profile;
@@ -21908,7 +21811,7 @@ function QuizScreen(_ref21) {
     React.createElement('button', { style: modeTabStyle(quizMode==='flash'),
       onClick: function(){ setQuizMode('flash'); } }, '🃏 플래시카드'),
     React.createElement('button', { style: modeTabStyle(quizMode==='speaking'),
-      onClick: function(){ setQuizMode('speaking'); } }, '🎤 스피킹')
+      onClick: function(){ setQuizMode('speaking'); } }, '🗣️ 스피킹')
   );
   // 플래시카드 모드 (모든 훅 선언 후 조기 return)
   if (quizMode === 'flash') {
@@ -22006,6 +21909,13 @@ function QuizScreen(_ref21) {
         } catch (_unused7) {}
         showToast('🏆 신기록 달성!');
       }
+      // 누적 퀴즈 통계 저장
+      try {
+        var _pc = parseInt(Storage.getItem('quiz_total_correct')||'0');
+        Storage.setItem('quiz_total_correct', String(_pc + score));
+        var _ps = parseInt(Storage.getItem('quiz_session_count')||'0');
+        Storage.setItem('quiz_session_count', String(_ps + 1));
+      } catch(_e){}
       setPhase('result');
     } else {
       setCurrent(function (c) {
