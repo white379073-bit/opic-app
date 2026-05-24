@@ -114,11 +114,32 @@ jobs:
         cat > android/app/src/main/java/com/opic/app/MainActivity.kt << 'KT'
         package com.opic.app
         import android.annotation.SuppressLint
+        import android.content.Context
         import android.os.Bundle
         import android.webkit.*
         import android.view.View
         import android.view.WindowManager
         import androidx.appcompat.app.AppCompatActivity
+
+        // 재설치 후에도 데이터 유지 (SharedPreferences 기반)
+        class AndroidBridge(private val context: Context) {
+            @JavascriptInterface
+            fun saveData(key: String, value: String) {
+                context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
+                    .edit().putString(key, value).apply()
+            }
+            @JavascriptInterface
+            fun getData(key: String): String {
+                return context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
+                    .getString(key, "") ?: ""
+            }
+            @JavascriptInterface
+            fun removeData(key: String) {
+                context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
+                    .edit().remove(key).apply()
+            }
+        }
+
         class MainActivity : AppCompatActivity() {
             private lateinit var webView: WebView
             @SuppressLint("SetJavaScriptEnabled")
@@ -127,7 +148,7 @@ jobs:
                 window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 supportActionBar?.hide()
                 webView = WebView(this)
-                webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+                webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
                 setContentView(webView)
                 webView.settings.apply {
                     javaScriptEnabled = true
@@ -142,6 +163,8 @@ jobs:
                     mediaPlaybackRequiresUserGesture = false
                     cacheMode = WebSettings.LOAD_NO_CACHE
                 }
+                // AndroidBridge 등록: window.AndroidBridge 로 접근 가능
+                webView.addJavascriptInterface(AndroidBridge(this), "AndroidBridge")
                 webView.webChromeClient = WebChromeClient()
                 webView.webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {

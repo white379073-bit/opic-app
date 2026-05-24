@@ -16551,9 +16551,35 @@ var Q_TRANSLATIONS = {
 
 // ─── 유틸리티 ──────────────────────────────────────────────────────────────────
 
+
+// ── Persistent Storage: AndroidBridge(재설치 생존) > localStorage 폴백 ──
+var Storage = {
+  getItem: function(key) {
+    try {
+      if (window.AndroidBridge) {
+        var v = window.AndroidBridge.getData(key);
+        return (v !== null && v !== undefined && v !== '') ? v : null;
+      }
+      return localStorage.getItem(key);
+    } catch(e) { return null; }
+  },
+  setItem: function(key, value) {
+    try {
+      if (window.AndroidBridge) window.AndroidBridge.saveData(key, value);
+      localStorage.setItem(key, value);
+    } catch(e) {}
+  },
+  removeItem: function(key) {
+    try {
+      if (window.AndroidBridge) window.AndroidBridge.removeData(key);
+      localStorage.removeItem(key);
+    } catch(e) {}
+  }
+};
+
 function loadProgress() {
   try {
-    var data = localStorage.getItem('opic_progress');
+    var data = Storage.getItem('opic_progress');
     var p = data ? JSON.parse(data) : {
       completedQ: {},
       masteredCards: [],
@@ -16565,7 +16591,7 @@ function loadProgress() {
       p.masteredCards = p.masteredCards.map(function (idx) {
         return FLASHCARDS[idx] ? FLASHCARDS[idx].en : null;
       }).filter(Boolean);
-      localStorage.setItem('opic_progress', JSON.stringify(p));
+      Storage.setItem('opic_progress', JSON.stringify(p));
     }
     return p;
   } catch (_unused) {
@@ -16579,7 +16605,7 @@ function loadProgress() {
 }
 function saveProgress(p) {
   try {
-    localStorage.setItem('opic_progress', JSON.stringify(p));
+    Storage.setItem('opic_progress', JSON.stringify(p));
   } catch (_unused2) {}
 }
 function todayStr() {
@@ -16860,7 +16886,7 @@ var PROF_OPTS = {
 };
 function loadProfile() {
   try {
-    var d = localStorage.getItem('opic_profile');
+    var d = Storage.getItem('opic_profile');
     return d ? _objectSpread(_objectSpread({}, DEFAULT_PROFILE), JSON.parse(d)) : null;
   } catch (_unused3) {
     return null;
@@ -16868,7 +16894,7 @@ function loadProfile() {
 }
 function saveProfile(p) {
   try {
-    localStorage.setItem('opic_profile', JSON.stringify(p));
+    Storage.setItem('opic_profile', JSON.stringify(p));
   } catch (_unused4) {}
 }
 
@@ -19037,7 +19063,7 @@ function ProgressScreen(_ref18) {
     }];
     var quizBest = function () {
       try {
-        return parseInt(localStorage.getItem('opic_quiz_best') || '0');
+        return parseInt(Storage.getItem('opic_quiz_best') || '0');
       } catch (_unused5) {
         return 0;
       }
@@ -19456,7 +19482,7 @@ function QuizScreen(_ref21) {
     setAnswers = _useState28[1];
   var _useState29 = useState(function () {
       try {
-        return parseInt(localStorage.getItem('opic_quiz_best') || '0');
+        return parseInt(Storage.getItem('opic_quiz_best') || '0');
       } catch (_unused6) {
         return 0;
       }
@@ -19538,7 +19564,7 @@ function QuizScreen(_ref21) {
       if (score > bestScore) {
         setBestScore(score);
         try {
-          localStorage.setItem('opic_quiz_best', String(score));
+          Storage.setItem('opic_quiz_best', String(score));
         } catch (_unused7) {}
         showToast('🏆 신기록 달성!');
       }
@@ -20156,7 +20182,7 @@ function App() {
       var myStats = {
         name: (profile && (profile.nameKo || profile.nameEn)) || '나',
         masteredCards: progress.masteredCards.length,
-        quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
+        quizBest: parseInt(Storage.getItem('opic_quiz_best') || '0'),
         completedQ: Object.values(progress.completedQ).flat().length,
         streak: progress.streak,
         exportedAt: Date.now()
@@ -20199,7 +20225,7 @@ function App() {
     var myStats = {
       name: (profile && (profile.nameKo || profile.nameEn)) || '나',
       masteredCards: progress.masteredCards.length,
-      quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
+      quizBest: parseInt(Storage.getItem('opic_quiz_best') || '0'),
       completedQ: Object.values(progress.completedQ).flat().length,
       streak: progress.streak,
       exportedAt: Date.now()
@@ -20211,7 +20237,7 @@ function App() {
   var myData = {
     name: (profile && (profile.nameKo || profile.nameEn)) || '나',
     masteredCards: progress.masteredCards.length,
-    quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
+    quizBest: parseInt(Storage.getItem('opic_quiz_best') || '0'),
     completedQ: Object.values(progress.completedQ).flat().length,
     streak: progress.streak,
     exportedAt: Date.now()
@@ -20307,8 +20333,8 @@ function App() {
     setTab('topic-questions');
   };
 
-  // 화면 라우팅
-  var renderScreen = function renderScreen() {
+  // 화면 라우팅 (서브스크린만 - 메인 5탭은 display:none 상시 마운트)
+  var renderSubScreen = function renderSubScreen() {
     if (tab === 'topic-questions' && selectedTopic) {
       if (selectedQIdx !== null) {
         return /*#__PURE__*/React.createElement(PracticeScreen, {
@@ -20347,45 +20373,30 @@ function App() {
         }
       });
     }
-    if (tab === 'home') return /*#__PURE__*/React.createElement(HomeScreen, {
-      progress: progress,
-      onTopicSelect: function onTopicSelect(t) {
-        return handleTopicSelect(t);
-      },
-      setTab: setTab
-    });
-    if (tab === 'topics') return /*#__PURE__*/React.createElement(TopicsScreen, {
-      progress: progress,
-      onTopicSelect: handleTopicSelect
-    });
-    if (tab === 'flashcards') return /*#__PURE__*/React.createElement(FlashcardsScreen, {
-      progress: progress,
-      onMaster: handleMasterCard,
-      showToast: showToast,
-      speech: speech,
-      speechRate: speechRate
-    });
-    if (tab === 'quiz') return /*#__PURE__*/React.createElement(QuizScreen, {
-      showToast: showToast
-    });
-    if (tab === 'progress') return /*#__PURE__*/React.createElement(ProgressScreen, {
-      progress: progress,
-      profile: profile,
-      onEditProfile: function onEditProfile() {
-        return setShowProfileSetup(true);
-      },
-      onExport: handleExportData,
-      onImportPartner: handleImportPartner,
-      partnerData: partnerData,
-      myData: myData,
-      coupleCode: coupleCode,
-      onJoinRoom: handleJoinRoom,
-      onLeaveRoom: handleLeaveRoom,
-      fbReady: fbReady,
-      fbStatus: fbStatus
-    });
     return null;
   };
+  var isSubScreen = tab === 'topic-questions';
+  var S = { display: 'block' };
+  var H = { display: 'none' };
+  // 메인 5탭 상시 마운트 (display 토글로 즉시 전환)
+  var mainScreens = /*#__PURE__*/React.createElement("div", { style: { position: 'relative' } },
+    React.createElement("div", { style: isSubScreen || tab !== 'home' ? H : S },
+      React.createElement(HomeScreen, { progress: progress, onTopicSelect: function(t){ return handleTopicSelect(t); }, setTab: setTab })
+    ),
+    React.createElement("div", { style: isSubScreen || tab !== 'topics' ? H : S },
+      React.createElement(TopicsScreen, { progress: progress, onTopicSelect: handleTopicSelect })
+    ),
+    React.createElement("div", { style: isSubScreen || tab !== 'flashcards' ? H : S },
+      React.createElement(FlashcardsScreen, { progress: progress, onMaster: handleMasterCard, showToast: showToast, speech: speech, speechRate: speechRate })
+    ),
+    React.createElement("div", { style: isSubScreen || tab !== 'quiz' ? H : S },
+      React.createElement(QuizScreen, { showToast: showToast })
+    ),
+    React.createElement("div", { style: isSubScreen || tab !== 'progress' ? H : S },
+      React.createElement(ProgressScreen, { progress: progress, profile: profile, onEditProfile: function(){ return setShowProfileSetup(true); }, onExport: handleExportData, onImportPartner: handleImportPartner, partnerData: partnerData, myData: myData, coupleCode: coupleCode, onJoinRoom: handleJoinRoom, onLeaveRoom: handleLeaveRoom, fbReady: fbReady, fbStatus: fbStatus })
+    ),
+    renderSubScreen()
+  );
   var navItems = [{
     id: 'home',
     icon: '🏠',
@@ -20409,7 +20420,7 @@ function App() {
   }];
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Toast, {
     msg: toast
-  }), renderScreen(), showVoicePanel && /*#__PURE__*/React.createElement("div", {
+  }), mainScreens, showVoicePanel && /*#__PURE__*/React.createElement("div", {
     className: "voice-panel",
     style: {
       position: 'fixed',
@@ -20518,7 +20529,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
         ),
         React.createElement('button', {
           onClick: function() {
-            try { localStorage.removeItem('opic_profile'); } catch(e) {}
+            try { Storage.removeItem('opic_profile'); } catch(e) {}
             window.location.reload();
           },
           style: {
