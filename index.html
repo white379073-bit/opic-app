@@ -20147,14 +20147,14 @@ function App() {
 
   // 방 입장 시 실시간 리스너
   React.useEffect(function () {
-    if (!fbReady || !coupleCode || !fbRef.current) return;
+    if (!fbReady || !coupleCode || !fbRef.current || !profile) return;
     var db = fbRef.current;
-    var myUserId = profile.nameKo || profile.nameEn || 'user1';
+    var myUserId = (profile && (profile.nameKo || profile.nameEn)) || 'user1';
 
     // 내 데이터 올리기
     var uploadMyData = function uploadMyData() {
       var myStats = {
-        name: profile.nameKo || profile.nameEn || '나',
+        name: (profile && (profile.nameKo || profile.nameEn)) || '나',
         masteredCards: progress.masteredCards.length,
         quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
         completedQ: Object.values(progress.completedQ).flat().length,
@@ -20190,14 +20190,14 @@ function App() {
     return function () {
       ref.off('value', listener);
     };
-  }, [fbReady, coupleCode, profile.nameKo, profile.nameEn]);
+  }, [fbReady, coupleCode, profile]);
 
   // progress 변경 시 Firebase에 업로드
   React.useEffect(function () {
-    if (!fbReady || !coupleCode || !fbRef.current) return;
-    var myUserId = profile.nameKo || profile.nameEn || 'user1';
+    if (!fbReady || !coupleCode || !fbRef.current || !profile) return;
+    var myUserId = (profile && (profile.nameKo || profile.nameEn)) || 'user1';
     var myStats = {
-      name: profile.nameKo || profile.nameEn || '나',
+      name: (profile && (profile.nameKo || profile.nameEn)) || '나',
       masteredCards: progress.masteredCards.length,
       quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
       completedQ: Object.values(progress.completedQ).flat().length,
@@ -20209,7 +20209,7 @@ function App() {
 
   // ── 내 통계 객체 ──
   var myData = {
-    name: profile.nameKo || profile.nameEn || '나',
+    name: (profile && (profile.nameKo || profile.nameEn)) || '나',
     masteredCards: progress.masteredCards.length,
     quizBest: parseInt(localStorage.getItem('opic_quiz_best') || '0'),
     completedQ: Object.values(progress.completedQ).flat().length,
