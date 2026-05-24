@@ -19898,7 +19898,7 @@ function HomeScreen(_ref5) {
             React.createElement("div", { style:{fontSize:16,fontWeight:800,color:"#34d399"} }, bestScore > 0 ? bestScore+"점" : "-")
           ),
           React.createElement("div", { style:{background:"rgba(167,139,250,0.1)",border:"1px solid rgba(167,139,250,0.2)",borderRadius:12,padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"} },
-            React.createElement("div", { style:{fontSize:11,color:"#64748b"} }, "🗣️ 스피킹"),
+            React.createElement("div", { style:{fontSize:11,color:"#64748b"} }, "💬 스피킹"),
             React.createElement("div", { style:{fontSize:16,fontWeight:800,color:"#a78bfa"} }, spTotal > 0 ? Math.round(spGood/spTotal*100)+"%" : "-")
           ),
           React.createElement("div", { style:{background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:12,padding:"10px 12px",display:"flex",justifyContent:"space-between",alignItems:"center"} },
@@ -21273,7 +21273,7 @@ function ProgressScreen(_ref18) {
     { icon:"🔄", label:"복습 세션",   value:sessionCount+"회",     sub:"총 퀴즈 횟수",        color:"#60a5fa", bg:"rgba(96,165,250,0.12)"  },
     { icon:"🔥", label:"연속 학습일", value:streak+(streak>=3?"🔥":"")+"일", sub:streak>=7?"대단해요!":streak>=3?"꾸준하네요":"계속 이어가요", color:"#f59e0b", bg:"rgba(245,158,11,0.12)"  },
     { icon:"🃏", label:"암기 표현",   value:masteredCards+"/"+FLASHCARDS.length, sub:cardPct+"%달성",      color:"#34d399", bg:"rgba(52,211,153,0.12)"  },
-    { icon:"🗣️", label:"스피킹 연습", value:spTotal+"회",          sub:spTotal>0?spRate+"% 성공률":"도전해보세요",color:"#f472b6", bg:"rgba(244,114,182,0.12)"  },
+    { icon:"💬", label:"스피킹 연습", value:spTotal+"회",          sub:spTotal>0?spRate+"% 성공률":"도전해보세요",color:"#f472b6", bg:"rgba(244,114,182,0.12)"  },
     { icon:"✅", label:"완료 주제",   value:completedTopics+"/"+TOPICS.length, sub:"주제 완성도",          color:"#22d3ee", bg:"rgba(34,211,238,0.12)"  },
   ];
 
@@ -21811,7 +21811,7 @@ function QuizScreen(_ref21) {
     React.createElement('button', { style: modeTabStyle(quizMode==='flash'),
       onClick: function(){ setQuizMode('flash'); } }, '🃏 플래시카드'),
     React.createElement('button', { style: modeTabStyle(quizMode==='speaking'),
-      onClick: function(){ setQuizMode('speaking'); } }, '🗣️ 스피킹')
+      onClick: function(){ setQuizMode('speaking'); } }, '💬 스피킹')
   );
   // 플래시카드 모드 (모든 훅 선언 후 조기 return)
   if (quizMode === 'flash') {
