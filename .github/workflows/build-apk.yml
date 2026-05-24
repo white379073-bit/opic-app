@@ -93,12 +93,15 @@ jobs:
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.opic.app">
             <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
             <application
                 android:allowBackup="true"
                 android:icon="@mipmap/ic_launcher"
                 android:label="@string/app_name"
                 android:theme="@style/Theme.OPIc"
-                android:hardwareAccelerated="true">
+                android:hardwareAccelerated="true"
+                android:requestLegacyExternalStorage="true">
                 <activity android:name=".MainActivity" android:exported="true"
                     android:screenOrientation="portrait"
                     android:windowSoftInputMode="adjustResize">
@@ -122,22 +125,117 @@ jobs:
         import android.view.WindowManager
         import androidx.appcompat.app.AppCompatActivity
 
-        // 재설치 후에도 데이터 유지 (SharedPreferences 기반)
+        // 재설치 후에도 데이터 유지 (Downloads 폴더 JSON 백업 + SharedPreferences)
         class AndroidBridge(private val context: Context) {
+            private val prefs = context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
+            private val BACKUP_FILE = "OPIc_study_backup.json"
+
+            init {
+                // 앱 시작: SharedPreferences 비어있으면 Downloads 백업에서 복원
+                if (!prefs.contains("opic_profile")) restoreFromDownloads()
+            }
+
             @JavascriptInterface
             fun saveData(key: String, value: String) {
-                context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
-                    .edit().putString(key, value).apply()
+                prefs.edit().putString(key, value).apply()
+                if (key == "opic_profile" || key == "opic_progress" || key == "opic_quiz_best") {
+                    saveToDownloads()
+                }
             }
             @JavascriptInterface
-            fun getData(key: String): String {
-                return context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
-                    .getString(key, "") ?: ""
-            }
+            fun getData(key: String): String = prefs.getString(key, "") ?: ""
             @JavascriptInterface
             fun removeData(key: String) {
-                context.getSharedPreferences("opic_data", Context.MODE_PRIVATE)
-                    .edit().remove(key).apply()
+                prefs.edit().remove(key).apply()
+                saveToDownloads()
+            }
+
+            private fun buildJson(): String {
+                val sb = StringBuilder("{")
+                var first = true
+                prefs.all.forEach { (k, v) ->
+                    if (!first) sb.append(",")
+                    sb.append("\"").append(k).append("\":\"")
+                    sb.append(v.toString().replace("\\","\\\\").replace("\"","\\\""))
+                    sb.append("\"")
+                    first = false
+                }
+                sb.append("}")
+                return sb.toString()
+            }
+
+            private fun saveToDownloads() {
+                try {
+                    val jsonStr = buildJson()
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        saveAndroid10Plus(jsonStr)
+                    } else {
+                        val dir = android.os.Environment.getExternalStoragePublicDirectory(
+                            android.os.Environment.DIRECTORY_DOWNLOADS)
+                        java.io.File(dir, BACKUP_FILE).writeText(jsonStr)
+                    }
+                } catch(e: Exception) {}
+            }
+
+            private fun saveAndroid10Plus(jsonStr: String) {
+                val resolver = context.contentResolver
+                val existing = resolver.query(
+                    android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                    arrayOf(android.provider.MediaStore.Downloads._ID),
+                    "${android.provider.MediaStore.Downloads.DISPLAY_NAME} = ?",
+                    arrayOf(BACKUP_FILE), null
+                )?.use { c ->
+                    if (c.moveToFirst()) android.net.Uri.withAppendedPath(
+                        android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                        c.getLong(0).toString()) else null
+                }
+                val uri = existing ?: run {
+                    val cv = android.content.ContentValues().apply {
+                        put(android.provider.MediaStore.Downloads.DISPLAY_NAME, BACKUP_FILE)
+                        put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/json")
+                    }
+                    resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, cv)
+                } ?: return
+                resolver.openOutputStream(uri, "wt")?.use { it.write(jsonStr.toByteArray()) }
+            }
+
+            private fun restoreFromDownloads() {
+                try {
+                    val jsonStr = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        restoreAndroid10Plus()
+                    } else {
+                        val f = java.io.File(
+                            android.os.Environment.getExternalStoragePublicDirectory(
+                                android.os.Environment.DIRECTORY_DOWNLOADS), BACKUP_FILE)
+                        if (f.exists()) f.readText() else null
+                    } ?: return
+                    // 간단한 JSON 파싱 (org.json 없이)
+                    val edit = prefs.edit()
+                    val pattern = Regex("\"([^\"]+)\":\"((?:[^\\\"]|\\\\.)*)\"")
+                    pattern.findAll(jsonStr).forEach { m ->
+                        edit.putString(m.groupValues[1], m.groupValues[2]
+                            .replace("\\\"", "\"").replace("\\\\","\\"))
+                    }
+                    edit.apply()
+                } catch(e: Exception) {}
+            }
+
+            private fun restoreAndroid10Plus(): String? {
+                return try {
+                    val resolver = context.contentResolver
+                    resolver.query(
+                        android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                        arrayOf(android.provider.MediaStore.Downloads._ID),
+                        "${android.provider.MediaStore.Downloads.DISPLAY_NAME} = ?",
+                        arrayOf(BACKUP_FILE), null
+                    )?.use { c ->
+                        if (!c.moveToFirst()) return null
+                        val uri = android.net.Uri.withAppendedPath(
+                            android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                            c.getLong(0).toString())
+                        resolver.openInputStream(uri)?.use { it.reader().readText() }
+                    }
+                } catch(e: Exception) { null }
             }
         }
 
