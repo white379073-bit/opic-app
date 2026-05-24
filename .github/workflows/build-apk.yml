@@ -93,6 +93,8 @@ jobs:
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.opic.app">
             <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
             <application
@@ -291,7 +293,11 @@ jobs:
                 // AndroidTTS 등록: window.AndroidTTS 로 접근 가능
                 androidTTS = AndroidTTS(this)
                 webView.addJavascriptInterface(androidTTS, "AndroidTTS")
-                webView.webChromeClient = WebChromeClient()
+                webView.webChromeClient = object : WebChromeClient() {
+                    override fun onPermissionRequest(request: android.webkit.PermissionRequest) {
+                        request.grant(request.resources)
+                    }
+                }
                 webView.webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         super.onPageFinished(view, url)
