@@ -16051,3006 +16051,3028 @@ var VOCAB_POOL = [{
   en: "ability to mentor",
   ko: "멘토링 능력"
 }];
+var FLASH_IMGS = {
+  opinion: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><rect x="8" y="10" width="68" height="50" rx="12" stroke="#a78bfa" stroke-width="3"/><path d="M22 60 L16 78 L38 60" stroke="#a78bfa" stroke-width="3" stroke-linejoin="round"/><line x1="22" y1="28" x2="62" y2="28" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="40" x2="62" y2="40" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="52" x2="46" y2="52" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><circle cx="80" cy="28" r="12" stroke="#fbbf24" stroke-width="2.5"/><line x1="80" y1="22" x2="80" y2="30" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/><circle cx="80" cy="34" r="1.5" fill="#fbbf24"/></svg>`,
+  connect: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="20" cy="50" r="14" stroke="#60a5fa" stroke-width="3"/><circle cx="80" cy="50" r="14" stroke="#60a5fa" stroke-width="3"/><rect x="34" y="38" width="32" height="24" rx="6" stroke="#60a5fa" stroke-width="2.5"/><line x1="34" y1="50" x2="66" y2="50" stroke="#60a5fa" stroke-width="2" stroke-dasharray="4 3"/><path d="M56 42 L66 50 L56 58" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  hobby: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="50" cy="46" r="28" stroke="#f472b6" stroke-width="3"/><circle cx="36" cy="40" r="5" stroke="#f472b6" stroke-width="2.5"/><circle cx="64" cy="40" r="5" stroke="#f472b6" stroke-width="2.5"/><path d="M34 58 Q50 72 66 58" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/><path d="M24 82 Q50 70 76 82" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/><path d="M42 18 L44 8 M50 16 L50 6 M58 18 L56 8" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/></svg>`,
+  work: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><rect x="10" y="34" width="80" height="52" rx="8" stroke="#fbbf24" stroke-width="3"/><path d="M36 34 V24 Q36 14 50 14 Q64 14 64 24 V34" stroke="#fbbf24" stroke-width="3"/><line x1="10" y1="54" x2="90" y2="54" stroke="#fbbf24" stroke-width="2.5"/><rect x="40" y="46" width="20" height="14" rx="3" stroke="#fbbf24" stroke-width="2.5"/><line x1="28" y1="66" x2="28" y2="74" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/><line x1="36" y1="66" x2="36" y2="74" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/><line x1="64" y1="66" x2="64" y2="74" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/><line x1="72" y1="66" x2="72" y2="74" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg>`,
+  travel: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="50" cy="50" r="36" stroke="#34d399" stroke-width="3"/><path d="M14 50 Q30 38 50 50 Q70 62 86 50" stroke="#34d399" stroke-width="2"/><path d="M50 14 Q38 30 50 50 Q62 70 50 86" stroke="#34d399" stroke-width="2"/><path d="M30 82 L44 50 L58 30 L72 18" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/><circle cx="72" cy="18" r="4" fill="#34d399"/></svg>`,
+  tech: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><rect x="28" y="6" width="44" height="78" rx="8" stroke="#22d3ee" stroke-width="3"/><line x1="28" y1="20" x2="72" y2="20" stroke="#22d3ee" stroke-width="2"/><line x1="28" y1="66" x2="72" y2="66" stroke="#22d3ee" stroke-width="2"/><circle cx="50" cy="76" r="4" fill="#22d3ee"/><rect x="36" y="28" width="28" height="30" rx="4" stroke="#22d3ee" stroke-width="2"/><line x1="40" y1="36" x2="60" y2="36" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"/><line x1="40" y1="42" x2="60" y2="42" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"/><line x1="40" y1="48" x2="52" y2="48" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  health: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M50 82 Q14 58 14 36 Q14 18 28 18 Q40 18 50 32 Q60 18 72 18 Q86 18 86 36 Q86 58 50 82Z" stroke="#f87171" stroke-width="3" stroke-linejoin="round"/><path d="M18 52 L32 44 L42 60 L52 38 L62 52 L76 44 L82 52" stroke="#f87171" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  nature: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><line x1="50" y1="88" x2="50" y2="46" stroke="#34d399" stroke-width="3" stroke-linecap="round"/><path d="M50 46 Q28 36 20 14 Q44 10 50 46" stroke="#34d399" stroke-width="2.5" stroke-linejoin="round"/><path d="M50 64 Q72 54 80 32 Q58 26 50 64" stroke="#34d399" stroke-width="2.5" stroke-linejoin="round"/><line x1="28" y1="88" x2="72" y2="88" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/><circle cx="76" cy="20" r="8" stroke="#fbbf24" stroke-width="2.5"/><path d="M76 8 L76 4 M84 12 L88 10 M88 20 L92 20 M84 28 L88 30" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg>`,
+  study: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M10 24 Q50 12 90 24 L90 80 Q50 68 10 80 Z" stroke="#818cf8" stroke-width="3" stroke-linejoin="round"/><line x1="50" y1="14" x2="50" y2="78" stroke="#818cf8" stroke-width="2.5"/><line x1="24" y1="40" x2="46" y2="35" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="52" x2="46" y2="47" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="64" x2="46" y2="59" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/><line x1="54" y1="35" x2="76" y2="40" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/><line x1="54" y1="47" x2="76" y2="52" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/></svg>`,
+  opic: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><rect x="36" y="10" width="28" height="46" rx="14" stroke="#a78bfa" stroke-width="3"/><path d="M20 50 Q20 76 50 76 Q80 76 80 50" stroke="#a78bfa" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="76" x2="50" y2="90" stroke="#a78bfa" stroke-width="3" stroke-linecap="round"/><line x1="36" y1="90" x2="64" y2="90" stroke="#a78bfa" stroke-width="3" stroke-linecap="round"/><path d="M76 8 L78 14 L84 14 L79 18 L81 24 L76 20 L71 24 L73 18 L68 14 L74 14 Z" stroke="#fbbf24" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  emotion: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="50" cy="50" r="36" stroke="#fbbf24" stroke-width="3"/><circle cx="36" cy="42" r="5" fill="#fbbf24"/><circle cx="64" cy="42" r="5" fill="#fbbf24"/><path d="M30 62 Q50 80 70 62" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/><path d="M18 30 Q14 22 20 18 Q26 14 28 22" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/><path d="M82 30 Q86 22 80 18 Q74 14 72 22" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg>`,
+  relation: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="30" cy="24" r="12" stroke="#60a5fa" stroke-width="3"/><path d="M10 84 Q10 58 30 58 Q50 58 50 84" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="24" r="12" stroke="#60a5fa" stroke-width="3"/><path d="M50 84 Q50 58 70 58 Q90 58 90 84" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/><path d="M44 38 Q50 48 56 38" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  home: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M8 52 L50 12 L92 52" stroke="#34d399" stroke-width="3" stroke-linejoin="round"/><rect x="18" y="52" width="64" height="40" rx="4" stroke="#34d399" stroke-width="3"/><rect x="40" y="72" width="20" height="20" rx="3" stroke="#34d399" stroke-width="2.5"/><rect x="22" y="58" width="16" height="14" rx="2" stroke="#34d399" stroke-width="2"/><rect x="62" y="58" width="16" height="14" rx="2" stroke="#34d399" stroke-width="2"/><circle cx="54" cy="83" r="2" fill="#34d399"/></svg>`,
+  time: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="50" cy="52" r="36" stroke="#f59e0b" stroke-width="3"/><line x1="50" y1="28" x2="50" y2="22" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="82" x2="50" y2="76" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/><line x1="20" y1="52" x2="26" y2="52" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/><line x1="80" y1="52" x2="74" y2="52" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/><path d="M50 34 L50 52 L64 60" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 8 Q50 4 66 8" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>`,
+  compare: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><line x1="50" y1="16" x2="50" y2="88" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><rect x="8" y="48" width="36" height="28" rx="6" stroke="#a78bfa" stroke-width="3"/><rect x="56" y="36" width="36" height="28" rx="6" stroke="#a78bfa" stroke-width="3"/><line x1="12" y1="16" x2="88" y2="16" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><line x1="26" y1="16" x2="26" y2="48" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/><line x1="74" y1="16" x2="74" y2="36" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/><circle cx="26" cy="16" r="4" fill="#a78bfa"/><circle cx="74" cy="16" r="4" fill="#a78bfa"/></svg>`,
+  solve: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="50" cy="36" r="22" stroke="#fbbf24" stroke-width="3"/><path d="M50 26 Q62 28 62 38 Q62 48 50 52" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/><circle cx="50" cy="54" r="3" fill="#fbbf24"/><rect x="42" y="60" width="16" height="6" rx="2" stroke="#fbbf24" stroke-width="2.5"/><rect x="44" y="70" width="12" height="6" rx="2" stroke="#fbbf24" stroke-width="2.5"/><line x1="47" y1="80" x2="53" y2="80" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/></svg>`,
+  future: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M50 88 L42 70 L26 70 Q18 56 28 44 L50 10 L72 44 Q82 56 74 70 L58 70 Z" stroke="#60a5fa" stroke-width="3" stroke-linejoin="round"/><circle cx="50" cy="50" r="9" stroke="#60a5fa" stroke-width="2.5"/><path d="M38 88 L30 96 M50 90 L50 98 M62 88 L70 96" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  intro: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><rect x="10" y="14" width="80" height="72" rx="10" stroke="#818cf8" stroke-width="3"/><circle cx="34" cy="44" r="14" stroke="#818cf8" stroke-width="2.5"/><line x1="56" y1="34" x2="82" y2="34" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/><line x1="56" y1="46" x2="82" y2="46" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/><line x1="56" y1="58" x2="74" y2="58" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/><path d="M20 72 Q20 58 34 58 Q48 58 48 72" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  experience: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M50 10 L59 36 L88 36 L65 54 L74 80 L50 62 L26 80 L35 54 L12 36 L41 36 Z" stroke="#fbbf24" stroke-width="3" stroke-linejoin="round"/><circle cx="50" cy="48" r="8" fill="#fbbf24" opacity="0.3"/><path d="M82 8 L84 14 L90 14 L85 18 L87 24 L82 20 L77 24 L79 18 L74 14 L80 14 Z" stroke="#fbbf24" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  idiom: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M26 50 L14 50 Q8 50 8 44 L8 20 Q8 14 14 14 L58 14 Q64 14 64 20 L64 44 Q64 50 58 50 L38 50 L30 62 Z" stroke="#f472b6" stroke-width="3" stroke-linejoin="round"/><path d="M46 50 L46 56 Q46 62 52 62 L86 62 Q92 62 92 68 L92 80 Q92 86 86 86 L62 86 L56 96 L50 86 L52 86 Q46 86 46 80 L46 68" stroke="#f472b6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="22" y1="26" x2="56" y2="26" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="36" x2="56" y2="36" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="44" x2="44" y2="44" stroke="#f472b6" stroke-width="2" stroke-linecap="round"/></svg>`,
+};
 var FLASHCARDS = [
   {
     en: "tend to",
     ko: "~하는 경향이 있다",
     ex: "I tend to prefer outdoor activities over indoor ones.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "used to",
     ko: "예전에는 ~했다",
     ex: "I used to play soccer every weekend when I was young.",
-    emoji: "⏮️"
+    cat: "opic"
   },
   {
     en: "prefer A to B",
     ko: "B보다 A를 더 좋아하다",
     ex: "I prefer hiking to going to the gym.",
-    emoji: "⚖️"
+    cat: "opic"
   },
   {
     en: "In my opinion",
     ko: "제 생각에는",
     ex: "In my opinion, technology has changed our lives dramatically.",
-    emoji: "💭"
+    cat: "opic"
   },
   {
     en: "To be honest",
     ko: "솔직히 말하면",
     ex: "To be honest, I'm not a big fan of fast food.",
-    emoji: "🤝"
+    cat: "opic"
   },
   {
     en: "As far as I know",
     ko: "제가 아는 한",
     ex: "As far as I know, that restaurant is really popular.",
-    emoji: "🔍"
+    cat: "opic"
   },
   {
     en: "In addition",
     ko: "게다가",
     ex: "In addition, the location is very convenient.",
-    emoji: "➕"
+    cat: "opic"
   },
   {
     en: "On the other hand",
     ko: "반면에",
     ex: "On the other hand, living in the city can be expensive.",
-    emoji: "🔁"
+    cat: "opic"
   },
   {
     en: "For example",
     ko: "예를 들어",
     ex: "For example, I enjoy hiking and watching movies.",
-    emoji: "📝"
+    cat: "opic"
   },
   {
     en: "As a result",
     ko: "그 결과",
     ex: "As a result, I became more confident in public speaking.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "I strongly believe that",
     ko: "나는 ~을 굳게 믿는다",
     ex: "I strongly believe that hard work pays off.",
-    emoji: "💪"
+    cat: "opic"
   },
   {
     en: "personally speaking",
     ko: "개인적으로 말하자면",
     ex: "Personally speaking, I think reading is the best habit.",
-    emoji: "🙋"
+    cat: "opic"
   },
   {
     en: "to be perfectly honest",
     ko: "솔직히 말하자면",
     ex: "To be perfectly honest, I was nervous at first.",
-    emoji: "💯"
+    cat: "opic"
   },
   {
     en: "all in all",
     ko: "결론적으로, 전반적으로",
     ex: "All in all, it was a wonderful experience.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "more than anything",
     ko: "무엇보다도",
     ex: "More than anything, I value my family's happiness.",
-    emoji: "❤️"
+    cat: "opic"
   },
   {
     en: "from my perspective",
     ko: "나의 관점에서는",
     ex: "From my perspective, work-life balance is essential.",
-    emoji: "👁️"
+    cat: "opic"
   },
   {
     en: "I have to say that",
     ko: "솔직히 말해야겠는데",
     ex: "I have to say that the food was absolutely delicious.",
-    emoji: "🗣️"
+    cat: "opic"
   },
   {
     en: "what I mean is",
     ko: "내가 말하려는 것은",
     ex: "What I mean is that communication is key.",
-    emoji: "💬"
+    cat: "opic"
   },
   {
     en: "the way I see it",
     ko: "내가 보기에는",
     ex: "The way I see it, every challenge is an opportunity.",
-    emoji: "🔭"
+    cat: "opic"
   },
   {
     en: "I'd say that",
     ko: "제 생각엔 ~인 것 같아요",
     ex: "I'd say that traveling broadens your horizons.",
-    emoji: "🤔"
+    cat: "opic"
   },
   {
     en: "Actually",
     ko: "사실은",
     ex: "Actually, I recently started learning English more seriously.",
-    emoji: "💡"
+    cat: "opic"
   },
   {
     en: "By the way",
     ko: "그런데, 그나저나",
     ex: "By the way, have you heard about the new coffee shop downtown?",
-    emoji: "↩️"
+    cat: "opic"
   },
   {
     en: "Speaking of which",
     ko: "그 얘기가 나왔으니",
     ex: "Speaking of which, I went there last weekend.",
-    emoji: "🗣️"
+    cat: "opic"
   },
   {
     en: "not to mention",
     ko: "말할 것도 없이",
     ex: "The food was great, not to mention the service.",
-    emoji: "✅"
+    cat: "opic"
   },
   {
     en: "what's more",
     ko: "게다가, 더욱이",
     ex: "What's more, the prices are very reasonable.",
-    emoji: "📈"
+    cat: "opic"
   },
   {
     en: "in other words",
     ko: "다시 말하면",
     ex: "In other words, we need to plan better.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "first and foremost",
     ko: "무엇보다 먼저",
     ex: "First and foremost, safety is our top priority.",
-    emoji: "1️⃣"
+    cat: "opic"
   },
   {
     en: "on top of that",
     ko: "그것에 더해서",
     ex: "On top of that, we got free dessert.",
-    emoji: "🍰"
+    cat: "opic"
   },
   {
     en: "as I mentioned",
     ko: "앞서 말했듯이",
     ex: "As I mentioned, I've been working here for three years.",
-    emoji: "📌"
+    cat: "opic"
   },
   {
     en: "come to think of it",
     ko: "생각해보니",
     ex: "Come to think of it, I haven't taken a vacation in years.",
-    emoji: "🤔"
+    cat: "opic"
   },
   {
     en: "believe it or not",
     ko: "믿거나 말거나",
     ex: "Believe it or not, I used to be very shy.",
-    emoji: "😲"
+    cat: "opic"
   },
   {
     en: "to make matters worse",
     ko: "설상가상으로",
     ex: "To make matters worse, it started raining heavily.",
-    emoji: "⛈️"
+    cat: "opic"
   },
   {
     en: "needless to say",
     ko: "말할 필요도 없이",
     ex: "Needless to say, I was very excited about the trip.",
-    emoji: "😊"
+    cat: "opic"
   },
   {
     en: "as a matter of fact",
     ko: "사실은, 실은",
     ex: "As a matter of fact, I've visited Japan three times.",
-    emoji: "📋"
+    cat: "opic"
   },
   {
     en: "to put it simply",
     ko: "간단히 말하면",
     ex: "To put it simply, I love spending time with my family.",
-    emoji: "💎"
+    cat: "opic"
   },
   {
     en: "it goes without saying",
     ko: "당연한 말이지만",
     ex: "It goes without saying that health is wealth.",
-    emoji: "🗝️"
+    cat: "opic"
   },
   {
     en: "to sum up",
     ko: "요약하자면",
     ex: "To sum up, this year has been very productive for me.",
-    emoji: "📊"
+    cat: "opic"
   },
   {
     en: "on a positive note",
     ko: "긍정적인 면에서는",
     ex: "On a positive note, I learned a lot from the experience.",
-    emoji: "😄"
+    cat: "opic"
   },
   {
     en: "to be fair",
     ko: "공정하게 말하자면",
     ex: "To be fair, both options have their advantages.",
-    emoji: "⚖️"
+    cat: "opic"
   },
   {
     en: "for the most part",
     ko: "대체로, 주로",
     ex: "For the most part, I enjoy my work.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "be into",
     ko: "~에 빠져 있다, ~을 좋아하다",
     ex: "I'm really into cooking these days.",
-    emoji: "❤️"
+    cat: "hobby"
   },
   {
     en: "hang out with",
     ko: "~와 어울리다, 시간을 보내다",
     ex: "I love hanging out with my close friends on weekends.",
-    emoji: "👫"
+    cat: "hobby"
   },
   {
     en: "take up",
     ko: "(취미 등을) 시작하다",
     ex: "I recently took up yoga to relieve stress.",
-    emoji: "🧘"
+    cat: "hobby"
   },
   {
     en: "give it a try",
     ko: "한번 해보다",
     ex: "You should give it a try—you might love it!",
-    emoji: "🎯"
+    cat: "hobby"
   },
   {
     en: "make the most of",
     ko: "~을 최대한 활용하다",
     ex: "I try to make the most of my free time.",
-    emoji: "⏰"
+    cat: "hobby"
   },
   {
     en: "wind down",
     ko: "긴장을 풀다, 쉬다",
     ex: "I usually wind down by reading a book before bed.",
-    emoji: "😌"
+    cat: "hobby"
   },
   {
     en: "catch up on",
     ko: "밀린 ~을 따라잡다",
     ex: "I spent the weekend catching up on sleep.",
-    emoji: "😴"
+    cat: "hobby"
   },
   {
     en: "work out",
     ko: "운동하다",
     ex: "I try to work out at least three times a week.",
-    emoji: "💪"
+    cat: "health"
   },
   {
     en: "get in shape",
     ko: "몸을 만들다",
     ex: "I've been working hard to get in shape this year.",
-    emoji: "🏋️"
+    cat: "health"
   },
   {
     en: "stay active",
     ko: "활동적으로 지내다",
     ex: "It's important to stay active as you get older.",
-    emoji: "🏃"
+    cat: "hobby"
   },
   {
     en: "be a fan of",
     ko: "~의 팬이다, ~을 좋아하다",
     ex: "I'm a big fan of jazz music.",
-    emoji: "🎵"
+    cat: "hobby"
   },
   {
     en: "look forward to",
     ko: "~을 기대하다",
     ex: "I'm really looking forward to the weekend trip.",
-    emoji: "🌈"
+    cat: "opic"
   },
   {
     en: "end up -ing",
     ko: "결국 ~하게 되다",
     ex: "We ended up staying at the cafe until midnight.",
-    emoji: "🔚"
+    cat: "opic"
   },
   {
     en: "be hooked on",
     ko: "~에 중독되다, 빠지다",
     ex: "I got hooked on that TV series last month.",
-    emoji: "🎣"
+    cat: "hobby"
   },
   {
     en: "pass the time",
     ko: "시간을 보내다",
     ex: "I read books to pass the time on long flights.",
-    emoji: "📚"
+    cat: "hobby"
   },
   {
     en: "kick back",
     ko: "편안하게 쉬다",
     ex: "On weekends, I just like to kick back and relax.",
-    emoji: "🛋️"
+    cat: "hobby"
   },
   {
     en: "have a blast",
     ko: "정말 재미있게 놀다",
     ex: "We had a blast at the music festival.",
-    emoji: "🎉"
+    cat: "hobby"
   },
   {
     en: "lose track of time",
     ko: "시간 가는 줄 모르다",
     ex: "I always lose track of time when I'm painting.",
-    emoji: "⏱️"
+    cat: "hobby"
   },
   {
     en: "explore new places",
     ko: "새로운 곳을 탐험하다",
     ex: "I love to explore new places on my days off.",
-    emoji: "🗺️"
+    cat: "hobby"
   },
   {
     en: "recharge my batteries",
     ko: "기운을 충전하다",
     ex: "Hiking really helps me recharge my batteries.",
-    emoji: "🔋"
+    cat: "hobby"
   },
   {
     en: "meet a deadline",
     ko: "마감일을 맞추다",
     ex: "It was challenging, but we managed to meet the deadline.",
-    emoji: "📅"
+    cat: "work"
   },
   {
     en: "work under pressure",
     ko: "압박 속에서 일하다",
     ex: "I've learned to work effectively under pressure.",
-    emoji: "😤"
+    cat: "work"
   },
   {
     en: "take on a challenge",
     ko: "도전을 받아들이다",
     ex: "I'm always ready to take on a new challenge.",
-    emoji: "🏆"
+    cat: "opic"
   },
   {
     en: "collaborate with",
     ko: "~와 협력하다",
     ex: "I enjoy collaborating with people from different backgrounds.",
-    emoji: "🤝"
+    cat: "work"
   },
   {
     en: "take the initiative",
     ko: "주도적으로 하다",
     ex: "She always takes the initiative in team projects.",
-    emoji: "🚀"
+    cat: "work"
   },
   {
     en: "come up with an idea",
     ko: "아이디어를 떠올리다",
     ex: "We need to come up with a creative solution.",
-    emoji: "💡"
+    cat: "opic"
   },
   {
     en: "keep track of",
     ko: "~을 추적하다, 파악하다",
     ex: "I use an app to keep track of my tasks.",
-    emoji: "📊"
+    cat: "opic"
   },
   {
     en: "delegate tasks",
     ko: "업무를 위임하다",
     ex: "A good leader knows how to delegate tasks effectively.",
-    emoji: "👆"
+    cat: "work"
   },
   {
     en: "make a presentation",
     ko: "발표하다",
     ex: "I had to make a presentation in front of 50 people.",
-    emoji: "📋"
+    cat: "work"
   },
   {
     en: "set goals",
     ko: "목표를 설정하다",
     ex: "I always set clear goals at the start of each year.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "get promoted",
     ko: "승진하다",
     ex: "I was happy to get promoted last spring.",
-    emoji: "⬆️"
+    cat: "work"
   },
   {
     en: "be in charge of",
     ko: "~을 담당하다, 책임지다",
     ex: "I'm in charge of customer relations at my company.",
-    emoji: "👔"
+    cat: "work"
   },
   {
     en: "handle a situation",
     ko: "상황을 처리하다",
     ex: "She handled the difficult situation very professionally.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "work overtime",
     ko: "야근하다, 초과 근무하다",
     ex: "I often have to work overtime during busy seasons.",
-    emoji: "🌙"
+    cat: "work"
   },
   {
     en: "brainstorm ideas",
     ko: "아이디어를 브레인스토밍하다",
     ex: "Let's brainstorm ideas for the new marketing campaign.",
-    emoji: "🧠"
+    cat: "work"
   },
   {
     en: "reach a consensus",
     ko: "합의에 도달하다",
     ex: "After long discussion, we finally reached a consensus.",
-    emoji: "🤝"
+    cat: "work"
   },
   {
     en: "give feedback",
     ko: "피드백을 주다",
     ex: "My manager always gives helpful feedback.",
-    emoji: "💬"
+    cat: "work"
   },
   {
     en: "pull one's weight",
     ko: "자기 몫을 다하다",
     ex: "Everyone in the team pulls their weight.",
-    emoji: "⚖️"
+    cat: "work"
   },
   {
     en: "a steep learning curve",
     ko: "가파른 학습 곡선, 배우기 어려움",
     ex: "The new software had a steep learning curve.",
-    emoji: "📈"
+    cat: "work"
   },
   {
     en: "go the extra mile",
     ko: "한발 더 나아가다, 최선을 다하다",
     ex: "She always goes the extra mile for her clients.",
-    emoji: "🏅"
+    cat: "work"
   },
   {
     en: "go on a trip",
     ko: "여행을 가다",
     ex: "I usually go on a trip at least once a year.",
-    emoji: "✈️"
+    cat: "travel"
   },
   {
     en: "broaden one's horizons",
     ko: "시야를 넓히다",
     ex: "Traveling helps you broaden your horizons.",
-    emoji: "🌍"
+    cat: "travel"
   },
   {
     en: "off the beaten path",
     ko: "사람이 잘 다니지 않는 곳",
     ex: "We prefer to visit places off the beaten path.",
-    emoji: "🗺️"
+    cat: "travel"
   },
   {
     en: "a once-in-a-lifetime experience",
     ko: "일생에 한번뿐인 경험",
     ex: "Seeing the Northern Lights was a once-in-a-lifetime experience.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "take in the scenery",
     ko: "경치를 감상하다",
     ex: "We stopped to take in the beautiful mountain scenery.",
-    emoji: "🏔️"
+    cat: "travel"
   },
   {
     en: "get around",
     ko: "돌아다니다",
     ex: "It's easy to get around Tokyo using the subway.",
-    emoji: "🚇"
+    cat: "opic"
   },
   {
     en: "immerse oneself in",
     ko: "~에 몰입하다",
     ex: "I love immersing myself in local culture.",
-    emoji: "🌊"
+    cat: "travel"
   },
   {
     en: "be worth a visit",
     ko: "방문할 가치가 있다",
     ex: "That museum is definitely worth a visit.",
-    emoji: "🏛️"
+    cat: "travel"
   },
   {
     en: "jet lag",
     ko: "시차 피로",
     ex: "It took me three days to recover from jet lag.",
-    emoji: "😵"
+    cat: "travel"
   },
   {
     en: "make it to",
     ko: "~에 도달하다, 방문하다",
     ex: "We finally made it to the top of the mountain.",
-    emoji: "⛰️"
+    cat: "travel"
   },
   {
     en: "travel light",
     ko: "짐을 가볍게 여행하다",
     ex: "I always try to travel light when I go abroad.",
-    emoji: "🎒"
+    cat: "travel"
   },
   {
     en: "go sightseeing",
     ko: "관광하러 가다",
     ex: "We spent the whole day going sightseeing.",
-    emoji: "📸"
+    cat: "travel"
   },
   {
     en: "fit in with the locals",
     ko: "현지인들과 어울리다",
     ex: "Learning a few phrases helps you fit in with the locals.",
-    emoji: "🤗"
+    cat: "travel"
   },
   {
     en: "a hidden gem",
     ko: "숨겨진 명소",
     ex: "That small fishing village is a real hidden gem.",
-    emoji: "💎"
+    cat: "travel"
   },
   {
     en: "live out of a suitcase",
     ko: "여행 가방 하나로 살다",
     ex: "I spent three months living out of a suitcase.",
-    emoji: "🧳"
+    cat: "travel"
   },
   {
     en: "keep up with",
     ko: "~을 따라가다, 파악하다",
     ex: "It's hard to keep up with the latest technology.",
-    emoji: "📱"
+    cat: "opic"
   },
   {
     en: "stay connected",
     ko: "연결 상태를 유지하다",
     ex: "Social media helps us stay connected with friends.",
-    emoji: "🔗"
+    cat: "tech"
   },
   {
     en: "go viral",
     ko: "바이럴되다, 널리 퍼지다",
     ex: "That funny video went viral overnight.",
-    emoji: "🦠"
+    cat: "tech"
   },
   {
     en: "scroll through",
     ko: "~을 스크롤하다",
     ex: "I spend too much time scrolling through social media.",
-    emoji: "📜"
+    cat: "tech"
   },
   {
     en: "digital detox",
     ko: "디지털 해독, 스마트폰 끊기",
     ex: "I tried a digital detox for a week last summer.",
-    emoji: "🔕"
+    cat: "tech"
   },
   {
     en: "rely on technology",
     ko: "기술에 의존하다",
     ex: "We've come to rely on technology for almost everything.",
-    emoji: "🤖"
+    cat: "tech"
   },
   {
     en: "stay up to date",
     ko: "최신 정보를 유지하다",
     ex: "I read tech blogs to stay up to date.",
-    emoji: "🗞️"
+    cat: "opic"
   },
   {
     en: "make life easier",
     ko: "삶을 더 편리하게 만들다",
     ex: "Smartphones have really made our lives easier.",
-    emoji: "✨"
+    cat: "opic"
   },
   {
     en: "have access to",
     ko: "~에 접근하다",
     ex: "We now have access to information 24/7.",
-    emoji: "🔓"
+    cat: "tech"
   },
   {
     en: "at one's fingertips",
     ko: "손끝에서, 바로 이용 가능한",
     ex: "All the information you need is at your fingertips.",
-    emoji: "👆"
+    cat: "tech"
   },
   {
     en: "be addicted to",
     ko: "~에 중독되다",
     ex: "Many teenagers are addicted to social media.",
-    emoji: "📲"
+    cat: "tech"
   },
   {
     en: "save time and effort",
     ko: "시간과 노력을 절약하다",
     ex: "Online shopping saves a lot of time and effort.",
-    emoji: "⚡"
+    cat: "tech"
   },
   {
     en: "work from home",
     ko: "재택근무하다",
     ex: "I've been working from home for two years now.",
-    emoji: "🏠"
+    cat: "tech"
   },
   {
     en: "a double-edged sword",
     ko: "양날의 검",
     ex: "Social media is a double-edged sword.",
-    emoji: "⚔️"
+    cat: "tech"
   },
   {
     en: "transform the way we",
     ko: "우리가 ~하는 방식을 바꾸다",
     ex: "AI is transforming the way we work.",
-    emoji: "🔄"
+    cat: "tech"
   },
   {
     en: "eat a balanced diet",
     ko: "균형 잡힌 식사를 하다",
     ex: "It's important to eat a balanced diet every day.",
-    emoji: "🥗"
+    cat: "health"
   },
   {
     en: "stay in shape",
     ko: "몸매를 유지하다",
     ex: "I exercise regularly to stay in shape.",
-    emoji: "💪"
+    cat: "health"
   },
   {
     en: "cut down on",
     ko: "~을 줄이다",
     ex: "I've been trying to cut down on sugar.",
-    emoji: "✂️"
+    cat: "opic"
   },
   {
     en: "be a stress reliever",
     ko: "스트레스 해소가 되다",
     ex: "Cooking is a great stress reliever for me.",
-    emoji: "😌"
+    cat: "health"
   },
   {
     en: "grab a bite",
     ko: "간단히 먹다",
     ex: "Let's grab a bite before the meeting.",
-    emoji: "🍔"
+    cat: "opic"
   },
   {
     en: "have a sweet tooth",
     ko: "단 것을 좋아하다",
     ex: "I have a sweet tooth, so I love desserts.",
-    emoji: "🍭"
+    cat: "health"
   },
   {
     en: "skip meals",
     ko: "식사를 거르다",
     ex: "I try not to skip meals, even when I'm busy.",
-    emoji: "🚫"
+    cat: "health"
   },
   {
     en: "go on a diet",
     ko: "다이어트를 하다",
     ex: "I went on a diet before my friend's wedding.",
-    emoji: "🥦"
+    cat: "health"
   },
   {
     en: "watch one's weight",
     ko: "체중 관리를 하다",
     ex: "I've been watching my weight since last year.",
-    emoji: "⚖️"
+    cat: "health"
   },
   {
     en: "be worth trying",
     ko: "한번 시도해볼 만하다",
     ex: "That new restaurant is definitely worth trying.",
-    emoji: "🍽️"
+    cat: "opic"
   },
   {
     en: "food for thought",
     ko: "깊이 생각해볼 거리",
     ex: "That documentary really gave me food for thought.",
-    emoji: "🧠"
+    cat: "health"
   },
   {
     en: "treat oneself to",
     ko: "자신에게 ~을 선물하다",
     ex: "I like to treat myself to a nice meal on Fridays.",
-    emoji: "🎁"
+    cat: "health"
   },
   {
     en: "get enough sleep",
     ko: "충분히 자다",
     ex: "It's essential to get enough sleep for good health.",
-    emoji: "😴"
+    cat: "health"
   },
   {
     en: "take a walk",
     ko: "산책하다",
     ex: "I take a walk every morning to clear my mind.",
-    emoji: "🚶"
+    cat: "health"
   },
   {
     en: "burn off calories",
     ko: "칼로리를 소모하다",
     ex: "Dancing is a fun way to burn off calories.",
-    emoji: "🔥"
+    cat: "health"
   },
   {
     en: "raise awareness",
     ko: "인식을 높이다",
     ex: "We need to raise awareness about climate change.",
-    emoji: "📢"
+    cat: "nature"
   },
   {
     en: "take action",
     ko: "행동을 취하다",
     ex: "It's time to take action to protect the environment.",
-    emoji: "⚡"
+    cat: "opic"
   },
   {
     en: "make a difference",
     ko: "변화를 만들다",
     ex: "Even small actions can make a big difference.",
-    emoji: "🌱"
+    cat: "opic"
   },
   {
     en: "go green",
     ko: "친환경적으로 되다",
     ex: "Our company is trying to go green this year.",
-    emoji: "♻️"
+    cat: "nature"
   },
   {
     en: "reduce carbon footprint",
     ko: "탄소 발자국을 줄이다",
     ex: "Using public transport helps reduce your carbon footprint.",
-    emoji: "👣"
+    cat: "nature"
   },
   {
     en: "have an impact on",
     ko: "~에 영향을 미치다",
     ex: "Our choices have a significant impact on the planet.",
-    emoji: "🌍"
+    cat: "nature"
   },
   {
     en: "be concerned about",
     ko: "~에 대해 걱정하다",
     ex: "I'm deeply concerned about air pollution.",
-    emoji: "😟"
+    cat: "opic"
   },
   {
     en: "play a role in",
     ko: "~에서 역할을 하다",
     ex: "Everyone plays a role in protecting the environment.",
-    emoji: "🎭"
+    cat: "opic"
   },
   {
     en: "a growing trend",
     ko: "증가하는 트렌드",
     ex: "Vegetarianism has become a growing trend.",
-    emoji: "📈"
+    cat: "opic"
   },
   {
     en: "give back to the community",
     ko: "지역사회에 환원하다",
     ex: "I volunteer on weekends to give back to the community.",
-    emoji: "🤲"
+    cat: "nature"
   },
   {
     en: "face challenges",
     ko: "도전에 직면하다",
     ex: "Many countries face serious environmental challenges.",
-    emoji: "🏔️"
+    cat: "opic"
   },
   {
     en: "long-term consequences",
     ko: "장기적인 결과",
     ex: "We must think about the long-term consequences.",
-    emoji: "🔮"
+    cat: "nature"
   },
   {
     en: "take responsibility",
     ko: "책임을 지다",
     ex: "We all need to take responsibility for our planet.",
-    emoji: "🛡️"
+    cat: "nature"
   },
   {
     en: "benefit future generations",
     ko: "미래 세대에게 도움이 되다",
     ex: "Sustainable choices benefit future generations.",
-    emoji: "👶"
+    cat: "nature"
   },
   {
     en: "at the expense of",
     ko: "~을 희생시키면서",
     ex: "We shouldn't develop at the expense of nature.",
-    emoji: "💸"
+    cat: "nature"
   },
   {
     en: "expand one's knowledge",
     ko: "지식을 넓히다",
     ex: "Reading is the best way to expand your knowledge.",
-    emoji: "📖"
+    cat: "study"
   },
   {
     en: "learn by doing",
     ko: "경험을 통해 배우다",
     ex: "I believe in learning by doing.",
-    emoji: "🛠️"
+    cat: "study"
   },
   {
     en: "make progress",
     ko: "발전하다, 진보하다",
     ex: "I've made a lot of progress in my English studies.",
-    emoji: "📊"
+    cat: "study"
   },
   {
     en: "pick up",
     ko: "(기술 등을) 배우다, 습득하다",
     ex: "I picked up Spanish while living in Mexico.",
-    emoji: "📌"
+    cat: "study"
   },
   {
     en: "enrich oneself",
     ko: "자기 자신을 풍요롭게 하다",
     ex: "Traveling abroad helps enrich yourself.",
-    emoji: "✨"
+    cat: "study"
   },
   {
     en: "acquire new skills",
     ko: "새로운 기술을 습득하다",
     ex: "I've been trying to acquire new skills online.",
-    emoji: "🎓"
+    cat: "study"
   },
   {
     en: "challenge oneself",
     ko: "자신에게 도전하다",
     ex: "I always try to challenge myself with new goals.",
-    emoji: "🏆"
+    cat: "study"
   },
   {
     en: "stay motivated",
     ko: "동기를 유지하다",
     ex: "It can be hard to stay motivated while studying alone.",
-    emoji: "🔥"
+    cat: "study"
   },
   {
     en: "have a passion for",
     ko: "~에 열정이 있다",
     ex: "I have a great passion for learning languages.",
-    emoji: "❤️"
+    cat: "study"
   },
   {
     en: "benefit from",
     ko: "~으로부터 혜택을 받다",
     ex: "Students benefit greatly from hands-on experience.",
-    emoji: "🎁"
+    cat: "study"
   },
   {
     en: "be exposed to",
     ko: "~에 노출되다",
     ex: "Living abroad exposes you to different cultures.",
-    emoji: "🌐"
+    cat: "study"
   },
   {
     en: "overcome difficulties",
     ko: "어려움을 극복하다",
     ex: "I've had to overcome many difficulties to get here.",
-    emoji: "💪"
+    cat: "solve"
   },
   {
     en: "push oneself",
     ko: "자신을 밀어붙이다",
     ex: "You have to push yourself to improve.",
-    emoji: "🚀"
+    cat: "study"
   },
   {
     en: "try something new",
     ko: "새로운 것을 시도하다",
     ex: "I try to try something new every month.",
-    emoji: "🆕"
+    cat: "opic"
   },
   {
     en: "be open-minded",
     ko: "열린 마음을 가지다",
     ex: "Being open-minded helps you learn faster.",
-    emoji: "🧠"
+    cat: "study"
   },
   {
     en: "It's hard to say exactly",
     ko: "정확히 말하기 어렵지만",
     ex: "It's hard to say exactly when this change happened.",
-    emoji: "🤷"
+    cat: "opic"
   },
   {
     en: "as time goes by",
     ko: "시간이 지남에 따라",
     ex: "As time goes by, things tend to get easier.",
-    emoji: "⏳"
+    cat: "time"
   },
   {
     en: "at the time",
     ko: "그 당시에",
     ex: "At the time, I didn't realize how important it was.",
-    emoji: "📆"
+    cat: "time"
   },
   {
     en: "looking back",
     ko: "돌이켜보면",
     ex: "Looking back, that was the best decision I ever made.",
-    emoji: "👀"
+    cat: "time"
   },
   {
     en: "ever since then",
     ko: "그 이후로 줄곧",
     ex: "Ever since then, I've been passionate about music.",
-    emoji: "🎵"
+    cat: "time"
   },
   {
     en: "out of the blue",
     ko: "갑자기, 예고 없이",
     ex: "Out of the blue, I got a call from an old friend.",
-    emoji: "💥"
+    cat: "opic"
   },
   {
     en: "at first glance",
     ko: "처음 보기에는",
     ex: "At first glance, it seemed very complicated.",
-    emoji: "👁️"
+    cat: "opic"
   },
   {
     en: "as it turned out",
     ko: "알고 보니",
     ex: "As it turned out, the trip was much better than expected.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "it occurred to me",
     ko: "~라는 생각이 들었다",
     ex: "It occurred to me that I should call him.",
-    emoji: "💭"
+    cat: "opic"
   },
   {
     en: "for the first time in years",
     ko: "몇 년 만에 처음으로",
     ex: "For the first time in years, I felt truly relaxed.",
-    emoji: "🌅"
+    cat: "time"
   },
   {
     en: "can't help but",
     ko: "~하지 않을 수 없다",
     ex: "I can't help but smile when I see old photos.",
-    emoji: "😊"
+    cat: "opic"
   },
   {
     en: "be taken aback",
     ko: "깜짝 놀라다",
     ex: "I was taken aback by how beautiful the view was.",
-    emoji: "😮"
+    cat: "opic"
   },
   {
     en: "it dawned on me",
     ko: "나에게 ~이 갑자기 깨달아졌다",
     ex: "It dawned on me that I had made a mistake.",
-    emoji: "🌤️"
+    cat: "opic"
   },
   {
     en: "without hesitation",
     ko: "망설임 없이",
     ex: "She answered without hesitation.",
-    emoji: "⚡"
+    cat: "opic"
   },
   {
     en: "to my surprise",
     ko: "놀랍게도",
     ex: "To my surprise, everyone loved my presentation.",
-    emoji: "😲"
+    cat: "opic"
   },
   {
     en: "gradually but surely",
     ko: "서서히 그러나 확실히",
     ex: "Gradually but surely, I improved my skills.",
-    emoji: "🐢"
+    cat: "opic"
   },
   {
     en: "out of nowhere",
     ko: "아무 예고 없이, 갑자기",
     ex: "Out of nowhere, the weather changed dramatically.",
-    emoji: "🌪️"
+    cat: "opic"
   },
   {
     en: "at the drop of a hat",
     ko: "즉시, 망설임 없이",
     ex: "She's always ready to help at the drop of a hat.",
-    emoji: "🎩"
+    cat: "opic"
   },
   {
     en: "in the long run",
     ko: "장기적으로 보면",
     ex: "In the long run, hard work always pays off.",
-    emoji: "🏁"
+    cat: "opic"
   },
   {
     en: "it's safe to say",
     ko: "~라고 해도 좋을 것 같다",
     ex: "It's safe to say that this was a memorable trip.",
-    emoji: "✅"
+    cat: "opic"
   },
   {
     en: "feel overwhelmed",
     ko: "압도당하다, 너무 힘들다",
     ex: "I sometimes feel overwhelmed with all the responsibilities.",
-    emoji: "😰"
+    cat: "emotion"
   },
   {
     en: "be relieved",
     ko: "안도하다",
     ex: "I was so relieved when the test was over.",
-    emoji: "😅"
+    cat: "emotion"
   },
   {
     en: "be thrilled",
     ko: "매우 기쁘다, 흥분되다",
     ex: "I was thrilled to hear the good news.",
-    emoji: "🤩"
+    cat: "emotion"
   },
   {
     en: "feel at ease",
     ko: "편안함을 느끼다",
     ex: "I always feel at ease when I'm with close friends.",
-    emoji: "😌"
+    cat: "emotion"
   },
   {
     en: "be frustrated",
     ko: "좌절하다, 답답하다",
     ex: "I felt frustrated when I couldn't solve the problem.",
-    emoji: "😤"
+    cat: "emotion"
   },
   {
     en: "be moved by",
     ko: "~에 감동받다",
     ex: "I was deeply moved by the movie.",
-    emoji: "🥺"
+    cat: "emotion"
   },
   {
     en: "get cold feet",
     ko: "긴장하다, 두려워지다",
     ex: "I got cold feet right before the performance.",
-    emoji: "🥶"
+    cat: "emotion"
   },
   {
     en: "have mixed feelings",
     ko: "복잡한 감정이 들다",
     ex: "I have mixed feelings about moving to a new city.",
-    emoji: "🎭"
+    cat: "emotion"
   },
   {
     en: "feel nostalgic",
     ko: "향수를 느끼다",
     ex: "Old music makes me feel nostalgic.",
-    emoji: "🌅"
+    cat: "emotion"
   },
   {
     en: "be in high spirits",
     ko: "기분이 좋다",
     ex: "She was in high spirits after the good news.",
-    emoji: "😄"
+    cat: "emotion"
   },
   {
     en: "have butterflies in one's stomach",
     ko: "긴장해서 두근거리다",
     ex: "I had butterflies in my stomach before the interview.",
-    emoji: "🦋"
+    cat: "emotion"
   },
   {
     en: "let off steam",
     ko: "스트레스를 풀다",
     ex: "I go for a run to let off steam after a tough day.",
-    emoji: "💨"
+    cat: "emotion"
   },
   {
     en: "be on cloud nine",
     ko: "매우 행복하다",
     ex: "I was on cloud nine after getting the job offer.",
-    emoji: "☁️"
+    cat: "emotion"
   },
   {
     en: "be under stress",
     ko: "스트레스를 받다",
     ex: "I've been under a lot of stress lately.",
-    emoji: "😓"
+    cat: "emotion"
   },
   {
     en: "feel fulfilled",
     ko: "성취감을 느끼다",
     ex: "Helping others makes me feel truly fulfilled.",
-    emoji: "🌟"
+    cat: "emotion"
   },
   {
     en: "get along with",
     ko: "~와 잘 지내다",
     ex: "I get along well with my coworkers.",
-    emoji: "🤝"
+    cat: "relation"
   },
   {
     en: "have a lot in common",
     ko: "공통점이 많다",
     ex: "My best friend and I have a lot in common.",
-    emoji: "🔗"
+    cat: "relation"
   },
   {
     en: "be there for",
     ko: "~을 위해 곁에 있다",
     ex: "Real friends are always there for each other.",
-    emoji: "🤗"
+    cat: "relation"
   },
   {
     en: "go through tough times",
     ko: "힘든 시간을 보내다",
     ex: "Having good friends helps when you go through tough times.",
-    emoji: "💪"
+    cat: "relation"
   },
   {
     en: "have a positive influence",
     ko: "긍정적인 영향을 미치다",
     ex: "Good mentors have a positive influence on our lives.",
-    emoji: "🌟"
+    cat: "relation"
   },
   {
     en: "see eye to eye",
     ko: "의견이 일치하다",
     ex: "We don't always see eye to eye, but we respect each other.",
-    emoji: "👁️"
+    cat: "relation"
   },
   {
     en: "build a strong relationship",
     ko: "강한 관계를 구축하다",
     ex: "Trust is essential to build a strong relationship.",
-    emoji: "🏗️"
+    cat: "relation"
   },
   {
     en: "stand by someone",
     ko: "~의 곁에 있다, 지지하다",
     ex: "True friends always stand by you.",
-    emoji: "🛡️"
+    cat: "relation"
   },
   {
     en: "catch up with",
     ko: "~와 밀린 이야기를 나누다",
     ex: "Let's catch up with each other over coffee.",
-    emoji: "☕"
+    cat: "relation"
   },
   {
     en: "share the same values",
     ko: "같은 가치관을 공유하다",
     ex: "We share the same values about family.",
-    emoji: "❤️"
+    cat: "relation"
   },
   {
     en: "keep in touch with",
     ko: "~와 연락을 유지하다",
     ex: "I try to keep in touch with my old school friends.",
-    emoji: "📱"
+    cat: "relation"
   },
   {
     en: "hit it off",
     ko: "금방 친해지다",
     ex: "We hit it off immediately at the party.",
-    emoji: "⚡"
+    cat: "relation"
   },
   {
     en: "drift apart",
     ko: "서로 멀어지다",
     ex: "We drifted apart after moving to different cities.",
-    emoji: "🌊"
+    cat: "relation"
   },
   {
     en: "have a great bond",
     ko: "강한 유대감이 있다",
     ex: "My sister and I have a great bond.",
-    emoji: "🔗"
+    cat: "health"
   },
   {
     en: "mutual respect",
     ko: "상호 존중",
     ex: "A good relationship is based on mutual respect.",
-    emoji: "🤝"
+    cat: "relation"
   },
   {
     en: "settle down",
     ko: "정착하다",
     ex: "I plan to settle down in the suburbs someday.",
-    emoji: "🏡"
+    cat: "home"
   },
   {
     en: "live on one's own",
     ko: "혼자 살다",
     ex: "I've been living on my own since I was 22.",
-    emoji: "🔑"
+    cat: "home"
   },
   {
     en: "close to public transportation",
     ko: "대중교통에 가깝다",
     ex: "My apartment is very close to public transportation.",
-    emoji: "🚌"
+    cat: "home"
   },
   {
     en: "have easy access to",
     ko: "~에 쉽게 접근할 수 있다",
     ex: "I have easy access to shops and parks.",
-    emoji: "🗺️"
+    cat: "tech"
   },
   {
     en: "be surrounded by",
     ko: "~으로 둘러싸이다",
     ex: "I like being surrounded by nature.",
-    emoji: "🌲"
+    cat: "home"
   },
   {
     en: "move to a new place",
     ko: "새로운 곳으로 이사하다",
     ex: "I moved to a new place for my job last year.",
-    emoji: "📦"
+    cat: "home"
   },
   {
     en: "a change of scenery",
     ko: "환경의 변화",
     ex: "Sometimes you just need a change of scenery.",
-    emoji: "🏞️"
+    cat: "travel"
   },
   {
     en: "the cost of living",
     ko: "생활비",
     ex: "The cost of living in Seoul has increased a lot.",
-    emoji: "💰"
+    cat: "home"
   },
   {
     en: "commute to work",
     ko: "출퇴근하다",
     ex: "I commute to work by subway every day.",
-    emoji: "🚇"
+    cat: "home"
   },
   {
     en: "make oneself at home",
     ko: "편하게 있다",
     ex: "Please make yourself at home!",
-    emoji: "🏠"
+    cat: "home"
   },
   {
     en: "have changed a lot",
     ko: "많이 변했다",
     ex: "My hometown has changed a lot in the past decade.",
-    emoji: "🔄"
+    cat: "time"
   },
   {
     en: "since I was young",
     ko: "어렸을 때부터",
     ex: "I've loved music since I was young.",
-    emoji: "👶"
+    cat: "time"
   },
   {
     en: "over the years",
     ko: "수년에 걸쳐",
     ex: "Over the years, I've learned to be more patient.",
-    emoji: "📅"
+    cat: "time"
   },
   {
     en: "recently",
     ko: "최근에",
     ex: "I've recently started going to the gym regularly.",
-    emoji: "🆕"
+    cat: "time"
   },
   {
     en: "not long ago",
     ko: "얼마 전에",
     ex: "Not long ago, I visited my grandparents in the countryside.",
-    emoji: "🗓️"
+    cat: "time"
   },
   {
     en: "in recent years",
     ko: "최근 몇 년간",
     ex: "In recent years, remote work has become very popular.",
-    emoji: "📊"
+    cat: "time"
   },
   {
     en: "things have gotten better",
     ko: "상황이 나아졌다",
     ex: "Things have gotten better since I changed my routine.",
-    emoji: "⬆️"
+    cat: "opic"
   },
   {
     en: "be a big change",
     ko: "큰 변화이다",
     ex: "Moving abroad was a really big change for me.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "for as long as I can remember",
     ko: "내가 기억하는 한 오래전부터",
     ex: "For as long as I can remember, I've loved cooking.",
-    emoji: "🧠"
+    cat: "time"
   },
   {
     en: "since then",
     ko: "그 이후로",
     ex: "Since then, I've been more careful about my health.",
-    emoji: "⏩"
+    cat: "time"
   },
   {
     en: "compared to",
     ko: "~와 비교하면",
     ex: "Compared to last year, I feel much healthier.",
-    emoji: "⚖️"
+    cat: "compare"
   },
   {
     en: "in contrast",
     ko: "대조적으로",
     ex: "In contrast, city life is fast-paced.",
-    emoji: "🔁"
+    cat: "compare"
   },
   {
     en: "similarly",
     ko: "마찬가지로",
     ex: "Similarly, exercise helps improve mental health.",
-    emoji: "🔗"
+    cat: "compare"
   },
   {
     en: "unlike",
     ko: "~와 달리",
     ex: "Unlike my siblings, I enjoy cooking.",
-    emoji: "🔀"
+    cat: "compare"
   },
   {
     en: "while",
     ko: "~인 반면",
     ex: "While I love the city, I also appreciate nature.",
-    emoji: "↔️"
+    cat: "opic"
   },
   {
     en: "the pros and cons",
     ko: "장단점",
     ex: "There are pros and cons to every decision.",
-    emoji: "⚖️"
+    cat: "compare"
   },
   {
     en: "a major difference",
     ko: "큰 차이점",
     ex: "A major difference between the two is the culture.",
-    emoji: "🔍"
+    cat: "compare"
   },
   {
     en: "have advantages",
     ko: "장점이 있다",
     ex: "Living in the suburbs has many advantages.",
-    emoji: "✅"
+    cat: "compare"
   },
   {
     en: "much better than",
     ko: "~보다 훨씬 낫다",
     ex: "The new version is much better than the old one.",
-    emoji: "⬆️"
+    cat: "compare"
   },
   {
     en: "not as good as expected",
     ko: "기대만큼 좋지 않다",
     ex: "The movie was not as good as I expected.",
-    emoji: "😐"
+    cat: "compare"
   },
   {
     en: "deal with a problem",
     ko: "문제를 처리하다",
     ex: "I learned how to deal with unexpected problems.",
-    emoji: "🔧"
+    cat: "solve"
   },
   {
     en: "find a solution",
     ko: "해결책을 찾다",
     ex: "We need to find a creative solution quickly.",
-    emoji: "💡"
+    cat: "solve"
   },
   {
     en: "overcome a challenge",
     ko: "도전을 극복하다",
     ex: "Overcoming this challenge made me stronger.",
-    emoji: "🏆"
+    cat: "solve"
   },
   {
     en: "face a setback",
     ko: "좌절을 맞다",
     ex: "I faced a major setback, but I kept going.",
-    emoji: "📉"
+    cat: "solve"
   },
   {
     en: "bounce back",
     ko: "회복하다",
     ex: "After failing, I bounced back and tried again.",
-    emoji: "↩️"
+    cat: "solve"
   },
   {
     en: "trial and error",
     ko: "시행착오",
     ex: "Success often comes through trial and error.",
-    emoji: "🔄"
+    cat: "solve"
   },
   {
     en: "think outside the box",
     ko: "창의적으로 생각하다",
     ex: "We need to think outside the box.",
-    emoji: "📦"
+    cat: "solve"
   },
   {
     en: "take risks",
     ko: "위험을 감수하다",
     ex: "You have to be willing to take risks to succeed.",
-    emoji: "🎲"
+    cat: "solve"
   },
   {
     en: "learn from mistakes",
     ko: "실수로부터 배우다",
     ex: "I always try to learn from my mistakes.",
-    emoji: "📝"
+    cat: "study"
   },
   {
     en: "keep trying",
     ko: "계속 시도하다",
     ex: "No matter how hard it gets, keep trying.",
-    emoji: "💪"
+    cat: "solve"
   },
   {
     en: "step out of one's comfort zone",
     ko: "안전지대를 벗어나다",
     ex: "I stepped out of my comfort zone by joining a debate club.",
-    emoji: "🚪"
+    cat: "solve"
   },
   {
     en: "put something into practice",
     ko: "~을 실행에 옮기다",
     ex: "I try to put what I learn into practice right away.",
-    emoji: "⚙️"
+    cat: "solve"
   },
   {
     en: "stay positive",
     ko: "긍정적으로 유지하다",
     ex: "Even in difficult times, I try to stay positive.",
-    emoji: "☀️"
+    cat: "solve"
   },
   {
     en: "never give up",
     ko: "절대 포기하지 않다",
     ex: "My motto is to never give up.",
-    emoji: "🏁"
+    cat: "solve"
   },
   {
     en: "turn things around",
     ko: "상황을 바꾸다",
     ex: "He managed to turn things around after a rough year.",
-    emoji: "🔄"
+    cat: "solve"
   },
   {
     en: "plan to",
     ko: "~할 계획이다",
     ex: "I plan to travel to Europe next summer.",
-    emoji: "📋"
+    cat: "future"
   },
   {
     en: "be looking forward to",
     ko: "~을 기대하고 있다",
     ex: "I'm really looking forward to the vacation.",
-    emoji: "🌈"
+    cat: "future"
   },
   {
     en: "set a goal",
     ko: "목표를 세우다",
     ex: "I set a goal to read 12 books this year.",
-    emoji: "🎯"
+    cat: "future"
   },
   {
     en: "dream of",
     ko: "~을 꿈꾸다",
     ex: "I've always dreamed of starting my own business.",
-    emoji: "💭"
+    cat: "future"
   },
   {
     en: "work toward",
     ko: "~을 향해 나아가다",
     ex: "I'm working toward becoming fluent in English.",
-    emoji: "➡️"
+    cat: "future"
   },
   {
     en: "have high hopes for",
     ko: "~에 큰 기대를 갖다",
     ex: "I have high hopes for the new project.",
-    emoji: "🌠"
+    cat: "future"
   },
   {
     en: "sooner or later",
     ko: "조만간",
     ex: "Sooner or later, I'd like to move abroad.",
-    emoji: "⏰"
+    cat: "future"
   },
   {
     en: "in the near future",
     ko: "가까운 미래에",
     ex: "I hope to get my own apartment in the near future.",
-    emoji: "🔮"
+    cat: "future"
   },
   {
     en: "a long-term goal",
     ko: "장기적인 목표",
     ex: "My long-term goal is to become a teacher.",
-    emoji: "📅"
+    cat: "future"
   },
   {
     en: "be known for",
     ko: "~으로 유명하다",
     ex: "My hometown is known for its beautiful temples.",
-    emoji: "🏛️"
+    cat: "intro"
   },
   {
     en: "describe oneself as",
     ko: "자신을 ~라고 표현하다",
     ex: "I would describe myself as outgoing and creative.",
-    emoji: "🖊️"
+    cat: "intro"
   },
   {
     en: "have a strong interest in",
     ko: "~에 강한 흥미가 있다",
     ex: "I have a strong interest in environmental science.",
-    emoji: "🔬"
+    cat: "opic"
   },
   {
     en: "be passionate about",
     ko: "~에 열정적이다",
     ex: "I'm passionate about helping others learn English.",
-    emoji: "❤️"
+    cat: "intro"
   },
   {
     en: "have experience in",
     ko: "~에 경험이 있다",
     ex: "I have experience in project management.",
-    emoji: "💼"
+    cat: "intro"
   },
   {
     en: "be good at",
     ko: "~을 잘하다",
     ex: "I'm quite good at problem-solving.",
-    emoji: "✅"
+    cat: "intro"
   },
   {
     en: "have a background in",
     ko: "~분야의 배경이 있다",
     ex: "I have a background in marketing.",
-    emoji: "📚"
+    cat: "intro"
   },
   {
     en: "be responsible for",
     ko: "~을 책임지다",
     ex: "I'm responsible for managing the team schedule.",
-    emoji: "👔"
+    cat: "intro"
   },
   {
     en: "be comfortable with",
     ko: "~에 익숙하다, 편하다",
     ex: "I'm very comfortable with public speaking now.",
-    emoji: "😌"
+    cat: "intro"
   },
   {
     en: "take pride in",
     ko: "~을 자랑스러워하다",
     ex: "I take great pride in my work.",
-    emoji: "🏆"
+    cat: "intro"
   },
   {
     en: "have an unforgettable experience",
     ko: "잊지 못할 경험을 하다",
     ex: "Visiting the Great Wall was an unforgettable experience.",
-    emoji: "🌟"
+    cat: "experience"
   },
   {
     en: "at that moment",
     ko: "그 순간",
     ex: "At that moment, I realized how lucky I was.",
-    emoji: "⏱️"
+    cat: "experience"
   },
   {
     en: "the highlight of",
     ko: "~의 하이라이트",
     ex: "The highlight of my trip was the local food.",
-    emoji: "✨"
+    cat: "experience"
   },
   {
     en: "from that point on",
     ko: "그 시점부터",
     ex: "From that point on, everything changed for the better.",
-    emoji: "📍"
+    cat: "experience"
   },
   {
     en: "it was quite an experience",
     ko: "꽤 특별한 경험이었다",
     ex: "Living alone for the first time was quite an experience.",
-    emoji: "😮"
+    cat: "experience"
   },
   {
     en: "I'll never forget",
     ko: "절대 잊지 못할 것이다",
     ex: "I'll never forget how kind everyone was.",
-    emoji: "💭"
+    cat: "experience"
   },
   {
     en: "on that occasion",
     ko: "그 때에",
     ex: "On that occasion, I met someone very inspiring.",
-    emoji: "📆"
+    cat: "experience"
   },
   {
     en: "it was not easy",
     ko: "쉽지 않았다",
     ex: "It was not easy at first, but I got used to it.",
-    emoji: "😓"
+    cat: "experience"
   },
   {
     en: "it was well worth it",
     ko: "충분히 가치 있었다",
     ex: "All the hard work was well worth it in the end.",
-    emoji: "🏆"
+    cat: "experience"
   },
   {
     en: "it left a lasting impression",
     ko: "오래도록 깊은 인상을 남겼다",
     ex: "That concert left a lasting impression on me.",
-    emoji: "🎭"
+    cat: "experience"
   },
   {
     en: "rather than",
     ko: "~하기보다는",
     ex: "I prefer to walk rather than take the bus.",
-    emoji: "🔀"
+    cat: "connect"
   },
   {
     en: "even though",
     ko: "비록 ~일지라도",
     ex: "Even though it was tiring, I really enjoyed it.",
-    emoji: "🤷"
+    cat: "connect"
   },
   {
     en: "thanks to",
     ko: "~ 덕분에",
     ex: "Thanks to my friends, I got through that hard time.",
-    emoji: "🙏"
+    cat: "connect"
   },
   {
     en: "due to",
     ko: "~ 때문에",
     ex: "Due to the rain, we stayed inside.",
-    emoji: "🌧️"
+    cat: "connect"
   },
   {
     en: "as long as",
     ko: "~하는 한",
     ex: "As long as I have good health, I'm happy.",
-    emoji: "✔️"
+    cat: "connect"
   },
   {
     en: "in case of",
     ko: "~의 경우에",
     ex: "In case of emergency, call this number.",
-    emoji: "🚨"
+    cat: "opic"
   },
   {
     en: "regardless of",
     ko: "~에 관계없이",
     ex: "Regardless of the outcome, I'm proud of my effort.",
-    emoji: "🏁"
+    cat: "connect"
   },
   {
     en: "so that",
     ko: "~할 수 있도록",
     ex: "I practice every day so that I can improve.",
-    emoji: "🎯"
+    cat: "connect"
   },
   {
     en: "as soon as",
     ko: "~하자마자",
     ex: "As soon as I arrived, I felt completely at ease.",
-    emoji: "⚡"
+    cat: "connect"
   },
   {
     en: "no matter what",
     ko: "무슨 일이 있어도",
     ex: "No matter what happens, I'll keep working hard.",
-    emoji: "💪"
+    cat: "connect"
   },
   {
     en: "except for",
     ko: "~을 제외하고",
     ex: "I enjoyed everything, except for the traffic.",
-    emoji: "🚫"
+    cat: "connect"
   },
   {
     en: "in terms of",
     ko: "~의 측면에서",
     ex: "In terms of health, I've improved a lot.",
-    emoji: "📊"
+    cat: "connect"
   },
   {
     en: "as opposed to",
     ko: "~와는 대조적으로",
     ex: "I enjoy cooking at home as opposed to eating out.",
-    emoji: "↔️"
+    cat: "connect"
   },
   {
     en: "in spite of",
     ko: "~에도 불구하고",
     ex: "In spite of the difficulties, I never gave up.",
-    emoji: "💪"
+    cat: "connect"
   },
   {
     en: "given that",
     ko: "~을 감안하면",
     ex: "Given that I'm a beginner, I think I did well.",
-    emoji: "🤔"
+    cat: "connect"
   },
   {
     en: "with that in mind",
     ko: "그것을 염두에 두고",
     ex: "With that in mind, I decided to study harder.",
-    emoji: "🧠"
+    cat: "connect"
   },
   {
     en: "from a different angle",
     ko: "다른 각도에서",
     ex: "Let me look at this from a different angle.",
-    emoji: "🔄"
+    cat: "connect"
   },
   {
     en: "to a great extent",
     ko: "상당한 정도까지",
     ex: "To a great extent, attitude determines success.",
-    emoji: "📏"
+    cat: "health"
   },
   {
     en: "have something to do with",
     ko: "~와 관련이 있다",
     ex: "This might have something to do with stress.",
-    emoji: "🔗"
+    cat: "connect"
   },
   {
     en: "it's no wonder that",
     ko: "~인 것은 당연하다",
     ex: "It's no wonder that she's so popular.",
-    emoji: "🌟"
+    cat: "connect"
   },
   {
     en: "the bottom line is",
     ko: "결론은",
     ex: "The bottom line is that we need to act now.",
-    emoji: "⬇️"
+    cat: "opic"
   },
   {
     en: "to put it another way",
     ko: "다르게 말하면",
     ex: "To put it another way, I simply enjoy being creative.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "as things stand",
     ko: "현재 상황으로는",
     ex: "As things stand, I'm quite satisfied with my life.",
-    emoji: "📌"
+    cat: "connect"
   },
   {
     en: "over time",
     ko: "시간이 지나면서",
     ex: "Over time, I developed a love for cooking.",
-    emoji: "⏳"
+    cat: "connect"
   },
   {
     en: "here's the thing",
     ko: "있잖아, 사실은",
     ex: "Here's the thing—I wasn't always confident.",
-    emoji: "💬"
+    cat: "opic"
   },
   {
     en: "to a certain extent",
     ko: "어느 정도까지는",
     ex: "To a certain extent, I agree with that view.",
-    emoji: "↔️"
+    cat: "opic"
   },
   {
     en: "in any case",
     ko: "어쨌든",
     ex: "In any case, I'm glad I made that decision.",
-    emoji: "✅"
+    cat: "connect"
   },
   {
     en: "under the circumstances",
     ko: "그런 상황에서",
     ex: "Under the circumstances, I did the best I could.",
-    emoji: "🌪️"
+    cat: "connect"
   },
   {
     en: "from that experience",
     ko: "그 경험으로부터",
     ex: "From that experience, I learned the value of patience.",
-    emoji: "📖"
+    cat: "connect"
   },
   {
     en: "it's fair to say",
     ko: "~라고 말해도 무방하다",
     ex: "It's fair to say that I'm a people person.",
-    emoji: "🤝"
+    cat: "opic"
   },
   {
     en: "be eager to",
     ko: "~하기를 열망하다",
     ex: "I'm eager to learn new languages.",
-    emoji: "🔥"
+    cat: "opic"
   },
   {
     en: "go hand in hand",
     ko: "함께 가다, 밀접하게 연관되다",
     ex: "Hard work and success go hand in hand.",
-    emoji: "🤝"
+    cat: "opic"
   },
   {
     en: "ring a bell",
     ko: "기억이 나다, 들어본 적 있다",
     ex: "That name rings a bell but I can't remember where from.",
-    emoji: "🔔"
+    cat: "opic"
   },
   {
     en: "put oneself in someone's shoes",
     ko: "~의 입장이 되어보다",
     ex: "Try to put yourself in their shoes.",
-    emoji: "👟"
+    cat: "opic"
   },
   {
     en: "the more, the merrier",
     ko: "많을수록 더 즐겁다",
     ex: "Feel free to bring friends—the more, the merrier!",
-    emoji: "🎉"
+    cat: "opic"
   },
   {
     en: "get the ball rolling",
     ko: "일을 시작하다",
     ex: "Let's get the ball rolling on this project.",
-    emoji: "⚽"
+    cat: "opic"
   },
   {
     en: "hit the nail on the head",
     ko: "핵심을 찌르다",
     ex: "You really hit the nail on the head with that comment.",
-    emoji: "🔨"
+    cat: "idiom"
   },
   {
     en: "break the ice",
     ko: "어색한 분위기를 깨다",
     ex: "He told a joke to break the ice at the meeting.",
-    emoji: "🧊"
+    cat: "idiom"
   },
   {
     en: "add fuel to the fire",
     ko: "불에 기름을 붓다",
     ex: "Arguing back would only add fuel to the fire.",
-    emoji: "🔥"
+    cat: "opic"
   },
   {
     en: "on the tip of my tongue",
     ko: "말이 입에서 맴돌다",
     ex: "The word is on the tip of my tongue.",
-    emoji: "👅"
+    cat: "idiom"
   },
   {
     en: "under the weather",
     ko: "몸이 안 좋다",
     ex: "I'm feeling a bit under the weather today.",
-    emoji: "🤒"
+    cat: "health"
   },
   {
     en: "bite off more than you can chew",
     ko: "감당 못할 일을 맡다",
     ex: "Don't bite off more than you can chew.",
-    emoji: "😬"
+    cat: "opic"
   },
   {
     en: "the tip of the iceberg",
     ko: "빙산의 일각",
     ex: "What we see is just the tip of the iceberg.",
-    emoji: "🧊"
+    cat: "idiom"
   },
   {
     en: "cut corners",
     ko: "대충하다, 손쉬운 방법을 쓰다",
     ex: "You shouldn't cut corners when it comes to safety.",
-    emoji: "✂️"
+    cat: "idiom"
   },
   {
     en: "put things into perspective",
     ko: "사물을 올바른 시각으로 보다",
     ex: "Travel helps put things into perspective.",
-    emoji: "🔭"
+    cat: "opic"
   },
   {
     en: "draw the line",
     ko: "한계를 정하다",
     ex: "You need to draw the line at some point.",
-    emoji: "📏"
+    cat: "opic"
   },
   {
     en: "give the benefit of the doubt",
     ko: "의심하지 않고 믿어주다",
     ex: "I decided to give him the benefit of the doubt.",
-    emoji: "🤔"
+    cat: "opic"
   },
   {
     en: "have a lot on one's plate",
     ko: "할 일이 너무 많다",
     ex: "I can't take on more work—I have a lot on my plate.",
-    emoji: "🍽️"
+    cat: "opic"
   },
   {
     en: "leave a good impression",
     ko: "좋은 인상을 남기다",
     ex: "I want to leave a good impression at the interview.",
-    emoji: "😊"
+    cat: "opic"
   },
   {
     en: "have second thoughts",
     ko: "다시 생각해보다, 망설이다",
     ex: "I started having second thoughts about the decision.",
-    emoji: "🤔"
+    cat: "opic"
   },
   {
     en: "see the bright side",
     ko: "밝은 면을 보다",
     ex: "Try to see the bright side of every situation.",
-    emoji: "☀️"
+    cat: "idiom"
   },
   {
     en: "a rule of thumb",
     ko: "경험의 법칙, 일반 원칙",
     ex: "As a rule of thumb, always double-check your work.",
-    emoji: "👍"
+    cat: "opic"
   },
   {
     en: "go out of one's way",
     ko: "각별히 노력하다",
     ex: "She always goes out of her way to help others.",
-    emoji: "🛤️"
+    cat: "opic"
   },
   {
     en: "take for granted",
     ko: "당연하게 여기다",
     ex: "We often take good health for granted.",
-    emoji: "😶"
+    cat: "opic"
   },
   {
     en: "cross that bridge when I come to it",
     ko: "그때 가서 생각하다",
     ex: "I'll cross that bridge when I come to it.",
-    emoji: "🌉"
+    cat: "opic"
   },
   {
     en: "in the blink of an eye",
     ko: "눈 깜짝할 사이에",
     ex: "Time passed in the blink of an eye.",
-    emoji: "👁️"
+    cat: "opic"
   },
   {
     en: "day in, day out",
     ko: "날마다, 하루도 빠짐없이",
     ex: "I practice English day in, day out.",
-    emoji: "📅"
+    cat: "opic"
   },
   {
     en: "go a long way",
     ko: "큰 도움이 되다, 중요하다",
     ex: "A little kindness can go a long way.",
-    emoji: "🛤️"
+    cat: "opic"
   },
   {
     en: "a walk in the park",
     ko: "매우 쉬운 일",
     ex: "The exam was no walk in the park.",
-    emoji: "🌳"
+    cat: "health"
   },
   {
     en: "on the fence",
     ko: "결정을 못하고 있다",
     ex: "I'm still on the fence about moving abroad.",
-    emoji: "🏠"
+    cat: "idiom"
   },
   {
     en: "get the hang of",
     ko: "~에 익숙해지다",
     ex: "It took me a while to get the hang of the new software.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "stick to",
     ko: "~을 고수하다, 지키다",
     ex: "I try to stick to my daily routine.",
-    emoji: "📌"
+    cat: "opic"
   },
   {
     en: "catch one's eye",
     ko: "~의 눈길을 끌다",
     ex: "That painting really caught my eye.",
-    emoji: "👀"
+    cat: "opic"
   },
   {
     en: "on the go",
     ko: "계속 바쁘게 움직이며",
     ex: "I'm always on the go—I love staying busy.",
-    emoji: "🏃"
+    cat: "opic"
   },
   {
     en: "hold one's breath",
     ko: "숨을 죽이고 기다리다",
     ex: "I was holding my breath during the whole performance.",
-    emoji: "😮‍💨"
+    cat: "health"
   },
   {
     en: "jump to conclusions",
     ko: "성급히 결론을 내리다",
     ex: "Don't jump to conclusions before hearing all the facts.",
-    emoji: "🦘"
+    cat: "opic"
   },
   {
     en: "bite the bullet",
     ko: "이를 악물고 참다, 어려운 일을 하다",
     ex: "I had to bite the bullet and give the speech.",
-    emoji: "💪"
+    cat: "idiom"
   },
   {
     en: "a breath of fresh air",
     ko: "신선한 변화, 새로운 활력",
     ex: "The new employee was a breath of fresh air.",
-    emoji: "🌬️"
+    cat: "health"
   },
   {
     en: "it takes two to tango",
     ko: "혼자서는 안 된다, 쌍방의 문제",
     ex: "It takes two to tango—both sides need to compromise.",
-    emoji: "💃"
+    cat: "idiom"
   },
   {
     en: "on the bright side",
     ko: "긍정적으로 보면",
     ex: "On the bright side, at least we learned something new.",
-    emoji: "🌟"
+    cat: "idiom"
   },
   {
     en: "not my cup of tea",
     ko: "나의 취향이 아니다",
     ex: "Horror movies are not my cup of tea.",
-    emoji: "☕"
+    cat: "idiom"
   },
   {
     en: "go with the flow",
     ko: "흐름에 맡기다",
     ex: "Sometimes it's best to just go with the flow.",
-    emoji: "🌊"
+    cat: "opic"
   },
   {
     en: "once in a while",
     ko: "가끔, 때때로",
     ex: "Once in a while, I treat myself to a fancy dinner.",
-    emoji: "🌙"
+    cat: "opic"
   },
   {
     en: "safe and sound",
     ko: "안전하고 무사히",
     ex: "She arrived home safe and sound.",
-    emoji: "🛡️"
+    cat: "idiom"
   },
   {
     en: "fit like a glove",
     ko: "딱 맞다",
     ex: "The new job fits like a glove.",
-    emoji: "🧤"
+    cat: "idiom"
   },
   {
     en: "feel right at home",
     ko: "고향에 온 것처럼 편안하다",
     ex: "I felt right at home in that small town.",
-    emoji: "🏡"
+    cat: "emotion"
   },
   {
     en: "live up to one's expectations",
     ko: "기대에 부응하다",
     ex: "The trip lived up to all my expectations.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "ahead of schedule",
     ko: "일정보다 앞서서",
     ex: "We finished the project ahead of schedule.",
-    emoji: "⏱️"
+    cat: "opic"
   },
   {
     en: "behind schedule",
     ko: "일정보다 늦게",
     ex: "Due to traffic, we arrived behind schedule.",
-    emoji: "⏰"
+    cat: "opic"
   },
   {
     en: "a change of pace",
     ko: "분위기 전환",
     ex: "A weekend trip would be a nice change of pace.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "from scratch",
     ko: "처음부터, 맨 처음부터",
     ex: "I built this website from scratch.",
-    emoji: "0️⃣"
+    cat: "idiom"
   },
   {
     en: "get back on track",
     ko: "제자리로 돌아오다",
     ex: "After the illness, I worked to get back on track.",
-    emoji: "🛤️"
+    cat: "opic"
   },
   {
     en: "throw in the towel",
     ko: "포기하다",
     ex: "Despite difficulties, I refused to throw in the towel.",
-    emoji: "🏳️"
+    cat: "opic"
   },
   {
     en: "lead by example",
     ko: "모범을 보이다",
     ex: "Great leaders lead by example.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "know inside out",
     ko: "속속들이 알다",
     ex: "She knows this city inside out.",
-    emoji: "📖"
+    cat: "opic"
   },
   {
     en: "all things considered",
     ko: "모든 것을 고려하면",
     ex: "All things considered, I think it was the right decision.",
-    emoji: "🤔"
+    cat: "opic"
   },
   {
     en: "have the upper hand",
     ko: "유리한 위치에 있다",
     ex: "With more experience, she had the upper hand.",
-    emoji: "✊"
+    cat: "opic"
   },
   {
     en: "a matter of time",
     ko: "시간 문제",
     ex: "It was just a matter of time before things improved.",
-    emoji: "⏳"
+    cat: "opic"
   },
   {
     en: "get to the point",
     ko: "본론으로 들어가다",
     ex: "Let's get to the point—what do you need?",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "bear in mind",
     ko: "명심하다",
     ex: "Bear in mind that practice makes perfect.",
-    emoji: "🧠"
+    cat: "opic"
   },
   {
     en: "shed light on",
     ko: "~을 밝혀주다, 이해시켜주다",
     ex: "The documentary shed light on many important issues.",
-    emoji: "💡"
+    cat: "opic"
   },
   {
     en: "play it safe",
     ko: "안전하게 행동하다",
     ex: "When in doubt, it's best to play it safe.",
-    emoji: "🛡️"
+    cat: "opic"
   },
   {
     en: "keep one's options open",
     ko: "여러 가지 가능성을 열어두다",
     ex: "I prefer to keep my options open for now.",
-    emoji: "🚪"
+    cat: "opic"
   },
   {
     en: "make up one's mind",
     ko: "마음을 정하다",
     ex: "I finally made up my mind to study abroad.",
-    emoji: "💭"
+    cat: "opic"
   },
   {
     en: "be second to none",
     ko: "최고이다, 뒤지지 않다",
     ex: "Her dedication is second to none.",
-    emoji: "🏆"
+    cat: "opic"
   },
   {
     en: "in the spotlight",
     ko: "주목받고 있다",
     ex: "That issue is currently in the spotlight.",
-    emoji: "💡"
+    cat: "opic"
   },
   {
     en: "go above and beyond",
     ko: "기대 이상으로 하다",
     ex: "She went above and beyond to help us.",
-    emoji: "⬆️"
+    cat: "opic"
   },
   {
     en: "a blessing in disguise",
     ko: "전화위복",
     ex: "Losing that job was a blessing in disguise.",
-    emoji: "🎁"
+    cat: "idiom"
   },
   {
     en: "spill the beans",
     ko: "비밀을 털어놓다",
     ex: "He accidentally spilled the beans about the surprise.",
-    emoji: "🫘"
+    cat: "idiom"
   },
   {
     en: "be cut out for",
     ko: "~에 적합하다",
     ex: "I think I'm cut out for a career in teaching.",
-    emoji: "✂️"
+    cat: "opic"
   },
   {
     en: "live up to",
     ko: "~에 부응하다",
     ex: "I always try to live up to my own standards.",
-    emoji: "📏"
+    cat: "opic"
   },
   {
     en: "get a grip on",
     ko: "~을 파악하다, 이해하다",
     ex: "It took time to get a grip on the new system.",
-    emoji: "🤲"
+    cat: "opic"
   },
   {
     en: "be in the same boat",
     ko: "같은 처지이다",
     ex: "We're all in the same boat here.",
-    emoji: "⛵"
+    cat: "opic"
   },
   {
     en: "under one's belt",
     ko: "경험으로 쌓인",
     ex: "With five years of experience under my belt, I felt confident.",
-    emoji: "🎓"
+    cat: "opic"
   },
   {
     en: "call it a day",
     ko: "오늘은 여기까지 하다",
     ex: "After a long day, I decided to call it a day.",
-    emoji: "🌙"
+    cat: "opic"
   },
   {
     en: "keep one's cool",
     ko: "침착함을 유지하다",
     ex: "She kept her cool during the difficult interview.",
-    emoji: "😎"
+    cat: "opic"
   },
   {
     en: "lose one's cool",
     ko: "흥분하다, 차분함을 잃다",
     ex: "I tried not to lose my cool during the argument.",
-    emoji: "😠"
+    cat: "opic"
   },
   {
     en: "start from square one",
     ko: "처음부터 다시 시작하다",
     ex: "The project failed, so we had to start from square one.",
-    emoji: "🔄"
+    cat: "opic"
   },
   {
     en: "on the same page",
     ko: "같은 생각이다, 의견이 일치하다",
     ex: "Let's make sure we're all on the same page.",
-    emoji: "📄"
+    cat: "opic"
   },
   {
     en: "speak one's mind",
     ko: "솔직히 말하다",
     ex: "I always try to speak my mind respectfully.",
-    emoji: "🗣️"
+    cat: "opic"
   },
   {
     en: "have a change of heart",
     ko: "마음이 바뀌다",
     ex: "I had a change of heart about moving overseas.",
-    emoji: "❤️"
+    cat: "opic"
   },
   {
     en: "do one's best",
     ko: "최선을 다하다",
     ex: "I always do my best, no matter the challenge.",
-    emoji: "💪"
+    cat: "opic"
   },
   {
     en: "make ends meet",
     ko: "근근이 살아가다",
     ex: "It was hard to make ends meet when I first moved out.",
-    emoji: "💰"
+    cat: "opic"
   },
   {
     en: "have a way with words",
     ko: "말을 잘하다",
     ex: "She really has a way with words.",
-    emoji: "🎤"
+    cat: "opic"
   },
   {
     en: "run out of time",
     ko: "시간이 부족해지다",
     ex: "I ran out of time during the test.",
-    emoji: "⌛"
+    cat: "opic"
   },
   {
     en: "be in good hands",
     ko: "잘 관리되다, 믿을 수 있다",
     ex: "Don't worry—you're in good hands.",
-    emoji: "🙌"
+    cat: "opic"
   },
   {
     en: "the icing on the cake",
     ko: "금상첨화",
     ex: "Winning the award was the icing on the cake.",
-    emoji: "🎂"
+    cat: "idiom"
   },
   {
     en: "kill two birds with one stone",
     ko: "일석이조",
     ex: "Taking the bus kills two birds with one stone—it's cheap and eco-friendly.",
-    emoji: "🐦"
+    cat: "idiom"
   },
   {
     en: "every cloud has a silver lining",
     ko: "모든 일에는 좋은 면이 있다",
     ex: "Every cloud has a silver lining—I learned a lot.",
-    emoji: "☁️"
+    cat: "idiom"
   },
   {
     en: "practice makes perfect",
     ko: "연습이 완벽을 만든다",
     ex: "As they say, practice makes perfect.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "actions speak louder than words",
     ko: "행동이 말보다 강하다",
     ex: "Actions speak louder than words—show, don't tell.",
-    emoji: "💬"
+    cat: "opic"
   },
   {
     en: "better late than never",
     ko: "늦더라도 안 하는 것보다 낫다",
     ex: "I finally started exercising—better late than never!",
-    emoji: "🕐"
+    cat: "opic"
   },
   {
     en: "two sides to every story",
     ko: "모든 일에는 양면이 있다",
     ex: "There are always two sides to every story.",
-    emoji: "📖"
+    cat: "opic"
   },
   {
     en: "hit the ground running",
     ko: "처음부터 빠르게 시작하다",
     ex: "She hit the ground running on her first day.",
-    emoji: "🏃"
+    cat: "opic"
   },
   {
     en: "have a knack for",
     ko: "~에 재주가 있다",
     ex: "She has a real knack for making people feel comfortable.",
-    emoji: "✨"
+    cat: "opic"
   },
   {
     en: "be in one's element",
     ko: "자신의 영역에서 빛나다",
     ex: "He's really in his element when teaching.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "at a loss for words",
     ko: "할 말을 잃다",
     ex: "I was at a loss for words when I heard the news.",
-    emoji: "😶"
+    cat: "opic"
   },
   {
     en: "keep a low profile",
     ko: "튀지 않게 행동하다",
     ex: "I tend to keep a low profile at work.",
-    emoji: "🤫"
+    cat: "opic"
   },
   {
     en: "wear one's heart on one's sleeve",
     ko: "감정을 솔직하게 표현하다",
     ex: "She wears her heart on her sleeve.",
-    emoji: "❤️"
+    cat: "opic"
   },
   {
     en: "take something with a grain of salt",
     ko: "~을 너무 심각하게 받아들이지 않다",
     ex: "I take online reviews with a grain of salt.",
-    emoji: "🧂"
+    cat: "opic"
   },
   {
     en: "speak volumes",
     ko: "많은 것을 말해준다",
     ex: "His silence spoke volumes about how he felt.",
-    emoji: "📢"
+    cat: "opic"
   },
   {
     en: "ring true",
     ko: "사실처럼 들리다, 공감이 가다",
     ex: "That advice really rings true for me.",
-    emoji: "🔔"
+    cat: "opic"
   },
   {
     en: "be on the verge of",
     ko: "~의 직전이다",
     ex: "I was on the verge of giving up when things improved.",
-    emoji: "⚠️"
+    cat: "opic"
   },
   {
     en: "leave no stone unturned",
     ko: "모든 수단을 다 동원하다",
     ex: "I'll leave no stone unturned to find the answer.",
-    emoji: "🪨"
+    cat: "opic"
   },
   {
     en: "be worth one's while",
     ko: "~할 가치가 있다",
     ex: "The extra preparation was worth my while.",
-    emoji: "⏱️"
+    cat: "opic"
   },
   {
     en: "go down the drain",
     ko: "물거품이 되다",
     ex: "All my hard work went down the drain.",
-    emoji: "🚿"
+    cat: "opic"
   },
   {
     en: "on the right track",
     ko: "올바른 방향으로 가고 있다",
     ex: "I feel like I'm finally on the right track.",
-    emoji: "🛤️"
+    cat: "opic"
   },
   {
     en: "smooth sailing",
     ko: "순조롭게 진행되다",
     ex: "After the first week, everything was smooth sailing.",
-    emoji: "⛵"
+    cat: "opic"
   },
   {
     en: "in a nutshell",
     ko: "간단히 말해서",
     ex: "In a nutshell, the project was a success.",
-    emoji: "🌰"
+    cat: "opic"
   },
   {
     en: "have a field day",
     ko: "신나게 즐기다",
     ex: "The kids had a field day at the amusement park.",
-    emoji: "🎡"
+    cat: "idiom"
   },
   {
     en: "the ball is in your court",
     ko: "이제 당신이 결정할 차례이다",
     ex: "I've said my piece—the ball is in your court now.",
-    emoji: "🎾"
+    cat: "idiom"
   },
   {
     en: "be all ears",
     ko: "귀를 기울이다",
     ex: "Tell me what happened—I'm all ears.",
-    emoji: "👂"
+    cat: "idiom"
   },
   {
     en: "run in the family",
     ko: "집안 내력이다",
     ex: "Musical talent runs in my family.",
-    emoji: "👨‍👩‍👧"
+    cat: "idiom"
   },
   {
     en: "hit the books",
     ko: "공부하다",
     ex: "I need to hit the books before the exam.",
-    emoji: "📚"
+    cat: "opic"
   },
   {
     en: "learn the ropes",
     ko: "요령을 익히다",
     ex: "It took a few months to learn the ropes at my new job.",
-    emoji: "🪢"
+    cat: "study"
   },
   {
     en: "let sleeping dogs lie",
     ko: "문제를 건드리지 않다",
     ex: "Better to let sleeping dogs lie on that issue.",
-    emoji: "🐕"
+    cat: "health"
   },
   {
     en: "lose sight of",
     ko: "~을 잊다, 놓치다",
     ex: "Don't lose sight of your original goals.",
-    emoji: "👁️"
+    cat: "opic"
   },
   {
     en: "be in one's comfort zone",
     ko: "안전지대에 있다",
     ex: "I stayed in my comfort zone for too long.",
-    emoji: "😌"
+    cat: "solve"
   },
   {
     en: "bridge the gap",
     ko: "격차를 줄이다",
     ex: "We need to bridge the gap between rich and poor.",
-    emoji: "🌉"
+    cat: "opic"
   },
   {
     en: "have a say in",
     ko: "~에 발언권이 있다",
     ex: "Everyone should have a say in the decision.",
-    emoji: "🗳️"
+    cat: "opic"
   },
   {
     en: "be in full swing",
     ko: "한창이다, 활기차다",
     ex: "The event was in full swing when we arrived.",
-    emoji: "🎠"
+    cat: "opic"
   },
   {
     en: "stand out from the crowd",
     ko: "군중 속에서 두드러지다",
     ex: "Her unique ideas helped her stand out from the crowd.",
-    emoji: "⭐"
+    cat: "opic"
   },
   {
     en: "make the best of",
     ko: "~을 최대한 활용하다",
     ex: "We should make the best of every opportunity.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "carry a lot of weight",
     ko: "매우 중요하다, 영향력이 있다",
     ex: "Her opinion carries a lot of weight in the team.",
-    emoji: "⚖️"
+    cat: "health"
   },
   {
     en: "be a stepping stone",
     ko: "디딤돌이 되다",
     ex: "This internship is a stepping stone to my career.",
-    emoji: "🪨"
+    cat: "opic"
   },
   {
     en: "have a head start",
     ko: "유리한 출발을 하다",
     ex: "Starting early gives you a head start.",
-    emoji: "🏁"
+    cat: "opic"
   },
   {
     en: "put one's foot down",
     ko: "단호하게 입장을 취하다",
     ex: "She finally put her foot down about working weekends.",
-    emoji: "👣"
+    cat: "opic"
   },
   {
     en: "keep the ball rolling",
     ko: "계속 진행하다",
     ex: "Good communication helps keep the ball rolling.",
-    emoji: "⚽"
+    cat: "opic"
   },
   {
     en: "have a lot to offer",
     ko: "제공할 것이 많다",
     ex: "This city has a lot to offer young professionals.",
-    emoji: "🎁"
+    cat: "opic"
   },
   {
     en: "take the plunge",
     ko: "과감히 시작하다",
     ex: "I finally took the plunge and started my own business.",
-    emoji: "🏊"
+    cat: "opic"
   },
   {
     en: "be in demand",
     ko: "수요가 많다",
     ex: "Engineers are really in demand these days.",
-    emoji: "📈"
+    cat: "opic"
   },
   {
     en: "have a lot going for one",
     ko: "유리한 점이 많다",
     ex: "You have a lot going for you—don't give up.",
-    emoji: "✨"
+    cat: "opic"
   },
   {
     en: "stay the course",
     ko: "끝까지 버티다",
     ex: "It's hard, but I'll stay the course.",
-    emoji: "🏁"
+    cat: "opic"
   },
   {
     en: "put one's best foot forward",
     ko: "최선을 다해 임하다",
     ex: "Always put your best foot forward at interviews.",
-    emoji: "👟"
+    cat: "opic"
   },
   {
     en: "make a good impression",
     ko: "좋은 인상을 만들다",
     ex: "Dressing well helps make a good impression.",
-    emoji: "👔"
+    cat: "opic"
   },
   {
     en: "have an eye for",
     ko: "~에 눈썰미가 있다",
     ex: "She has an eye for design.",
-    emoji: "👁️"
+    cat: "opic"
   },
   {
     en: "be a natural at",
     ko: "~에 타고난 재능이 있다",
     ex: "He's a natural at playing the guitar.",
-    emoji: "🎸"
+    cat: "opic"
   },
   {
     en: "take one's time",
     ko: "서두르지 않다",
     ex: "Take your time—there's no rush.",
-    emoji: "⏰"
+    cat: "opic"
   },
   {
     en: "be in the zone",
     ko: "집중 상태에 있다",
     ex: "I was completely in the zone while coding.",
-    emoji: "🎯"
+    cat: "opic"
   },
   {
     en: "rise to the occasion",
     ko: "상황에 맞게 잘 대처하다",
     ex: "She always rises to the occasion under pressure.",
-    emoji: "⬆️"
+    cat: "opic"
   },
   {
     en: "live and learn",
     ko: "살면서 배운다",
     ex: "I made a mistake, but live and learn!",
-    emoji: "📖"
+    cat: "study"
   },
   {
     en: "long story short",
     ko: "간단히 말하면",
     ex: "Long story short, we ended up having a great time.",
-    emoji: "📏"
+    cat: "opic"
   },
   {
     en: "at the end of the day",
     ko: "결국에는",
     ex: "At the end of the day, what matters most is happiness.",
-    emoji: "🌅"
+    cat: "opic"
   },
   {
     en: "in a heartbeat",
     ko: "즉시, 망설임 없이",
     ex: "I'd do it again in a heartbeat.",
-    emoji: "💓"
+    cat: "health"
   },
   {
     en: "it's a small world",
     ko: "세상 참 좁다",
     ex: "We met again by coincidence—it's a small world!",
-    emoji: "🌍"
+    cat: "opic"
   },
   {
     en: "be on a roll",
     ko: "잘 풀리고 있다",
     ex: "I've been on a roll with my studies lately.",
-    emoji: "🎲"
+    cat: "idiom"
   },
   {
     en: "keep an eye on",
     ko: "~을 주시하다",
     ex: "Please keep an eye on the kids.",
-    emoji: "👀"
+    cat: "opic"
   },
   {
     en: "be all about",
     ko: "~에 대한 것이다, 중요하게 생각하다",
     ex: "Life is all about balance.",
-    emoji: "⚖️"
+    cat: "opic"
   },
   {
     en: "get the most out of",
     ko: "~에서 최대한을 얻다",
     ex: "I want to get the most out of my time here.",
-    emoji: "💯"
+    cat: "opic"
   },
   {
     en: "see the light at the end of the tunnel",
     ko: "터널 끝의 빛을 보다, 희망이 보이다",
     ex: "After months of hard work, I finally saw the light at the end of the tunnel.",
-    emoji: "🕯️"
+    cat: "opic"
   },
   {
     en: "be in the driver's seat",
     ko: "주도권을 쥐다",
     ex: "It feels good to be in the driver's seat of my own life.",
-    emoji: "🚗"
+    cat: "health"
   },
   {
     en: "weather the storm",
     ko: "어려운 시기를 헤쳐나가다",
     ex: "Together, we weathered the storm.",
-    emoji: "⛈️"
+    cat: "health"
   },
   {
     en: "a fresh start",
     ko: "새로운 출발",
     ex: "Moving to a new city gave me a fresh start.",
-    emoji: "🌅"
+    cat: "opic"
   },
   {
     en: "keep pace with",
     ko: "~와 보조를 맞추다",
     ex: "It's hard to keep pace with rapid technological changes.",
-    emoji: "🏃"
+    cat: "opic"
   },
   {
     en: "stand one's ground",
     ko: "자신의 입장을 고수하다",
     ex: "She stood her ground despite the pressure.",
-    emoji: "🏔️"
+    cat: "opic"
   },
   {
     en: "be a far cry from",
     ko: "~와 매우 다르다",
     ex: "This place is a far cry from where I grew up.",
-    emoji: "📏"
+    cat: "opic"
   },
   {
     en: "set the stage for",
     ko: "~을 위한 발판을 마련하다",
     ex: "Early success set the stage for a great career.",
-    emoji: "🎭"
+    cat: "opic"
   },
   {
     en: "put one's skills to use",
     ko: "자신의 기술을 활용하다",
     ex: "I want to put my skills to use in a meaningful way.",
-    emoji: "🛠️"
+    cat: "study"
   },
   {
     en: "be driven by",
     ko: "~에 의해 움직이다, 동기부여받다",
     ex: "I'm driven by a desire to make a positive impact.",
-    emoji: "🚀"
+    cat: "opic"
   },
   {
     en: "call the shots",
     ko: "결정권을 갖다",
     ex: "In my new role, I get to call the shots.",
-    emoji: "🎬"
+    cat: "opic"
   },
   {
     en: "hit a wall",
     ko: "한계에 부딪히다",
     ex: "I hit a wall with my language learning and needed new methods.",
-    emoji: "🧱"
+    cat: "solve"
   },
   {
     en: "clear one's head",
     ko: "머리를 맑게 하다",
     ex: "I take a walk to clear my head when stressed.",
-    emoji: "🧘"
+    cat: "opic"
   },
   {
     en: "put one's heart into",
     ko: "~에 온 마음을 쏟다",
     ex: "I put my heart into every project I work on.",
-    emoji: "❤️"
+    cat: "opic"
   },
   {
     en: "be bound to",
     ko: "반드시 ~하게 되어 있다",
     ex: "If you work hard, you're bound to succeed.",
-    emoji: "🔗"
+    cat: "opic"
   },
   {
     en: "have an open-door policy",
     ko: "언제든지 대화가 가능하다",
     ex: "My manager has an open-door policy.",
-    emoji: "🚪"
+    cat: "opic"
   },
   {
     en: "on good terms",
     ko: "사이가 좋다",
     ex: "I'm on good terms with all my former coworkers.",
-    emoji: "🤝"
+    cat: "opic"
   },
   {
     en: "be a turning point",
     ko: "전환점이 되다",
     ex: "That trip was a turning point in my life.",
-    emoji: "🔀"
+    cat: "opic"
   },
   {
     en: "give it one's all",
     ko: "모든 것을 쏟아붓다",
     ex: "I gave it my all during the competition.",
-    emoji: "💯"
+    cat: "opic"
   },
   {
     en: "have a head for",
     ko: "~에 재능이 있다",
     ex: "She has a head for numbers.",
-    emoji: "🧮"
+    cat: "opic"
   },
   {
     en: "be at one's best",
     ko: "최상의 상태이다",
     ex: "I'm at my best when I've had a good sleep.",
-    emoji: "⭐"
+    cat: "opic"
   },
   {
     en: "strike a balance",
     ko: "균형을 잡다",
     ex: "It's important to strike a balance between work and rest.",
-    emoji: "⚖️"
+    cat: "opic"
   },
   {
     en: "bring out the best in",
     ko: "~의 좋은 면을 이끌어내다",
     ex: "Great coaches bring out the best in their players.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "take center stage",
     ko: "중심이 되다, 주목받다",
     ex: "Sustainability has taken center stage recently.",
-    emoji: "🎭"
+    cat: "opic"
   },
   {
     en: "be well-rounded",
     ko: "다방면으로 능숙하다",
     ex: "I try to be well-rounded by learning various skills.",
-    emoji: "🔵"
+    cat: "opic"
   },
   {
     en: "be up for",
     ko: "~할 준비가 되어 있다",
     ex: "I'm always up for trying new things.",
-    emoji: "✋"
+    cat: "opic"
   },
   {
     en: "be all the rage",
     ko: "크게 유행하다",
     ex: "K-pop is all the rage around the world.",
-    emoji: "🔥"
+    cat: "opic"
   },
   {
     en: "make headway",
     ko: "진전을 이루다",
     ex: "We're slowly making headway on the project.",
-    emoji: "⬆️"
+    cat: "opic"
   },
   {
     en: "be hard on oneself",
     ko: "자신에게 너무 엄하다",
     ex: "Don't be too hard on yourself—mistakes happen.",
-    emoji: "😔"
+    cat: "opic"
   },
   {
     en: "take things one step at a time",
     ko: "한 번에 한 걸음씩 나아가다",
     ex: "Take things one step at a time and don't rush.",
-    emoji: "👣"
+    cat: "opic"
   },
   {
     en: "see eye to eye with",
     ko: "~와 의견이 일치하다",
     ex: "We don't always see eye to eye, but we work well together.",
-    emoji: "👁️"
+    cat: "relation"
   },
   {
     en: "have a soft spot for",
     ko: "~을 각별히 좋아하다",
     ex: "I have a soft spot for traditional music.",
-    emoji: "💚"
+    cat: "opic"
   },
   {
     en: "make up for lost time",
     ko: "잃어버린 시간을 만회하다",
     ex: "After recovering, I worked hard to make up for lost time.",
-    emoji: "⏩"
+    cat: "opic"
   },
   {
     en: "be up to the challenge",
     ko: "도전에 임할 준비가 되어 있다",
     ex: "I'm definitely up to the challenge.",
-    emoji: "💪"
+    cat: "opic"
   },
   {
     en: "have an impact",
     ko: "영향을 미치다",
     ex: "Small daily habits can have a huge impact over time.",
-    emoji: "💥"
+    cat: "opic"
   },
   {
     en: "come a long way",
     ko: "많이 발전했다",
     ex: "I've come a long way since I first started studying English.",
-    emoji: "🛤️"
+    cat: "opic"
   },
   {
     en: "make a fresh start",
     ko: "새로운 시작을 하다",
     ex: "After the breakup, I decided to make a fresh start.",
-    emoji: "🌱"
+    cat: "opic"
   },
   {
     en: "be worth the effort",
     ko: "노력할 가치가 있다",
     ex: "Learning a new skill is always worth the effort.",
-    emoji: "🏆"
+    cat: "opic"
   },
   {
     en: "keep one's word",
     ko: "약속을 지키다",
     ex: "I always keep my word—trust is everything.",
-    emoji: "🤝"
+    cat: "opic"
   },
   {
     en: "have a clear conscience",
     ko: "양심에 거리낌이 없다",
     ex: "I can sleep well because I have a clear conscience.",
-    emoji: "😇"
+    cat: "opic"
   },
   {
     en: "stay true to oneself",
     ko: "자신에게 충실하다",
     ex: "No matter what, I try to stay true to myself.",
-    emoji: "🌟"
+    cat: "opic"
   },
   {
     en: "be in good shape",
     ko: "좋은 상태이다",
     ex: "The project is in good shape—we're almost done.",
-    emoji: "💪"
+    cat: "health"
   }
 ];
 
@@ -20524,14 +20546,17 @@ function FlashcardsScreen(_ref9) {
     className: "flip-face flip-front"
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 56,
-      marginBottom: 6,
-      lineHeight: 1,
-      textAlign: 'center'
-    }
-  }, card.emoji || "📝"), /*#__PURE__*/React.createElement("div", {
+      width: 90,
+      height: 90,
+      margin: '0 auto 10px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    dangerouslySetInnerHTML: { __html: (typeof FLASH_IMGS !== 'undefined' && FLASH_IMGS[card.cat]) ? FLASH_IMGS[card.cat] : FLASH_IMGS['opic'] }
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: 22,
+      fontSize: 20,
       fontWeight: 800,
       color: '#f1f5f9',
       marginBottom: 8,
@@ -20552,7 +20577,7 @@ function FlashcardsScreen(_ref9) {
       color: '#64748b',
       fontStyle: 'italic'
     }
-  }, "\uD0ED\uD558\uC5EC \uB73B \uD655\uC778 \u21A9")), /*#__PURE__*/React.createElement("div", {
+  }, "탭하여 뜻 확인 ↩")), /*#__PURE__*/React.createElement("div", {
     className: "flip-face flip-back"
   }, /*#__PURE__*/React.createElement("div", {
     style: {
