@@ -18758,608 +18758,259 @@ function FirebaseSetupForm(_ref15) {
 
 // 진도 화면
 function ProgressScreen(_ref18) {
-  var progress = _ref18.progress,
-    profile = _ref18.profile,
-    onEditProfile = _ref18.onEditProfile,
-    onExport = _ref18.onExport,
-    onImportPartner = _ref18.onImportPartner,
-    partnerData = _ref18.partnerData,
-    myData = _ref18.myData,
-    coupleCode = _ref18.coupleCode,
-    onJoinRoom = _ref18.onJoinRoom,
-    onLeaveRoom = _ref18.onLeaveRoom,
-    fbReady = _ref18.fbReady,
-    fbStatus = _ref18.fbStatus;
-  var totalQ = TOPICS.reduce(function (s, t) {
-    return s + t.questions.length;
-  }, 0);
-  var completedQ = Object.values(progress.completedQ).flat().length;
-  var masteredCards = progress.masteredCards.length;
-  var overallPct = Math.round(completedQ / totalQ * 100);
-  var cardPct = Math.round(masteredCards / FLASHCARDS.length * 100);
-  var level = 'IL';
-  if (overallPct >= 30 && cardPct >= 20) level = 'IM';
-  if (overallPct >= 50 && cardPct >= 40) level = 'IH';
-  if (overallPct >= 80 && cardPct >= 70) level = 'AL';
-  var levelColors = {
-    IL: '#64748b',
-    IM: '#f59e0b',
-    IH: '#10b981',
-    AL: '#6366f1'
+  var progress       = _ref18.progress,
+      profile        = _ref18.profile,
+      onEditProfile  = _ref18.onEditProfile,
+      onExport       = _ref18.onExport,
+      onImportPartner= _ref18.onImportPartner,
+      partnerData    = _ref18.partnerData,
+      myData         = _ref18.myData,
+      coupleCode     = _ref18.coupleCode,
+      onJoinRoom     = _ref18.onJoinRoom,
+      onLeaveRoom    = _ref18.onLeaveRoom,
+      fbReady        = _ref18.fbReady,
+      fbStatus       = _ref18.fbStatus;
+
+  var _showTopics = useState(false), _sta = _slicedToArray(_showTopics, 2),
+      showTopics = _sta[0], setShowTopics = _sta[1];
+
+  var totalQ       = TOPICS.reduce(function(s,t){ return s+t.questions.length; }, 0);
+  var completedQ   = Object.values(progress.completedQ).flat().length;
+  var masteredCards= progress.masteredCards.length;
+  var overallPct   = totalQ>0 ? Math.round(completedQ/totalQ*100) : 0;
+  var cardPct      = FLASHCARDS.length>0 ? Math.round(masteredCards/FLASHCARDS.length*100) : 0;
+  var completedTopics = TOPICS.filter(function(t){ return (progress.completedQ[t.id]||[]).length===t.questions.length; }).length;
+
+  // 저장된 데이터 읽기
+  var bestRank=null, bestScore=0, spTotal=0, spGood=0;
+  try { bestRank  = Storage.getItem('opic_best_rank'); }  catch(e){}
+  try { bestScore = parseInt(Storage.getItem('opic_quiz_best')||'0'); } catch(e){}
+  try { spTotal   = parseInt(Storage.getItem('sp_total')||'0'); }       catch(e){}
+  try { spGood    = parseInt(Storage.getItem('sp_good')||'0'); }         catch(e){}
+  var spRate = spTotal>0 ? Math.round(spGood/spTotal*100) : 0;
+
+  var RANK_INFO = {
+    'NH' :{ color:'#94a3b8', label:'Novice High',        next:'IL',  tip:'퀴즈 40% 이상 목표' },
+    'IL' :{ color:'#f87171', label:'Intermediate Low',   next:'IM1', tip:'퀴즈 50% 이상 목표' },
+    'IM1':{ color:'#fb923c', label:'Intermediate Mid 1', next:'IM2', tip:'퀴즈 60% 이상 목표' },
+    'IM2':{ color:'#a78bfa', label:'Intermediate Mid 2', next:'IM3', tip:'퀴즈 70% 이상 목표' },
+    'IM3':{ color:'#60a5fa', label:'Intermediate Mid 3', next:'IH',  tip:'퀴즈 80% 이상 목표' },
+    'IH' :{ color:'#34d399', label:'Intermediate High',  next:'AL',  tip:'퀴즈 90% 이상 목표' },
+    'AL' :{ color:'#f59e0b', label:'Advanced Low',       next:null,  tip:'최고 등급 달성!' }
   };
-  var levelMsg = {
-    IL: '기초를 다지고 있어요. 꾸준히 학습하세요!',
-    IM: '좋은 시작! 더 많은 주제를 연습하세요.',
-    IH: '목표 수준 달성! 계속 유지하세요! 🎉',
-    AL: '훌륭해요! 최고 수준을 향해 가고 있습니다! 🏆'
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "screen fade-in"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "top-bar"
-  }, /*#__PURE__*/React.createElement("h1", null, "\uD83D\uDCCA \uD559\uC2B5 \uC9C4\uB3C4"), /*#__PURE__*/React.createElement("p", null, "\uD604\uC7AC \uC2E4\uB825\uC744 \uD655\uC778\uD558\uC138\uC694")), /*#__PURE__*/React.createElement("div", {
-    className: "scroll-content",
-    style: {
-      padding: '16px 16px 0'
-    }
-  },
-  // ── OPIc 랭크 카드 ────────────────────────────────────────────────────
-  (function() {
-    var bestRank = null, bestScore = 0, spTotal = 0, spGood = 0;
-    try { bestRank = Storage.getItem('opic_best_rank'); } catch(e) {}
-    try { bestScore = parseInt(Storage.getItem('opic_quiz_best')||'0'); } catch(e) {}
-    try { spTotal = parseInt(Storage.getItem('sp_total')||'0'); } catch(e) {}
-    try { spGood = parseInt(Storage.getItem('sp_good')||'0'); } catch(e) {}
-    var RANK_INFO = {
-      'NH':{'color':'#94a3b8','label':'Novice High','next':'IL'},
-      'IL':{'color':'#f87171','label':'Intermediate Low','next':'IM1'},
-      'IM1':{'color':'#fb923c','label':'Intermediate Mid 1','next':'IM2'},
-      'IM2':{'color':'#a78bfa','label':'Intermediate Mid 2','next':'IM3'},
-      'IM3':{'color':'#60a5fa','label':'Intermediate Mid 3','next':'IH'},
-      'IH':{'color':'#34d399','label':'Intermediate High','next':'AL'},
-      'AL':{'color':'#f59e0b','label':'Advanced Low','next':null}
-    };
-    var rk = bestRank && RANK_INFO[bestRank] ? RANK_INFO[bestRank] : null;
-    var spRate = spTotal > 0 ? Math.round(spGood/spTotal*100) : 0;
-    return /*#__PURE__*/React.createElement("div", {
-      style: { background: rk ? "linear-gradient(135deg,"+rk.color+"22,#1e293b)" : "linear-gradient(135deg,rgba(99,102,241,0.1),#1e293b)",
-        border: "1.5px solid "+(rk ? rk.color+"55" : "rgba(99,102,241,0.2)"),
-        borderRadius: 18, padding: '20px', marginBottom: 16 }
-    },
-      /*#__PURE__*/React.createElement("div", { style:{fontSize:13,color:"#64748b",marginBottom:10,letterSpacing:1} }, "📊 나의 OPIc 랭크"),
-      /*#__PURE__*/React.createElement("div", { style:{display:"flex",alignItems:"center",gap:16} },
-        /*#__PURE__*/React.createElement("div", { style:{textAlign:"center",flex:1} },
-          rk
-            ? React.createElement(React.Fragment, null,
-                /*#__PURE__*/React.createElement("div", { style:{fontSize:42,fontWeight:900,color:rk.color,letterSpacing:3} }, bestRank),
-                /*#__PURE__*/React.createElement("div", { style:{fontSize:12,color:"#94a3b8",marginTop:4} }, rk.label)
-              )
-            : React.createElement(React.Fragment, null,
-                /*#__PURE__*/React.createElement("div", { style:{fontSize:32} }, "🎯"),
-                /*#__PURE__*/React.createElement("div", { style:{fontSize:12,color:"#64748b",marginTop:4} }, "퀴즈를 풀어 랭크 획득!")
-              )
+  var RANK_ORDER = ['NH','IL','IM1','IM2','IM3','IH','AL'];
+  var rk = bestRank && RANK_INFO[bestRank] ? RANK_INFO[bestRank] : null;
+  var rkIdx = bestRank ? RANK_ORDER.indexOf(bestRank) : -1;
+
+  return React.createElement("div", { className:"screen fade-in" },
+    React.createElement("div", { className:"top-bar" },
+      React.createElement("h1", null, "📊 학습 진도"),
+      React.createElement("p", null, profile ? (profile.nameKo||profile.nameEn)+"님의 학습 현황" : "현재 실력을 확인하세요")
+    ),
+    React.createElement("div", { className:"scroll-content", style:{padding:"16px 16px 0"} },
+
+      // ── 1. OPIc 랭크 메인 카드 ────────────────────────────────────────
+      React.createElement("div", {
+        style:{ background: rk ? "linear-gradient(135deg,"+rk.color+"25,#0f172a)" : "linear-gradient(135deg,rgba(99,102,241,0.12),#0f172a)",
+          border:"2px solid "+(rk?rk.color+"66":"rgba(99,102,241,0.3)"), borderRadius:20, padding:"20px 18px", marginBottom:14 }
+      },
+        React.createElement("div", { style:{fontSize:12,color:"#64748b",letterSpacing:2,marginBottom:12} }, "MY OPIc RANK"),
+        React.createElement("div", { style:{display:"flex",alignItems:"center",gap:16} },
+          // 랭크 표시
+          React.createElement("div", { style:{textAlign:"center"} },
+            rk
+              ? React.createElement("div", { style:{fontSize:52,fontWeight:900,color:rk.color,letterSpacing:3,lineHeight:1} }, bestRank)
+              : React.createElement("div", { style:{fontSize:36} }, "🎯"),
+            React.createElement("div", { style:{fontSize:11,color:"#94a3b8",marginTop:4,whiteSpace:"nowrap"} }, rk ? rk.label : "퀴즈를 풀어 랭크 획득")
+          ),
+          // 구분선
+          React.createElement("div", { style:{width:1,height:70,background:"rgba(255,255,255,0.08)"} }),
+          // 오른쪽 스탯
+          React.createElement("div", { style:{flex:1,display:"flex",flexDirection:"column",gap:10} },
+            React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
+              React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🏆 퀴즈 최고"),
+              React.createElement("span", { style:{fontSize:13,fontWeight:700,color:"#34d399"} }, bestScore>0 ? bestScore+"점" : "-")
+            ),
+            React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
+              React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎤 스피킹"),
+              React.createElement("span", { style:{fontSize:13,fontWeight:700,color:"#a78bfa"} }, spTotal>0 ? spRate+"% ("+spTotal+"회)" : "-")
+            ),
+            rk && rk.next
+              ? React.createElement("div", { style:{display:"flex",justifyContent:"space-between"} },
+                  React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎯 다음 목표"),
+                  React.createElement("div", { style:{display:"flex",alignItems:"center",gap:6} },
+                    React.createElement("span", { style:{fontSize:13,fontWeight:700,color:RANK_INFO[rk.next].color} }, rk.next),
+                    React.createElement("span", { style:{fontSize:11,color:"#64748b"} }, rk.tip)
+                  )
+                )
+              : rk
+                ? React.createElement("div", { style:{fontSize:12,color:"#f59e0b",fontWeight:700} }, "🏆 최고 등급 달성!")
+                : null
+          )
         ),
-        /*#__PURE__*/React.createElement("div", { style:{flex:1.5,display:"flex",flexDirection:"column",gap:8} },
-          /*#__PURE__*/React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center"} },
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🏆 퀴즈 최고점"),
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:14,fontWeight:700,color:"#34d399"} }, bestScore > 0 ? bestScore+"점" : "기록 없음")
-          ),
-          /*#__PURE__*/React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center"} },
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎤 스피킹 성공률"),
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:14,fontWeight:700,color:"#a78bfa"} }, spTotal > 0 ? spRate+"% ("+spTotal+"회)" : "기록 없음")
-          ),
-          rk && rk.next && /*#__PURE__*/React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center"} },
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, "🎯 다음 목표"),
-            /*#__PURE__*/React.createElement("span", { style:{fontSize:14,fontWeight:700,color:RANK_INFO[rk.next].color} }, rk.next)
+        // 랭크 로드맵 바
+        React.createElement("div", { style:{marginTop:16} },
+          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginBottom:8} }, "랭크 로드맵"),
+          React.createElement("div", { style:{display:"flex",gap:4,alignItems:"center"} },
+            RANK_ORDER.map(function(r, i) {
+              var ri = RANK_INFO[r];
+              var isAchieved = rkIdx >= i;
+              var isCurrent  = rkIdx === i;
+              return React.createElement("div", { key:r, style:{display:"flex",alignItems:"center",flex:1} },
+                React.createElement("div", {
+                  style:{ flex:1, textAlign:"center", padding:"4px 2px", borderRadius:8,
+                    background: isAchieved ? ri.color+"33" : "rgba(255,255,255,0.04)",
+                    border:"1px solid "+(isAchieved ? ri.color+"88" : "rgba(255,255,255,0.06)"),
+                    color: isAchieved ? ri.color : "#475569",
+                    fontSize: isCurrent ? 12 : 10,
+                    fontWeight: isCurrent ? 900 : 500,
+                    boxShadow: isCurrent ? "0 0 8px "+ri.color+"66" : "none" }
+                }, r)
+              );
+            })
           )
         )
-      )
-    );
-  })(),
-  profile && /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: 'linear-gradient(135deg, rgba(99,102,241,0.12), #1e293b)',
-      border: '1px solid rgba(99,102,241,0.25)',
-      borderRadius: 16,
-      padding: 16,
-      marginBottom: 14
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: 10
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: 40,
-      height: 40,
-      borderRadius: '50%',
-      background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontSize: 18,
-      fontWeight: 700,
-      color: 'white'
-    }
-  }, (profile.nameKo || profile.nameEn || '?')[0]), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontWeight: 700,
-      fontSize: 16
-    }
-  }, profile.nameKo || profile.nameEn), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#64748b'
-    }
-  }, profile.jobKo || profile.jobEn))), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      padding: '6px 12px',
-      fontSize: 12
-    },
-    onClick: onEditProfile
-  }, "\u270F\uFE0F \uC218\uC815")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: 6
-    }
-  }, profile.companyKo && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-purple"
-  }, "\uD83C\uDFE2 ", profile.companyKo), profile.durationKo && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-purple"
-  }, "\u23F1 ", profile.durationKo), profile.locationKo && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-purple"
-  }, "\uD83D\uDCCD ", profile.locationKo), profile.hobby1Ko && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-green"
-  }, "\uD83C\uDFAF ", profile.hobby1Ko), profile.hobby2Ko && /*#__PURE__*/React.createElement("span", {
-    className: "badge badge-green"
-  }, "\uD83C\uDFAF ", profile.hobby2Ko))), function () {
-    var tiers = [{
-      min: 0,
-      max: 49,
-      icon: '🌱',
-      label: 'Starter',
-      color: '#94a3b8',
-      bg: 'rgba(148,163,184,0.12)',
-      xpMax: 50
-    }, {
-      min: 50,
-      max: 149,
-      icon: '📖',
-      label: 'Learner',
-      color: '#34d399',
-      bg: 'rgba(52,211,153,0.12)',
-      xpMax: 150
-    }, {
-      min: 150,
-      max: 299,
-      icon: '⭐',
-      label: 'Rising',
-      color: '#fbbf24',
-      bg: 'rgba(251,191,36,0.12)',
-      xpMax: 300
-    }, {
-      min: 300,
-      max: 499,
-      icon: '🔥',
-      label: 'Skilled',
-      color: '#f97316',
-      bg: 'rgba(249,115,22,0.12)',
-      xpMax: 500
-    }, {
-      min: 500,
-      max: 999,
-      icon: '💪',
-      label: 'Advanced',
-      color: '#818cf8',
-      bg: 'rgba(129,140,248,0.12)',
-      xpMax: 1000
-    }, {
-      min: 1000,
-      max: 2499,
-      icon: '💎',
-      label: 'Expert',
-      color: '#06b6d4',
-      bg: 'rgba(6,182,212,0.12)',
-      xpMax: 2500
-    }, {
-      min: 2500,
-      max: Infinity,
-      icon: '👑',
-      label: 'Master',
-      color: '#a855f7',
-      bg: 'rgba(168,85,247,0.12)',
-      xpMax: 5003
-    }];
-    var quizBest = function () {
-      try {
-        return parseInt(Storage.getItem('opic_quiz_best') || '0');
-      } catch (_unused5) {
-        return 0;
-      }
-    }();
-    var xp = masteredCards * 10 + quizBest * 5;
-    var tier = tiers.find(function (t) {
-      return masteredCards >= t.min && masteredCards <= t.max;
-    }) || tiers[0];
-    var nextTier = tiers[tiers.indexOf(tier) + 1];
-    var pctInTier = nextTier ? Math.round((masteredCards - tier.min) / (tier.max - tier.min + 1) * 100) : 100;
-    return /*#__PURE__*/React.createElement("div", {
-      style: {
-        background: tier.bg,
-        border: "1.5px solid ".concat(tier.color, "55"),
-        borderRadius: 18,
-        padding: '20px 18px',
-        marginBottom: 14
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 12
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 40,
-        lineHeight: 1
-      }
-    }, tier.icon), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 18,
-        fontWeight: 900,
-        color: tier.color
-      }
-    }, tier.label), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 12,
-        color: '#94a3b8'
-      }
-    }, "\uC2B5\uB4DD \uB2E8\uC5B4 \uAE30\uBC18 \uB7AD\uD06C"))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        textAlign: 'right'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 24,
-        fontWeight: 900,
-        color: '#f1f5f9'
-      }
-    }, xp.toLocaleString()), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 11,
-        color: '#64748b'
-      }
-    }, "XP \uC810\uC218"))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        marginBottom: 8
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: 6
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 12,
-        color: '#94a3b8'
-      }
-    }, "\uB2E8\uC5B4 ", /*#__PURE__*/React.createElement("span", {
-      style: {
-        color: tier.color,
-        fontWeight: 700
-      }
-    }, masteredCards), " / ", nextTier ? tier.max + 1 : 5003), nextTier && /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 12,
-        color: '#64748b'
-      }
-    }, "\uB2E4\uC74C: ", nextTier.icon, " ", nextTier.label)), /*#__PURE__*/React.createElement("div", {
-      style: {
-        height: 8,
-        background: 'rgba(255,255,255,0.08)',
-        borderRadius: 99,
-        overflow: 'hidden'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        height: '100%',
-        borderRadius: 99,
-        transition: 'width 0.5s ease',
-        background: "linear-gradient(90deg, ".concat(tier.color, "88, ").concat(tier.color, ")"),
-        width: pctInTier + '%'
-      }
-    }))), /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        gap: 6,
-        flexWrap: 'wrap',
-        marginTop: 12
-      }
-    }, tiers.map(function (t) {
-      return /*#__PURE__*/React.createElement("div", {
-        key: t.label,
-        style: {
-          padding: '4px 10px',
-          borderRadius: 999,
-          fontSize: 11,
-          fontWeight: 600,
-          background: masteredCards >= t.min ? t.bg : 'rgba(255,255,255,0.04)',
-          color: masteredCards >= t.min ? t.color : '#475569',
-          border: "1px solid ".concat(masteredCards >= t.min ? t.color + '44' : 'rgba(255,255,255,0.06)'),
-          opacity: masteredCards >= t.min ? 1 : 0.5
-        }
-      }, t.icon, " ", t.label);
-    })));
-  }(), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: "linear-gradient(135deg, ".concat(levelColors[level], "22, #1e293b)"),
-      border: "1px solid ".concat(levelColors[level], "44"),
-      borderRadius: 16,
-      padding: 20,
-      marginBottom: 12,
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#94a3b8',
-      marginBottom: 8
-    }
-  }, "\uD604\uC7AC \uC608\uC0C1 \uB4F1\uAE09"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 48,
-      fontWeight: 900,
-      color: levelColors[level]
-    }
-  }, level), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 13,
-      color: '#94a3b8',
-      marginTop: 8
-    }
-  }, levelMsg[level])), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 12,
-      marginBottom: 12
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-card"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 28,
-      fontWeight: 800,
-      color: '#818cf8'
-    }
-  }, completedQ, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 14,
-      color: '#64748b'
-    }
-  }, "/", totalQ)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#64748b',
-      marginTop: 4
-    }
-  }, "\uC644\uB8CC \uC9C8\uBB38"), /*#__PURE__*/React.createElement("div", {
-    className: "progress-bar",
-    style: {
-      marginTop: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "progress-fill",
-    style: {
-      width: overallPct + '%'
-    }
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "stat-card"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 28,
-      fontWeight: 800,
-      color: '#34d399'
-    }
-  }, masteredCards, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: 14,
-      color: '#64748b'
-    }
-  }, "/", FLASHCARDS.length)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#64748b',
-      marginTop: 4
-    }
-  }, "\uC554\uAE30 \uD45C\uD604"), /*#__PURE__*/React.createElement("div", {
-    className: "progress-bar",
-    style: {
-      marginTop: 8
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "progress-fill",
-    style: {
-      width: cardPct + '%'
-    }
-  })))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 12,
-      marginBottom: 16
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat-card"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 28,
-      fontWeight: 800,
-      color: '#f59e0b'
-    }
-  }, progress.streak), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#64748b',
-      marginTop: 4
-    }
-  }, "\uD83D\uDD25 \uC5F0\uC18D \uD559\uC2B5\uC77C")), /*#__PURE__*/React.createElement("div", {
-    className: "stat-card"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 28,
-      fontWeight: 800,
-      color: '#06b6d4'
-    }
-  }, TOPICS.filter(function (t) {
-    return (progress.completedQ[t.id] || []).length === t.questions.length;
-  }).length), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 12,
-      color: '#64748b',
-      marginTop: 4
-    }
-  }, "\u2705 \uC644\uB8CC \uC8FC\uC81C"))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontWeight: 700,
-      fontSize: 15,
-      color: '#94a3b8',
-      marginBottom: 12
-    }
-  }, "\uC8FC\uC81C\uBCC4 \uD559\uC2B5 \uD604\uD669"), TOPICS.map(function (t) {
-    var done = (progress.completedQ[t.id] || []).length;
-    var pct = Math.round(done / t.questions.length * 100);
-    return /*#__PURE__*/React.createElement("div", {
-      key: t.id,
-      className: "card",
-      style: {
-        margin: '0 0 10px',
-        padding: '14px 16px'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: 8
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8
-      }
-    }, /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 20
-      }
-    }, t.emoji), /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 14,
-        fontWeight: 600
-      }
-    }, t.name)), /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: 13,
-        fontWeight: 700,
-        color: pct === 100 ? '#34d399' : '#818cf8'
-      }
-    }, pct, "%")), /*#__PURE__*/React.createElement("div", {
-      className: "progress-bar"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "progress-fill",
-      style: {
-        width: pct + '%'
-      }
-    })), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 11,
-        color: '#64748b',
-        marginTop: 4
-      }
-    }, done, "/", t.questions.length, " \uC9C8\uBB38 \uC644\uB8CC"));
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontWeight: 700,
-      fontSize: 15,
-      color: '#94a3b8',
-      marginTop: 8,
-      marginBottom: 12
-    }
-  }, "IH \uB2EC\uC131 \uC870\uAC74"), /*#__PURE__*/React.createElement("div", {
-    className: "card",
-    style: {
-      margin: '0 0 12px'
-    }
-  }, [['질문 연습 50% 이상', completedQ >= totalQ * 0.5], ['플래시카드 암기 40% 이상', masteredCards >= FLASHCARDS.length * 0.4], ['주제 5개 이상 완료', TOPICS.filter(function (t) {
-    return (progress.completedQ[t.id] || []).length === t.questions.length;
-  }).length >= 5], ['연속 학습 3일 이상', progress.streak >= 3]].map(function (_ref19, i) {
-    var _ref20 = _slicedToArray(_ref19, 2),
-      label = _ref20[0],
-      done = _ref20[1];
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-        padding: '8px 0',
-        borderBottom: i < 3 ? '1px solid rgba(255,255,255,0.05)' : 'none'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        width: 24,
-        height: 24,
-        borderRadius: '50%',
-        background: done ? 'rgba(52,211,153,0.2)' : 'rgba(100,116,139,0.2)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 13
-      }
-    }, done ? '✓' : '○'), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: 13,
-        color: done ? '#34d399' : '#94a3b8'
-      }
-    }, label));
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 20
-    }
-  }), /*#__PURE__*/React.createElement(CoupleSection, {
-    myData: myData,
-    partnerData: partnerData,
-    onExport: onExport,
-    onImport: onImportPartner,
-    coupleCode: coupleCode,
-    onJoinRoom: onJoinRoom,
-    onLeaveRoom: onLeaveRoom,
-    fbReady: fbReady,
-    fbStatus: fbStatus
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      height: 20
-    }
-  })));
+      ),
+
+      // ── 2. 핵심 통계 4칸 ────────────────────────────────────────────
+      React.createElement("div", { style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:14} },
+        React.createElement("div", { style:{background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:14,padding:"14px 16px"} },
+          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#818cf8"} }, completedQ,
+            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+totalQ)
+          ),
+          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "📖 완료한 질문"),
+          React.createElement("div", { className:"progress-bar", style:{marginTop:8} },
+            React.createElement("div", { className:"progress-fill", style:{width:overallPct+"%"} })
+          )
+        ),
+        React.createElement("div", { style:{background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.2)",borderRadius:14,padding:"14px 16px"} },
+          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#34d399"} }, masteredCards,
+            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+FLASHCARDS.length)
+          ),
+          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "🃏 암기한 표현"),
+          React.createElement("div", { className:"progress-bar", style:{marginTop:8} },
+            React.createElement("div", { className:"progress-fill", style:{width:cardPct+"%"} })
+          )
+        ),
+        React.createElement("div", { style:{background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:14,padding:"14px 16px"} },
+          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#fbbf24"} }, progress.streak),
+          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, progress.streak>=3?"🔥 연속 학습일":"📅 연속 학습일")
+        ),
+        React.createElement("div", { style:{background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.2)",borderRadius:14,padding:"14px 16px"} },
+          React.createElement("div", { style:{fontSize:26,fontWeight:800,color:"#06b6d4"} }, completedTopics,
+            React.createElement("span", { style:{fontSize:13,color:"#475569"} }, "/"+TOPICS.length)
+          ),
+          React.createElement("div", { style:{fontSize:11,color:"#64748b",marginTop:4} }, "✅ 완료 주제")
+        )
+      ),
+
+      // ── 3. 프로필 카드 ──────────────────────────────────────────────
+      profile && React.createElement("div", {
+        style:{ background:"linear-gradient(135deg,rgba(99,102,241,0.1),#1e293b)",
+          border:"1px solid rgba(99,102,241,0.2)", borderRadius:14, padding:"14px 16px", marginBottom:14 }
+      },
+        React.createElement("div", { style:{display:"flex",alignItems:"center",justifyContent:"space-between"} },
+          React.createElement("div", { style:{display:"flex",alignItems:"center",gap:10} },
+            React.createElement("div", { style:{width:38,height:38,borderRadius:"50%",background:"linear-gradient(135deg,#6366f1,#8b5cf6)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:700,color:"white"} },
+              (profile.nameKo||profile.nameEn||"?")[0]
+            ),
+            React.createElement("div", null,
+              React.createElement("div", { style:{fontWeight:700,fontSize:15} }, profile.nameKo||profile.nameEn),
+              React.createElement("div", { style:{fontSize:12,color:"#64748b"} }, profile.jobKo||profile.jobEn)
+            )
+          ),
+          React.createElement("button", { className:"btn btn-secondary", style:{padding:"6px 12px",fontSize:12}, onClick:onEditProfile }, "✏️ 수정")
+        ),
+        React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6,marginTop:10} },
+          profile.companyKo && React.createElement("span", { className:"badge badge-purple" }, "🏢 ",profile.companyKo),
+          profile.durationKo && React.createElement("span", { className:"badge badge-purple" }, "⏱ ",profile.durationKo),
+          profile.locationKo && React.createElement("span", { className:"badge badge-purple" }, "📍 ",profile.locationKo),
+          profile.hobby1Ko   && React.createElement("span", { className:"badge badge-green" }, "🎯 ",profile.hobby1Ko),
+          profile.hobby2Ko   && React.createElement("span", { className:"badge badge-green" }, "🎯 ",profile.hobby2Ko)
+        )
+      ),
+
+      // ── 4. 주제별 학습 현황 (접기/펼치기) ───────────────────────────
+      React.createElement("div", { style:{marginBottom:14} },
+        React.createElement("button", {
+          style:{ width:"100%",background:"rgba(30,41,59,0.9)",border:"1px solid rgba(255,255,255,0.08)",
+            borderRadius:14,padding:"12px 16px",display:"flex",justifyContent:"space-between",
+            alignItems:"center",cursor:"pointer",color:"#e2e8f0",fontWeight:700,fontSize:14 },
+          onClick:function(){ setShowTopics(!showTopics); }
+        },
+          React.createElement("span", null, "📖 주제별 학습 현황 ("+completedTopics+"/"+TOPICS.length+" 완료)"),
+          React.createElement("span", { style:{fontSize:12,color:"#64748b"} }, showTopics?"▲":"▼")
+        ),
+        showTopics && React.createElement("div", { style:{marginTop:8,display:"flex",flexDirection:"column",gap:8} },
+          TOPICS.map(function(t) {
+            var done = (progress.completedQ[t.id]||[]).length;
+            var pct  = Math.round(done/t.questions.length*100);
+            var isDone = done===t.questions.length;
+            return React.createElement("div", {
+              key:t.id,
+              style:{ background:"rgba(30,41,59,0.8)",border:"1px solid "+(isDone?"rgba(52,211,153,0.2)":"rgba(255,255,255,0.06)"),
+                borderRadius:12, padding:"12px 14px" }
+            },
+              React.createElement("div", { style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8} },
+                React.createElement("div", { style:{display:"flex",alignItems:"center",gap:8} },
+                  React.createElement("span", { style:{fontSize:18} }, t.emoji),
+                  React.createElement("span", { style:{fontSize:13,fontWeight:600} }, t.name)
+                ),
+                React.createElement("span", { style:{fontSize:13,fontWeight:700,color:isDone?"#34d399":"#818cf8"} },
+                  isDone ? "✅ 완료" : pct+"%"
+                )
+              ),
+              React.createElement("div", { className:"progress-bar" },
+                React.createElement("div", { className:"progress-fill", style:{width:pct+"%"} })
+              ),
+              React.createElement("div", { style:{fontSize:10,color:"#64748b",marginTop:4} }, done+"/"+t.questions.length+" 질문")
+            );
+          })
+        )
+      ),
+
+      // ── 5. 다음 랭크 달성 조건 ──────────────────────────────────────
+      React.createElement("div", {
+        style:{ background:"rgba(30,41,59,0.9)",border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"16px", marginBottom:14 }
+      },
+        React.createElement("div", { style:{fontWeight:700,fontSize:14,marginBottom:12,color:"#94a3b8"} },
+          rk && rk.next
+            ? "🎯 "+rk.next+" 달성 조건"
+            : rk ? "🏆 최고 등급 달성!" : "🎯 첫 랭크 획득 조건"
+        ),
+        [
+          ["퀴즈 10문제 이상 풀기",    bestScore > 0],
+          ["퀴즈 정답률 50% 이상",     bestScore >= Math.round(0.5 * (parseInt(Storage.getItem('opic_quiz_size')||'10')))],
+          ["주제 연습 3개 이상 완료",   completedTopics >= 3],
+          ["플래시카드 20개 이상 암기", masteredCards >= 20],
+          ["스피킹 연습 3회 이상",      spTotal >= 3]
+        ].map(function(pair, i) {
+          var label = pair[0], done = pair[1];
+          return React.createElement("div", {
+            key:i,
+            style:{ display:"flex",alignItems:"center",gap:10,padding:"9px 0",
+              borderBottom:i<4?"1px solid rgba(255,255,255,0.05)":"none" }
+          },
+            React.createElement("div", {
+              style:{ width:24,height:24,borderRadius:"50%",flexShrink:0,
+                background:done?"rgba(52,211,153,0.2)":"rgba(100,116,139,0.15)",
+                display:"flex",alignItems:"center",justifyContent:"center",fontSize:12 }
+            }, done ? "✓" : "○"),
+            React.createElement("div", { style:{fontSize:13,color:done?"#34d399":"#94a3b8"} }, label)
+          );
+        })
+      ),
+
+      // ── 6. 커플 섹션 ────────────────────────────────────────────────
+      React.createElement(CoupleSection, {
+        myData:myData, partnerData:partnerData, onExport:onExport,
+        onImport:onImportPartner, coupleCode:coupleCode,
+        onJoinRoom:onJoinRoom, onLeaveRoom:onLeaveRoom,
+        fbReady:fbReady, fbStatus:fbStatus
+      }),
+      React.createElement("div", { style:{height:24} })
+    )
+  );
 }
 
 // ─── 메인 앱 ─────────────────────────────────────────────────────────────────
