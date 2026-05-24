@@ -115,6 +115,7 @@ jobs:
         package com.opic.app
         import android.annotation.SuppressLint
         import android.content.Context
+        import android.speech.tts.TextToSpeech
         import android.os.Bundle
         import android.webkit.*
         import android.view.View
@@ -140,8 +141,32 @@ jobs:
             }
         }
 
+        // Android 네이티브 TTS (WebView Web Speech API 대체)
+        class AndroidTTS(private val context: Context) : TextToSpeech.OnInitListener {
+            private val tts: TextToSpeech = TextToSpeech(context, this)
+            private var ready = false
+            override fun onInit(status: Int) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(java.util.Locale.US)
+                    ready = true
+                }
+            }
+            @JavascriptInterface
+            fun speak(text: String, rate: Float) {
+                if (!ready) return
+                tts.setSpeechRate(rate)
+                tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "opic_tts")
+            }
+            @JavascriptInterface
+            fun stop() { if (ready) tts.stop() }
+            @JavascriptInterface
+            fun isSpeaking(): Boolean = ready && tts.isSpeaking
+            fun shutdown() { if (ready) tts.shutdown() }
+        }
+
         class MainActivity : AppCompatActivity() {
             private lateinit var webView: WebView
+            private lateinit var androidTTS: AndroidTTS
             @SuppressLint("SetJavaScriptEnabled")
             override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
@@ -165,6 +190,9 @@ jobs:
                 }
                 // AndroidBridge 등록: window.AndroidBridge 로 접근 가능
                 webView.addJavascriptInterface(AndroidBridge(this), "AndroidBridge")
+                // AndroidTTS 등록: window.AndroidTTS 로 접근 가능
+                androidTTS = AndroidTTS(this)
+                webView.addJavascriptInterface(androidTTS, "AndroidTTS")
                 webView.webChromeClient = WebChromeClient()
                 webView.webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
@@ -181,6 +209,10 @@ jobs:
                     webView.evaluateJavascript(
                         "document.body.style.opacity='0.999';setTimeout(function(){document.body.style.opacity='';},50);", null)
                 }
+            }
+            override fun onDestroy() {
+                if (::androidTTS.isInitialized) androidTTS.shutdown()
+                super.onDestroy()
             }
             @Deprecated("Deprecated in Java")
             override fun onBackPressed() {

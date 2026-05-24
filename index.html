@@ -613,8 +613,13 @@ function useSpeech() {
     currentId = _useState6[0],
     setCurrentId = _useState6[1];
   var synthRef = useRef(typeof window !== 'undefined' && window.speechSynthesis ? window.speechSynthesis : null);
+  var pollRef = useRef(null); // AndroidTTS 완료 감지용 폴링
 
-  // 영어 목소리 선택 (en-US 우선)
+  var stopPolling = function() {
+    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
+  };
+
+  // 영어 목소리 선택 (en-US 우선) - Web Speech API 폴백용
   var getBestVoice = useCallback(function () {
     if (!synthRef.current) return null;
     var voices = synthRef.current.getVoices();
@@ -626,53 +631,99 @@ function useSpeech() {
       return v.lang.startsWith('en');
     }) || null;
   }, []);
+
   var speak = useCallback(function (text) {
     var rate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.85;
     var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    stopPolling();
+    // ── Android 네이티브 TTS 우선 ──
+    if (window.AndroidTTS) {
+      try {
+        window.AndroidTTS.speak(text, rate);
+        setIsSpeaking(true);
+        setIsPaused(false);
+        setCurrentId(id);
+        // 완료 감지: 300ms 폴링
+        pollRef.current = setInterval(function() {
+          try {
+            if (!window.AndroidTTS.isSpeaking()) {
+              setIsSpeaking(false);
+              setCurrentId(null);
+              stopPolling();
+            }
+          } catch(e) { stopPolling(); }
+        }, 300);
+      } catch(e) { setIsSpeaking(false); }
+      return;
+    }
+    // ── Web Speech API 폴백 (브라우저/일부 WebView) ──
     if (synthRef.current) synthRef.current.cancel();
-    var utter = new SpeechSynthesisUtterance(text);
-    var voice = getBestVoice();
-    if (voice) utter.voice = voice;
-    utter.lang = 'en-US';
-    utter.rate = rate;
-    utter.pitch = 1.0;
-    utter.volume = 1.0;
-    utter.onstart = function () {
-      setIsSpeaking(true);
-      setIsPaused(false);
-      setCurrentId(id);
-    };
-    utter.onend = function () {
-      setIsSpeaking(false);
-      setIsPaused(false);
-      setCurrentId(null);
-    };
-    utter.onerror = function () {
-      setIsSpeaking(false);
-      setIsPaused(false);
-      setCurrentId(null);
-    };
-    if (synthRef.current) synthRef.current.speak(utter);
+    try {
+      var utter = new SpeechSynthesisUtterance(text);
+      var voice = getBestVoice();
+      if (voice) utter.voice = voice;
+      utter.lang = 'en-US';
+      utter.rate = rate;
+      utter.pitch = 1.0;
+      utter.volume = 1.0;
+      utter.onstart = function () {
+        setIsSpeaking(true);
+        setIsPaused(false);
+        setCurrentId(id);
+      };
+      utter.onend = function () {
+        setIsSpeaking(false);
+        setIsPaused(false);
+        setCurrentId(null);
+      };
+      utter.onerror = function () {
+        setIsSpeaking(false);
+        setIsPaused(false);
+        setCurrentId(null);
+      };
+      if (synthRef.current) synthRef.current.speak(utter);
+    } catch(e) { setIsSpeaking(false); }
   }, [getBestVoice]);
+
   var pause = useCallback(function () {
+    if (window.AndroidTTS) {
+      // Android TTS는 pause 미지원 → stop으로 대체
+      try { window.AndroidTTS.stop(); } catch(e) {}
+      stopPolling();
+      setIsSpeaking(false);
+      setIsPaused(true);
+      return;
+    }
     if (synthRef.current) synthRef.current.pause();
     setIsPaused(true);
   }, []);
+
   var resume = useCallback(function () {
+    if (window.AndroidTTS) {
+      // Android TTS pause 없음 - 그냥 무시
+      setIsPaused(false);
+      return;
+    }
     if (synthRef.current) synthRef.current.resume();
     setIsPaused(false);
   }, []);
+
   var stop = useCallback(function () {
+    stopPolling();
+    if (window.AndroidTTS) { try { window.AndroidTTS.stop(); } catch(e) {} }
     if (synthRef.current) synthRef.current.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
     setCurrentId(null);
   }, []);
+
   useEffect(function () {
     return function () {
+      stopPolling();
       if (synthRef.current) synthRef.current.cancel();
     };
   }, []);
+
   return {
     isSpeaking: isSpeaking,
     isPaused: isPaused,
