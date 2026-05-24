@@ -612,10 +612,11 @@ function useSpeech() {
     _useState6 = _slicedToArray(_useState5, 2),
     currentId = _useState6[0],
     setCurrentId = _useState6[1];
-  var synthRef = useRef(window.speechSynthesis);
+  var synthRef = useRef(typeof window !== 'undefined' && window.speechSynthesis ? window.speechSynthesis : null);
 
   // 영어 목소리 선택 (en-US 우선)
   var getBestVoice = useCallback(function () {
+    if (!synthRef.current) return null;
     var voices = synthRef.current.getVoices();
     return voices.find(function (v) {
       return v.lang === 'en-US' && v.localService;
@@ -628,7 +629,7 @@ function useSpeech() {
   var speak = useCallback(function (text) {
     var rate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.85;
     var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-    synthRef.current.cancel();
+    if (synthRef.current) synthRef.current.cancel();
     var utter = new SpeechSynthesisUtterance(text);
     var voice = getBestVoice();
     if (voice) utter.voice = voice;
@@ -651,25 +652,25 @@ function useSpeech() {
       setIsPaused(false);
       setCurrentId(null);
     };
-    synthRef.current.speak(utter);
+    if (synthRef.current) synthRef.current.speak(utter);
   }, [getBestVoice]);
   var pause = useCallback(function () {
-    synthRef.current.pause();
+    if (synthRef.current) synthRef.current.pause();
     setIsPaused(true);
   }, []);
   var resume = useCallback(function () {
-    synthRef.current.resume();
+    if (synthRef.current) synthRef.current.resume();
     setIsPaused(false);
   }, []);
   var stop = useCallback(function () {
-    synthRef.current.cancel();
+    if (synthRef.current) synthRef.current.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
     setCurrentId(null);
   }, []);
   useEffect(function () {
     return function () {
-      return synthRef.current.cancel();
+      if (synthRef.current) synthRef.current.cancel();
     };
   }, []);
   return {
@@ -20484,8 +20485,63 @@ function App() {
     }
   }));
 }
+
+// ── React Error Boundary (WebView 크래시 방지) ──
+var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
+  function ErrorBoundary(props) {
+    _React$Component.call(this, props);
+    this.state = { hasError: false, error: null, info: null };
+  }
+  ErrorBoundary.prototype = Object.create(_React$Component.prototype);
+  ErrorBoundary.prototype.constructor = ErrorBoundary;
+  ErrorBoundary.getDerivedStateFromError = function(error) {
+    return { hasError: true, error: error };
+  };
+  ErrorBoundary.prototype.componentDidCatch = function(error, info) {
+    this.setState({ error: error, info: info });
+    try { localStorage.setItem('opic_last_error', error.toString()); } catch(e) {}
+  };
+  ErrorBoundary.prototype.render = function() {
+    if (this.state.hasError) {
+      var self = this;
+      return React.createElement('div', {
+        style: {
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          height:'100vh', background:'#0f172a', color:'#f8fafc', padding:24, textAlign:'center'
+        }
+      },
+        React.createElement('div', { style: { fontSize:48, marginBottom:16 } }, '⚠️'),
+        React.createElement('h2', { style: { color:'#f87171', marginBottom:12, fontSize:18 } }, '앱 오류가 발생했습니다'),
+        React.createElement('p', { style: { color:'#94a3b8', marginBottom:8, fontSize:14 } }, '아래 버튼을 눌러 앱을 다시 시작해주세요'),
+        React.createElement('p', { style: { color:'#475569', fontSize:11, marginBottom:20, wordBreak:'break-all', maxWidth:300 } },
+          this.state.error ? this.state.error.toString() : ''
+        ),
+        React.createElement('button', {
+          onClick: function() {
+            try { localStorage.removeItem('opic_profile'); } catch(e) {}
+            window.location.reload();
+          },
+          style: {
+            padding:'12px 28px', background:'#6366f1', color:'#fff', border:'none',
+            borderRadius:12, fontSize:15, fontWeight:700, cursor:'pointer', marginBottom:12
+          }
+        }, '🔄 앱 재시작'),
+        React.createElement('button', {
+          onClick: function() { window.location.reload(); },
+          style: {
+            padding:'10px 24px', background:'transparent', color:'#6366f1', border:'1.5px solid #6366f1',
+            borderRadius:12, fontSize:14, cursor:'pointer'
+          }
+        }, '↩ 새로고침만')
+      );
+    }
+    return this.props.children;
+  };
+  return ErrorBoundary;
+}(React.Component);
+
 var root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(/*#__PURE__*/React.createElement(App, null));
+root.render(React.createElement(ErrorBoundary, null, React.createElement(App, null)));
 
 </script>
 
