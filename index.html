@@ -20025,23 +20025,6 @@ function App() {
   var speech = useSpeech();
   useEffect(function() { speech.stop(); }, [tab]);
 
-  // 프로필 없으면 초기 설정 화면
-  if (!profile && !showProfileSetup) {
-    return /*#__PURE__*/React.createElement(ProfileSetupScreen, {
-      onComplete: function onComplete(p) {
-        setProfile(p);
-      }
-    });
-  }
-  if (showProfileSetup) {
-    return /*#__PURE__*/React.createElement(ProfileSetupScreen, {
-      initialProfile: profile,
-      onComplete: function onComplete(p) {
-        setProfile(p);
-        setShowProfileSetup(false);
-      }
-    });
-  }
 
   // 연속 학습 스트릭 업데이트
   useEffect(function () {
@@ -20297,6 +20280,26 @@ function App() {
     setCoupleCode('');
     showToast('방에서 나왔습니다');
   }, [showToast]);
+
+  if (!profile && !showProfileSetup) {
+    return /*#__PURE__*/React.createElement(ProfileSetupScreen, {
+      onComplete: function onComplete(p) {
+        saveProfile(p);
+        setProfile(p);
+      }
+    });
+  }
+  if (showProfileSetup) {
+    return /*#__PURE__*/React.createElement(ProfileSetupScreen, {
+      initialProfile: profile,
+      onComplete: function onComplete(p) {
+        saveProfile(p);
+        setProfile(p);
+        setShowProfileSetup(false);
+      }
+    });
+  }
+
   var handleTopicSelect = function handleTopicSelect(topic) {
     setSelectedTopic(topic);
     setSelectedQIdx(null);
