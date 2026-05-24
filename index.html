@@ -17580,7 +17580,7 @@ function HomeScreen(_ref5) {
       borderColor: 'rgba(52,211,153,0.2)'
     },
     onClick: function onClick() {
-      return setTab('flashcards');
+      return setTab('quiz');
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -19509,7 +19509,14 @@ var SPEED_OPTIONS = [{
 // ─── 퀴즈 화면 ──────────────────────────────────────────────────────────────
 
 function QuizScreen(_ref21) {
-  var showToast = _ref21.showToast;
+  var showToast = _ref21.showToast,
+    progress = _ref21.progress,
+    onMaster = _ref21.onMaster,
+    speech = _ref21.speech,
+    speechRate = _ref21.speechRate;
+  // ── 모드 전환: 단어퀴즈 | 플래시카드 ── (Rules of Hooks: 모든 훅은 조기 return 앞에 선언)
+  var _quizMode = useState('quiz'), _quizModeA = _slicedToArray(_quizMode, 2),
+    quizMode = _quizModeA[0], setQuizMode = _quizModeA[1];
   var _useStateQZ = useState(15), _useStateQZA = _slicedToArray(_useStateQZ, 2), quizSize = _useStateQZA[0], setQuizSize = _useStateQZA[1];
   var _useState19 = useState('start'),
     _useState20 = _slicedToArray(_useState19, 2),
@@ -19541,6 +19548,33 @@ function QuizScreen(_ref21) {
     _useState30 = _slicedToArray(_useState29, 2),
     bestScore = _useState30[0],
     setBestScore = _useState30[1];
+  // ─ 모드 탭 스타일 및 UI ─
+  var modeTabStyle = function(active) { return {
+    flex: 1, padding: '10px 0', border: 'none', borderRadius: 10, cursor: 'pointer',
+    fontWeight: 700, fontSize: 14, transition: 'all 0.15s',
+    background: active ? 'rgba(99,102,241,0.35)' : 'transparent',
+    color: active ? '#a5b4fc' : '#475569'
+  }; };
+  var modeSelector = React.createElement('div', {
+    style: { display:'flex', gap:4, background:'rgba(15,23,42,0.8)', borderRadius:12,
+      padding:4, margin:'0 16px 12px', border:'1px solid rgba(99,102,241,0.2)' }
+  },
+    React.createElement('button', { style: modeTabStyle(quizMode==='quiz'),
+      onClick: function(){ setQuizMode('quiz'); } }, '🧠 단어 퀴즈'),
+    React.createElement('button', { style: modeTabStyle(quizMode==='flash'),
+      onClick: function(){ setQuizMode('flash'); } }, '🃏 플래시카드')
+  );
+  // 플래시카드 모드 (모든 훅 선언 후 조기 return)
+  if (quizMode === 'flash') {
+    return React.createElement(React.Fragment, null,
+      React.createElement('div', { style:{ padding:'12px 0 0' } }, modeSelector),
+      React.createElement(FlashcardsScreen, {
+        progress: progress, onMaster: onMaster,
+        showToast: showToast, speech: speech, speechRate: speechRate,
+        noHeader: true
+      })
+    );
+  }
   var generateQuiz = function generateQuiz() {
     var pool = typeof VOCAB_POOL !== 'undefined' ? VOCAB_POOL : FLASHCARDS;
     var shuffled = _toConsumableArray(pool).sort(function () {
@@ -19575,7 +19609,9 @@ function QuizScreen(_ref21) {
   // 퀴즈 TTS: 정답 단어 읽기
   var speakQuizAnswer = function speakQuizAnswer(text) {
     try {
+      if (window.AndroidTTS) { window.AndroidTTS.speak(text, 0.82); return; }
       var synth = window.speechSynthesis;
+      if (!synth) return;
       synth.cancel();
       var utter = new SpeechSynthesisUtterance(text);
       var voices = synth.getVoices();
@@ -19583,10 +19619,7 @@ function QuizScreen(_ref21) {
                 || voices.find(function(v){ return v.lang === 'en-US'; })
                 || voices.find(function(v){ return v.lang.startsWith('en'); });
       if (voice) utter.voice = voice;
-      utter.lang = 'en-US';
-      utter.rate = 0.82;
-      utter.pitch = 1.0;
-      utter.volume = 1.0;
+      utter.lang = 'en-US'; utter.rate = 0.82; utter.pitch = 1.0; utter.volume = 1.0;
       synth.speak(utter);
     } catch(e) {}
   };
@@ -19632,7 +19665,7 @@ function QuizScreen(_ref21) {
   if (phase === 'start') {
     return /*#__PURE__*/React.createElement("div", {
       className: "screen fade-in"
-    }, /*#__PURE__*/React.createElement("div", {
+    }, modeSelector, /*#__PURE__*/React.createElement("div", {
       className: "top-bar"
     }, /*#__PURE__*/React.createElement("h1", null, "\uD83E\uDDE0 \uC601\uC5B4 \uB2E8\uC5B4 \uD034\uC988"), /*#__PURE__*/React.createElement("p", null, "\uD55C\uAD6D\uC5B4 \uB73B\uC744 \uBCF4\uACE0 \uC601\uC5B4 \uD45C\uD604\uC744 \uACE8\uB77C\uBCF4\uC138\uC694")), /*#__PURE__*/React.createElement("div", {
       style: {
@@ -19728,9 +19761,23 @@ function QuizScreen(_ref21) {
     var wrongOnes = answers.filter(function (a) {
       return !a.correct;
     });
-    var emoji = score >= 9 ? '🎉' : score >= 7 ? '😊' : score >= 5 ? '🙂' : '😅';
-    var msg = score >= 9 ? '완벽해요! 정말 대단해요!' : score >= 7 ? '아주 잘하셨어요!' : score >= 5 ? '잘하셨어요! 조금 더 연습해봐요' : '틀린 문제를 복습하고 다시 도전해봐요';
-    var accentColor = score >= 7 ? '#34d399' : score >= 5 ? '#fbbf24' : '#f87171';
+    // OPIc 랭크 계산 (퀴즈 정답률 기반)
+    var opicRank = pct >= 90 ? { grade: 'AL', label: 'Advanced Low', color: '#f59e0b', bg: 'rgba(245,158,11,0.15)', desc: '최고 등급! 원어민 수준의 영어 실력이에요 🏆' }
+      : pct >= 80 ? { grade: 'IH', label: 'Intermediate High', color: '#34d399', bg: 'rgba(52,211,153,0.15)', desc: '매우 우수! 고급 영어 구사가 가능해요 ✨' }
+      : pct >= 70 ? { grade: 'IM3', label: 'Intermediate Mid 3', color: '#60a5fa', bg: 'rgba(96,165,250,0.15)', desc: '잘하고 있어요! 조금만 더 연습하면 IH예요 💪' }
+      : pct >= 60 ? { grade: 'IM2', label: 'Intermediate Mid 2', color: '#a78bfa', bg: 'rgba(167,139,250,0.15)', desc: '중급 실력이에요! 꾸준히 연습해봐요 📚' }
+      : pct >= 50 ? { grade: 'IM1', label: 'Intermediate Mid 1', color: '#fb923c', bg: 'rgba(251,146,60,0.15)', desc: '기초가 탄탄해요! 더 도전해봐요 🌱' }
+      : pct >= 40 ? { grade: 'IL', label: 'Intermediate Low', color: '#f87171', bg: 'rgba(248,113,113,0.15)', desc: '틀린 문제를 복습하고 다시 도전해봐요 📖' }
+      : { grade: 'NH', label: 'Novice High', color: '#94a3b8', bg: 'rgba(148,163,184,0.15)', desc: '기초부터 차근차근 연습해봐요 🔰' };
+    // 최고 랭크 저장
+    var rankOrder = ['NH','IL','IM1','IM2','IM3','IH','AL'];
+    var savedBest = Storage.getItem('opic_best_rank');
+    var bestRankIdx = savedBest ? rankOrder.indexOf(savedBest) : -1;
+    var curRankIdx = rankOrder.indexOf(opicRank.grade);
+    if (curRankIdx > bestRankIdx) Storage.setItem('opic_best_rank', opicRank.grade);
+    var emoji = pct >= 90 ? '🏆' : pct >= 80 ? '🎉' : pct >= 70 ? '😊' : pct >= 60 ? '🙂' : pct >= 50 ? '🌱' : '😅';
+    var msg = opicRank.desc;
+    var accentColor = opicRank.color;
     return /*#__PURE__*/React.createElement("div", {
       className: "screen fade-in"
     }, /*#__PURE__*/React.createElement("div", {
@@ -19771,6 +19818,17 @@ function QuizScreen(_ref21) {
         marginTop: 8
       }
     }, msg), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        background: opicRank.bg,
+        border: '1.5px solid ' + opicRank.color + '66',
+        borderRadius: 12,
+        padding: '8px 18px',
+        marginTop: 14
+      }
+    }, /*#__PURE__*/React.createElement("span", { style: { fontSize: 22, fontWeight: 900, color: opicRank.color, letterSpacing: 1 } }, opicRank.grade), /*#__PURE__*/React.createElement("span", { style: { fontSize: 12, color: '#94a3b8' } }, opicRank.label)), /*#__PURE__*/React.createElement("div", {
       style: {
         display: 'flex',
         justifyContent: 'center',
@@ -20437,11 +20495,8 @@ function App() {
     React.createElement("div", { style: isSubScreen || tab !== 'topics' ? H : S },
       React.createElement(TopicsScreen, { progress: progress, onTopicSelect: handleTopicSelect })
     ),
-    React.createElement("div", { style: isSubScreen || tab !== 'flashcards' ? H : S },
-      React.createElement(FlashcardsScreen, { progress: progress, onMaster: handleMasterCard, showToast: showToast, speech: speech, speechRate: speechRate })
-    ),
     React.createElement("div", { style: isSubScreen || tab !== 'quiz' ? H : S },
-      React.createElement(QuizScreen, { showToast: showToast })
+      React.createElement(QuizScreen, { showToast: showToast, progress: progress, onMaster: handleMasterCard, speech: speech, speechRate: speechRate })
     ),
     React.createElement("div", { style: isSubScreen || tab !== 'progress' ? H : S },
       React.createElement(ProgressScreen, { progress: progress, profile: profile, onEditProfile: function(){ return setShowProfileSetup(true); }, onExport: handleExportData, onImportPartner: handleImportPartner, partnerData: partnerData, myData: myData, coupleCode: coupleCode, onJoinRoom: handleJoinRoom, onLeaveRoom: handleLeaveRoom, fbReady: fbReady, fbStatus: fbStatus })
@@ -20456,10 +20511,6 @@ function App() {
     id: 'topics',
     icon: '📖',
     label: '주제 연습'
-  }, {
-    id: 'flashcards',
-    icon: '🃏',
-    label: '플래시카드'
   }, {
     id: 'quiz',
     icon: '🧠',
@@ -20574,55 +20625,4 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
       },
         React.createElement('div', { style: { fontSize:48, marginBottom:16 } }, '⚠️'),
         React.createElement('h2', { style: { color:'#f87171', marginBottom:12, fontSize:18 } }, '앱 오류가 발생했습니다'),
-        React.createElement('p', { style: { color:'#94a3b8', marginBottom:8, fontSize:14 } }, '아래 버튼을 눌러 앱을 다시 시작해주세요'),
-        React.createElement('p', { style: { color:'#475569', fontSize:11, marginBottom:20, wordBreak:'break-all', maxWidth:300 } },
-          this.state.error ? this.state.error.toString() : ''
-        ),
-        React.createElement('button', {
-          onClick: function() {
-            try { Storage.removeItem('opic_profile'); } catch(e) {}
-            window.location.reload();
-          },
-          style: {
-            padding:'12px 28px', background:'#6366f1', color:'#fff', border:'none',
-            borderRadius:12, fontSize:15, fontWeight:700, cursor:'pointer', marginBottom:12
-          }
-        }, '🔄 앱 재시작'),
-        React.createElement('button', {
-          onClick: function() { window.location.reload(); },
-          style: {
-            padding:'10px 24px', background:'transparent', color:'#6366f1', border:'1.5px solid #6366f1',
-            borderRadius:12, fontSize:14, cursor:'pointer'
-          }
-        }, '↩ 새로고침만')
-      );
-    }
-    return this.props.children;
-  };
-  return ErrorBoundary;
-}(React.Component);
-
-var root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(React.createElement(ErrorBoundary, null, React.createElement(App, null)));
-
-</script>
-
-<script>
-// PWA 설치 전역 관리
-window.__pwa = {
-  prompt: null,
-  installed: window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone
-};
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  window.__pwa.prompt = e;
-  // React 컴포넌트에 알림
-  window.dispatchEvent(new CustomEvent('pwa-ready'));
-});
-window.addEventListener('appinstalled', function() {
-  window.__pwa.installed = true;
-  window.dispatchEvent(new CustomEvent('pwa-installed'));
-});
-</script>
-</body>
-</html>               
+        React.createElement('p', { style: { color:'#94a3b8', marginBottom:8, fontSize:14 } }, '아래 
