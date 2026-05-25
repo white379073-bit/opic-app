@@ -22416,6 +22416,13 @@ function App() {
     _useState42 = _slicedToArray(_useState41, 2),
     speechRate = _useState42[0],
     setSpeechRate = _useState42[1];
+  // TTS 음성 선택 상태
+  var _ttsVoiceState = useState(function(){ try{ return localStorage.getItem('opic_tts_voice')||''; }catch(e){return '';} }),
+    _ttsVoiceSA = _slicedToArray(_ttsVoiceState, 2),
+    ttsVoice = _ttsVoiceSA[0], setTtsVoice = _ttsVoiceSA[1];
+  var _ttsVoiceListState = useState([]),
+    _ttsVoiceListSA = _slicedToArray(_ttsVoiceListState, 2),
+    ttsVoiceList = _ttsVoiceListSA[0], setTtsVoiceList = _ttsVoiceListSA[1];
   var _useState43 = useState(false),
     _useState44 = _slicedToArray(_useState43, 2),
     showVoicePanel = _useState44[0],
@@ -22860,7 +22867,7 @@ function App() {
     }, opt.label);
   }),
   // AndroidTTS 음성 선택 드롭다운 (음성 목록이 있을 때만 표시)
-  ttsVoiceList.length > 0 && React.createElement('div', {
+  Array.isArray(ttsVoiceList) && ttsVoiceList.length > 0 && React.createElement('div', {
     style: { width:'100%', marginTop:6 }
   },
     React.createElement('div', { style:{ fontSize:11, color:'#94a3b8', marginBottom:4 } }, '🎙 TTS 음성 선택'),
