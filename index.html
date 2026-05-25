@@ -623,13 +623,13 @@ function useSpeech() {
   var getBestVoice = useCallback(function () {
     if (!synthRef.current) return null;
     var voices = synthRef.current.getVoices();
-    return voices.find(function (v) {
-      return v.lang === 'en-US' && v.localService;
-    }) || voices.find(function (v) {
-      return v.lang === 'en-US';
-    }) || voices.find(function (v) {
-      return v.lang.startsWith('en');
-    }) || null;
+    // 에바(Eva) 음성 우선 탐색, 없으면 여성 en-US, 없으면 en-US 아무거나
+    return voices.find(function(v){ return /eva/i.test(v.name); })
+        || voices.find(function(v){ return /samantha|ava|karen|moira|tessa/i.test(v.name) && v.lang.startsWith('en'); })
+        || voices.find(function(v){ return v.lang === 'en-US' && v.localService; })
+        || voices.find(function(v){ return v.lang === 'en-US'; })
+        || voices.find(function(v){ return v.lang.startsWith('en'); })
+        || null;
   }, []);
 
   var speak = useCallback(function (text) {
@@ -21748,6 +21748,12 @@ function SpeakingScreen(_ref_sp) {
     )
   );
 }
+
+var SPEED_OPTIONS = [
+  { label: '느리게', value: 0.65 },
+  { label: '보통',   value: 0.85 },
+  { label: '빠르게', value: 1.1  }
+];
 
 function QuizScreen(_ref21) {
   var showToast = _ref21.showToast,
