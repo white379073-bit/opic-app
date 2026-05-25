@@ -623,9 +623,16 @@ function useSpeech() {
   var getBestVoice = useCallback(function () {
     if (!synthRef.current) return null;
     var voices = synthRef.current.getVoices();
-    // 에바(Eva) 음성 우선 탐색, 없으면 여성 en-US, 없으면 en-US 아무거나
-    return voices.find(function(v){ return /eva/i.test(v.name); })
-        || voices.find(function(v){ return /samantha|ava|karen|moira|tessa/i.test(v.name) && v.lang.startsWith('en'); })
+    // 사용자가 선택한 음성 우선
+    var preferred = '';
+    try { preferred = localStorage.getItem('opic_tts_voice') || ''; } catch(e){}
+    if (preferred) {
+      var found = voices.find(function(v){ return v.name === preferred; });
+      if (found) return found;
+    }
+    // 기본: 에바(Eva)/아바(Ava) 우선, 없으면 여성 en-US
+    return voices.find(function(v){ return /\beva\b|\bava\b/i.test(v.name); })
+        || voices.find(function(v){ return /samantha|karen|moira|tessa|zira/i.test(v.name) && v.lang.startsWith('en'); })
         || voices.find(function(v){ return v.lang === 'en-US' && v.localService; })
         || voices.find(function(v){ return v.lang === 'en-US'; })
         || voices.find(function(v){ return v.lang.startsWith('en'); })
@@ -22428,15 +22435,38 @@ function App() {
   var speech = useSpeech();
   useEffect(function() { speech.stop(); }, [tab]);
 
-  // AndroidTTS 음성 목록 로드 + 저장된 음성 복원
+  // TTS 음성 목록 로드 (AndroidTTS 또는 Web Speech API)
   useEffect(function() {
-    if (!window.AndroidTTS) return;
-    try {
-      var list = JSON.parse(window.AndroidTTS.getVoices() || '[]');
-      setTtsVoiceList(list);
-      var saved = ttsVoice;
-      if (saved) { try { window.AndroidTTS.setPreferredVoice(saved); } catch(e){} }
-    } catch(e) {}
+    var saved = ttsVoice;
+    if (window.AndroidTTS) {
+      // Android 네이티브: getVoices() 로 목록 가져오기 (TTS init 완료 대기)
+      var attempts = 0;
+      var loadAndroidVoices = function() {
+        try {
+          var list = JSON.parse(window.AndroidTTS.getVoices() || '[]');
+          if (list.length > 0) {
+            setTtsVoiceList(list);
+            if (saved) { try { window.AndroidTTS.setPreferredVoice(saved); } catch(e){} }
+          } else if (attempts < 10) {
+            attempts++;
+            setTimeout(loadAndroidVoices, 500);
+          }
+        } catch(e) {}
+      };
+      setTimeout(loadAndroidVoices, 800);
+    } else if (window.speechSynthesis) {
+      // 브라우저 Web Speech API
+      var loadWebVoices = function() {
+        var voices = window.speechSynthesis.getVoices();
+        var eng = voices.filter(function(v){ return v.lang.startsWith('en'); })
+          .map(function(v){ return { name: v.name, locale: v.lang }; });
+        if (eng.length > 0) setTtsVoiceList(eng);
+      };
+      loadWebVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadWebVoices;
+      }
+    }
   }, []);
 
 
@@ -22830,7 +22860,7 @@ function App() {
     }, opt.label);
   }),
   // AndroidTTS 음성 선택 드롭다운 (음성 목록이 있을 때만 표시)
-  window.AndroidTTS && ttsVoiceList.length > 0 && React.createElement('div', {
+  ttsVoiceList.length > 0 && React.createElement('div', {
     style: { width:'100%', marginTop:6 }
   },
     React.createElement('div', { style:{ fontSize:11, color:'#94a3b8', marginBottom:4 } }, '🎙 TTS 음성 선택'),
@@ -22840,7 +22870,7 @@ function App() {
         var v = e.target.value;
         setTtsVoice(v);
         try { localStorage.setItem('opic_tts_voice', v); } catch(err){}
-        try { window.AndroidTTS.setPreferredVoice(v); } catch(err){}
+        if (window.AndroidTTS) { try { window.AndroidTTS.setPreferredVoice(v); } catch(err){} }
       },
       style: { width:'100%', padding:'6px 10px', borderRadius:8, border:'1px solid rgba(99,102,241,0.3)',
         background:'#1e293b', color:'#e2e8f0', fontSize:13 }
