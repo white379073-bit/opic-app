@@ -245,6 +245,7 @@ jobs:
         class AndroidTTS(private val context: Context) : TextToSpeech.OnInitListener {
             private val tts: TextToSpeech = TextToSpeech(context, this)
             private var ready = false
+            private var preferredVoiceName: String = ""
             override fun onInit(status: Int) {
                 if (status == TextToSpeech.SUCCESS) {
                     tts.setLanguage(java.util.Locale.US)
@@ -254,8 +255,35 @@ jobs:
             @JavascriptInterface
             fun speak(text: String, rate: Float) {
                 if (!ready) return
+                applyPreferredVoice()
                 tts.setSpeechRate(rate)
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "opic_tts")
+            }
+            private fun applyPreferredVoice() {
+                if (preferredVoiceName.isEmpty()) return
+                try {
+                    val voices = tts.voices ?: return
+                    val v = voices.find { it.name.contains(preferredVoiceName, ignoreCase = true) }
+                    if (v != null) tts.voice = v
+                } catch(e: Exception) {}
+            }
+            @JavascriptInterface
+            fun setPreferredVoice(voiceName: String) {
+                preferredVoiceName = voiceName
+            }
+            @JavascriptInterface
+            fun getPreferredVoice(): String = preferredVoiceName
+            @JavascriptInterface
+            fun getVoices(): String {
+                if (!ready) return "[]"
+                return try {
+                    val voices = tts.voices ?: return "[]"
+                    val eng = voices.filter { it.locale.language == "en" }
+                        .sortedBy { it.name }
+                    eng.joinToString(",","[","]") {
+                        "{"name":"${it.name}","locale":"${it.locale}"}"
+                    }
+                } catch(e: Exception) { "[]" }
             }
             @JavascriptInterface
             fun stop() { if (ready) tts.stop() }

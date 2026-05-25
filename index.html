@@ -22428,6 +22428,17 @@ function App() {
   var speech = useSpeech();
   useEffect(function() { speech.stop(); }, [tab]);
 
+  // AndroidTTS 음성 목록 로드 + 저장된 음성 복원
+  useEffect(function() {
+    if (!window.AndroidTTS) return;
+    try {
+      var list = JSON.parse(window.AndroidTTS.getVoices() || '[]');
+      setTtsVoiceList(list);
+      var saved = ttsVoice;
+      if (saved) { try { window.AndroidTTS.setPreferredVoice(saved); } catch(e){} }
+    } catch(e) {}
+  }, []);
+
 
   // 연속 학습 스트릭 업데이트
   useEffect(function () {
@@ -22817,7 +22828,31 @@ function App() {
         speech.stop();
       }
     }, opt.label);
-  }), speech.isSpeaking && /*#__PURE__*/React.createElement("div", {
+  }),
+  // AndroidTTS 음성 선택 드롭다운 (음성 목록이 있을 때만 표시)
+  window.AndroidTTS && ttsVoiceList.length > 0 && React.createElement('div', {
+    style: { width:'100%', marginTop:6 }
+  },
+    React.createElement('div', { style:{ fontSize:11, color:'#94a3b8', marginBottom:4 } }, '🎙 TTS 음성 선택'),
+    React.createElement('select', {
+      value: ttsVoice,
+      onChange: function(e) {
+        var v = e.target.value;
+        setTtsVoice(v);
+        try { localStorage.setItem('opic_tts_voice', v); } catch(err){}
+        try { window.AndroidTTS.setPreferredVoice(v); } catch(err){}
+      },
+      style: { width:'100%', padding:'6px 10px', borderRadius:8, border:'1px solid rgba(99,102,241,0.3)',
+        background:'#1e293b', color:'#e2e8f0', fontSize:13 }
+    },
+      React.createElement('option', { value:'' }, '-- 기본 음성 --'),
+      ttsVoiceList.map(function(v) {
+        return React.createElement('option', { key:v.name, value:v.name },
+          v.name + ' (' + v.locale + ')');
+      })
+    )
+  ),
+  speech.isSpeaking && /*#__PURE__*/React.createElement("div", {
     style: {
       marginLeft: 'auto',
       display: 'flex',
