@@ -19558,7 +19558,29 @@ function ProfileSetupScreen(_ref3) {
       key: i,
       className: "step-dot ".concat(step === i ? 'active' : step > i ? 'done' : '')
     });
-  })), /*#__PURE__*/React.createElement("div", {
+  })),
+  // 재설치 후 데이터 복원 버튼
+  window.AndroidBridge && React.createElement('button', {
+    style: { marginTop:8, padding:'8px 20px', borderRadius:10, border:'1px solid rgba(99,102,241,0.4)',
+      background:'rgba(99,102,241,0.1)', color:'#a5b4fc', fontSize:12, cursor:'pointer' },
+    onClick: function() {
+      try {
+        var ok = window.AndroidBridge.tryRestoreFromBackup
+          ? window.AndroidBridge.tryRestoreFromBackup()
+          : false;
+        if (ok) {
+          var saved = Storage.getItem('opic_profile');
+          if (saved) {
+            var p = JSON.parse(saved);
+            onComplete(p);
+            return;
+          }
+        }
+        alert('저장된 백업을 찾을 수 없습니다.');
+      } catch(e) { alert('복원 실패: ' + e.message); }
+    }
+  }, '📥 이전 데이터 복원'),
+  /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 12,
       color: '#64748b',

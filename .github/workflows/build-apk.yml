@@ -89,6 +89,27 @@ jobs:
         }
         GRADLE
 
+        mkdir -p android/app/src/main/res/xml
+
+        cat > android/app/src/main/res/xml/backup_rules.xml << 'XML'
+        <?xml version="1.0" encoding="utf-8"?>
+        <full-backup-content>
+            <include domain="sharedpref" path="opic_data.xml"/>
+        </full-backup-content>
+        XML
+
+        cat > android/app/src/main/res/xml/data_extraction_rules.xml << 'XML'
+        <?xml version="1.0" encoding="utf-8"?>
+        <data-extraction-rules>
+            <cloud-backup>
+                <include domain="sharedpref" path="opic_data.xml"/>
+            </cloud-backup>
+            <device-transfer>
+                <include domain="sharedpref" path="opic_data.xml"/>
+            </device-transfer>
+        </data-extraction-rules>
+        XML
+
         cat > android/app/src/main/AndroidManifest.xml << 'XML'
         <?xml version="1.0" encoding="utf-8"?>
         <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.opic.app">
@@ -99,6 +120,9 @@ jobs:
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
             <application
                 android:allowBackup="true"
+                android:fullBackupOnly="true"
+                android:fullBackupContent="@xml/backup_rules"
+                android:dataExtractionRules="@xml/data_extraction_rules"
                 android:icon="@mipmap/ic_launcher"
                 android:label="@string/app_name"
                 android:theme="@style/Theme.OPIc"
@@ -140,9 +164,8 @@ jobs:
             @JavascriptInterface
             fun saveData(key: String, value: String) {
                 prefs.edit().putString(key, value).apply()
-                if (key == "opic_profile" || key == "opic_progress" || key == "opic_quiz_best") {
-                    saveToDownloads()
-                }
+                // 모든 키 변경 시 백업 (스로틀: 빠른 연속 저장 방지)
+                saveToDownloads()
             }
             @JavascriptInterface
             fun getData(key: String): String = prefs.getString(key, "") ?: ""
@@ -150,6 +173,13 @@ jobs:
             fun removeData(key: String) {
                 prefs.edit().remove(key).apply()
                 saveToDownloads()
+            }
+            @JavascriptInterface
+            fun tryRestoreFromBackup(): Boolean {
+                return try {
+                    restoreFromDownloads()
+                    prefs.contains("opic_profile")
+                } catch(e: Exception) { false }
             }
 
             private fun buildJson(): String {
