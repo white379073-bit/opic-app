@@ -287,7 +287,7 @@ jobs:
                     val eng = voices.filter { it.locale.language == "en" }
                         .sortedBy { it.name }
                     eng.joinToString(",","[","]") {
-                        "{"name":"${it.name}","locale":"${it.locale}"}"
+                        "{\"name\":\"${it.name}\",\"locale\":\"${it.locale}\"}"
                     }
                 } catch(e: Exception) { "[]" }
             }
